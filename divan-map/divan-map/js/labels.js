@@ -64,3 +64,30 @@ export const EQUIVALENT_STATUS = {
   disputed: { label: 'Tartışmalı veya farklı', symbol: '◆' },
   unidentified: { label: 'Belirlenemedi', symbol: '○' },
 };
+
+/** Kinds of things the map's explanation cards describe (Turkish chip text). */
+export const ANNOTATION_KIND = {
+  place: 'Yer adı',
+  region: 'Ülke / bölge',
+  river: 'Irmak',
+  water: 'Deniz / göl',
+  steppe: 'Bozkır',
+  mountain: 'Dağ',
+  legend: 'Efsanevi / geleneksel',
+  direction: 'Yön',
+  note: 'Açıklama yazısı',
+  line: 'Çizgi',
+  symbol: 'Simge',
+  area: 'Alan',
+};
+
+/**
+ * How well a card's text is backed by the consulted sources. The symbol and the words
+ * carry the meaning, never colour alone.
+ */
+export const ANNOTATION_STATUS = {
+  sourced: { label: 'Kaynakta var', symbol: '●', help: 'Bu bilgi aşağıdaki kaynaklarda yer alıyor.' },
+  partial: { label: 'Kısmen kaynaklı', symbol: '◐', help: 'Bilgi kaynaklarda kısmen yer alıyor; kartta neyin kaynaklı olduğu belirtilmiştir.' },
+  interpretation: { label: 'Araştırmacı yorumu', symbol: '◇', help: 'Bu eşleştirme araştırmacıların yorumudur; haritanın kendisi bunu yazmaz.' },
+  'label-only': { label: 'Yalnızca haritadaki yazı', symbol: '○', help: 'Bu yazı için elimizdeki kaynaklarda ayrıntılı açıklama bulunamadı; kaynak taraması sürüyor.' },
+};

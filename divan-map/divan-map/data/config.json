@@ -23,5 +23,20 @@
       ],
       "zoom": 3
     }
+  },
+  "redrawMap": {
+    "imagePath": "assets/turkish-redraw-map.webp",
+    "width": 1746,
+    "height": 1672,
+    "title": "Türkçe etiketli yeniden çizim",
+    "credit": "Türkçe etiketli yeniden çizim: proje ekibi tarafından sağlandı; çizeni, kaynağı ve lisansı henüz doğrulanmadı.",
+    "provenanceVerified": false,
+    "circle": {
+      "cx": 895,
+      "cy": 848,
+      "r": 812,
+      "oceanFromRatio": 0.917
+    },
+    "note": "Yeniden çizimin özgün haritaya sadakati bu çalışmada yazıt yazıt karşılaştırılmadı. Kart metinleri yazıları açıklar; çizimin kendisini doğrulamaz."
   }
 }

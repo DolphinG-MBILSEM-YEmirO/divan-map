@@ -12,6 +12,8 @@ import { clearAllLocal, readLocal, writeLocal } from './storage.js';
 import { normalizeText, el } from './text.js';
 import { renderCategoryFilters, renderInfoCard, renderEquivalents, renderGlossary, renderLegend, renderResults, renderSources } from './ui.js';
 import { playIntro } from './intro.js';
+import { createExplainer } from './explain.js';
+import { renderLabelsList } from './labels-list.js';
 
 const TEXT_SCALES = [100, 115, 130, 150];
 const NARROW_QUERY = window.matchMedia('(max-width: 860px)');
@@ -55,6 +57,7 @@ const state = {
 
 const views = {};
 let activity = null;
+let explainer = null;
 const shownOnce = new Set();
 
 // ------------------------------------------------------------------ messages
@@ -128,6 +131,7 @@ function renderCard(record) {
 function selectRecord(id, { focus = false, trigger = null } = {}) {
   const record = state.records.find((r) => r.id === id);
   if (!record) return;
+  showOriginalBase(); // record markers are placed on the original image only
   state.selectedId = id;
   state.lastTrigger = trigger ?? document.activeElement;
   if (activity?.isActive()) activity.answer(record);
@@ -159,6 +163,67 @@ function closeCard() {
   const trigger = state.lastTrigger;
   const target = trigger && document.body.contains(trigger) ? trigger : dom.results.querySelector('button') ?? dom.searchInput;
   target.focus();
+}
+
+// ------------------------------------------------------------ schematic base
+
+const BASE_TITLES = { redraw: 'Özgün haritanın Türkçe etiketli çizimi', original: 'Özgün harita' };
+const TOUCH_ONLY = window.matchMedia('(hover: none)').matches;
+const BASE_NOTES = {
+  redraw: TOUCH_ONLY
+    ? 'Haritaya dokun: dokunduğun yazı, çizgi ve renk açıklanır.'
+    : 'Fareni haritada gezdir: her yazı, çizgi ve renk açıklanır. Kartı sabitlemek için tıkla.',
+  original: 'Bu görselde kayıt işaretleri görünür. Yazı ve çizgi açıklamaları Türkçe etiketli çizimde bulunur.',
+};
+
+/** Updates the pane title, the switch buttons, the credit line and the explanation cards after a base change. */
+function syncBaseUi() {
+  const view = views.schematic;
+  const base = view.base;
+  $('schematic-title').textContent = BASE_TITLES[base];
+  $('base-redraw').setAttribute('aria-pressed', String(base === 'redraw'));
+  $('base-original').setAttribute('aria-pressed', String(base === 'original'));
+  $('base-note').textContent = view.hasRedraw() ? BASE_NOTES[base] : '';
+  explainer?.setActive(base === 'redraw');
+
+  const { originalMap, redrawMap } = state.config;
+  const credit = $('map-credit');
+  const text = base === 'redraw' ? redrawMap?.credit : originalMap.imagePath && originalMap.license ? `Görsel: ${originalMap.license}` : '';
+  credit.textContent = text ?? '';
+  credit.hidden = !credit.textContent;
+}
+
+function chooseBase(name, { remember = true } = {}) {
+  views.schematic.setBase(name);
+  if (remember) writeLocal('schematicBase', views.schematic.base);
+}
+
+/** Markers and the find-it activity need the original image; switch to it when they are used. */
+function showOriginalBase() {
+  if (views.schematic?.base === 'redraw') chooseBase('original', { remember: false });
+}
+
+/** Opens the explanation card of one label on the redraw (used by the list of labels). */
+function showAnnotation(id) {
+  if (!state.showOriginal) {
+    state.showOriginal = true;
+    dom.layerOriginal.checked = true;
+    applyLayout();
+  }
+  chooseBase('redraw', { remember: false });
+  $('labels-title').closest('dialog').close();
+  requestAnimationFrame(() => {
+    views.schematic.refreshSize();
+    explainer?.focusAnnotation(id);
+    closeSidebarOnNarrow();
+  });
+}
+
+function wireBaseSwitch() {
+  const redrawAvailable = views.schematic.hasRedraw();
+  for (const id of ['base-redraw', 'base-original', 'btn-labels-pane']) $(id).hidden = !redrawAvailable;
+  $('base-redraw').addEventListener('click', () => chooseBase('redraw'));
+  $('base-original').addEventListener('click', () => chooseBase('original'));
 }
 
 // --------------------------------------------------------------------- layout
@@ -201,6 +266,49 @@ function setSidebarOpen(open) {
 
 function closeSidebarOnNarrow() {
   if (NARROW_QUERY.matches) setSidebarOpen(false);
+}
+
+// ---------------------------------------------------------------------- menus
+
+/**
+ * Disclosure menus of the top bar. A trigger button opens a panel of ordinary buttons;
+ * Esc or a click outside closes it, and Esc returns focus to the trigger.
+ */
+function wireMenus() {
+  const menus = [...document.querySelectorAll('[data-menu]')];
+  const close = (menu, { restoreFocus = false } = {}) => {
+    const trigger = menu.querySelector('.menu__trigger');
+    const panel = menu.querySelector('.menu__panel');
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger.focus();
+  };
+  const closeAll = (except = null) => menus.forEach((m) => { if (m !== except) close(m); });
+
+  for (const menu of menus) {
+    const trigger = menu.querySelector('.menu__trigger');
+    const panel = menu.querySelector('.menu__panel');
+    trigger.addEventListener('click', () => {
+      const willOpen = panel.hidden;
+      closeAll();
+      panel.hidden = !willOpen;
+      trigger.setAttribute('aria-expanded', String(willOpen));
+    });
+    panel.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (button && !button.hasAttribute('data-keep-open') && !button.closest('.menu__row')) close(menu);
+    });
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) {
+        event.stopPropagation();
+        close(menu, { restoreFocus: true });
+      }
+    });
+  }
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-menu]')) closeAll();
+  });
+  document.querySelectorAll('.topbar__nav > button').forEach((button) => button.addEventListener('click', () => closeAll()));
 }
 
 // -------------------------------------------------------------------- dialogs
@@ -377,7 +485,7 @@ async function boot() {
 
   let data;
   try {
-    const [config, places, sources, quiz, glossary, instruments, equivalents] = await Promise.all([
+    const [config, places, sources, quiz, glossary, instruments, equivalents, annotations] = await Promise.all([
       loadJson('data/config.json'),
       loadJson('data/places.json'),
       loadJson('data/sources.json'),
@@ -385,8 +493,9 @@ async function boot() {
       loadJson('data/glossary.json'),
       loadJson('data/research-instruments.json'),
       loadJson('data/modern-equivalents.json'),
+      loadJson('data/map-annotations.json'),
     ]);
-    data = { config, places, sources, quiz, glossary, instruments, equivalents };
+    data = { config, places, sources, quiz, glossary, instruments, equivalents, annotations };
   } catch (error) {
     console.error(error);
     showFatal(
@@ -398,12 +507,6 @@ async function boot() {
   }
 
   state.config = data.config;
-  {
-    const { imagePath, license } = state.config.originalMap;
-    const credit = $('map-credit');
-    credit.textContent = imagePath && license ? `Görsel: ${license}` : '';
-    credit.hidden = !credit.textContent;
-  }
   state.records = prepareRecords(data.places.records);
   data.sources.sources.forEach((s) => state.sourcesById.set(s.id, s));
   dom.demoBanner.hidden = !state.records.some((r) => r.is_demo);
@@ -419,6 +522,35 @@ async function boot() {
   views.modern = new MapView({ container: $('map-modern'), kind: 'modern', config: state.config, onSelect: (id) => selectRecord(id, { trigger: document.activeElement }), onStatus });
   Object.values(views).forEach((view) => view.setRecords(state.records));
 
+  // Explanation cards belong to the Turkish-labelled redraw; without that image the map works as before.
+  views.schematic.onBaseChange = syncBaseUi;
+  if (views.schematic.hasRedraw()) {
+    const equivalentsById = new Map(data.equivalents.records.map((r) => [r.id, r]));
+    explainer = createExplainer({
+      view: views.schematic,
+      pane: dom.paneSchematic,
+      config: state.config,
+      data: data.annotations,
+      sourcesById: state.sourcesById,
+      equivalentsById,
+      onOpenSource: openSource,
+    });
+    renderLabelsList({
+      body: $('labels-body'),
+      search: $('labels-search'),
+      count: $('labels-count'),
+      annotations: explainer.annotations,
+      sourcesById: state.sourcesById,
+      equivalentsById,
+      onShow: showAnnotation,
+      onOpenSource: openSource,
+    });
+    $('labels-notice').textContent = data.annotations.notice;
+  }
+  const storedBase = readLocal('schematicBase', null);
+  chooseBase(views.schematic.hasRedraw() && storedBase !== 'original' ? 'redraw' : 'original', { remember: false });
+  wireBaseSwitch();
+
   document.querySelectorAll('[data-legend]').forEach(renderLegend);
   renderSources($('sources-body'), data.sources.sources);
   $('sources-notice').textContent = data.sources.notice;
@@ -431,11 +563,12 @@ async function boot() {
   const research = createResearch({ container: $('research-body'), instruments: data.instruments });
   $('btn-research-test').addEventListener('click', research.start);
   activity = createActivity({ bar: $('activity-bar'), records: state.records });
-  $('btn-activity').addEventListener('click', () => { closeCard(); activity.start(); });
+  $('btn-activity').addEventListener('click', () => { closeCard(); showOriginalBase(); activity.start(); });
 
   renderFilters();
   wireControls();
   wireDialogs();
+  wireMenus();
   wireSettings();
   wirePresentationMode();
   updateProgress();
@@ -449,4 +582,4 @@ async function boot() {
 boot();
 
 // Exposed for tests and debugging only; not part of the interface.
-window.__dlt = { state, views, selectRecord, closeCard };
+window.__dlt = { state, views, selectRecord, closeCard, get explainer() { return explainer; } };

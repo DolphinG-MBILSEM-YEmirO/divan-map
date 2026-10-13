@@ -51,6 +51,74 @@ await new Promise((r) => setTimeout(r, 900));
 check('intro removed after skip', $('intro') === null);
 check('cover opened after intro', $('dlg-welcome').hasAttribute('open'));
 check('page not inert after intro', !window.document.querySelector('[inert]'));
+// Turkish-labelled redraw as the default base: record markers are hidden until the original image is shown
+check('redraw is the default base of the schematic pane', app.views.schematic.base === 'redraw' && $('base-redraw').getAttribute('aria-pressed') === 'true');
+check('pane title names the redraw', $('schematic-title').textContent.includes('Türkçe etiketli'));
+check('redraw credit says its source is unverified', $('map-credit').textContent.includes('doğrulanmadı'));
+check('record markers are not drawn on the redraw', Object.values(app.views.schematic.groups).every((g) => !app.views.schematic.map.hasLayer(g)));
+check('Leaflet attribution control is not added to the schematic map', !window.document.querySelector('#map-schematic .leaflet-control-attribution'));
+check('modern map shows the OSM credit without the Leaflet prefix', (() => { const a = window.document.querySelector('#map-modern .leaflet-control-attribution'); return !!a && a.textContent.includes('OpenStreetMap') && !a.textContent.includes('Leaflet'); })());
+
+// explanation cards: hit testing by label, shape, colour class and fallbacks
+const ex = app.explainer;
+const at = (x, y) => ex.hitTest(x, y, 4);
+const K = 1746 / 1100;
+check('explainer has annotations and classes', !!ex && ex.annotations.length > 100 && Object.keys(ex.classes).length >= 9);
+check('hovering "Balasagun" explains Balasagun with sources', (() => { const r = at(550 * K, 549 * K); return r.title === 'Balasagun' && r.status === 'sourced' && r.sources.length >= 3; })());
+check('a label without a source is marked label-only', (() => { const r = at(558 * K, 241 * K); return r.title === 'Canbalık' && r.status === 'label-only' && r.sources.length === 0; })());
+check('a polygon area (rotated text) is hit', at(770 * K, 250 * K).title === 'Başaklarla kaplı diyar');
+check('a shape beats the colour under it (Işık Göl)', at(600 * K, 512 * K).title.startsWith('Işık Göl'));
+check('the outer ring is explained by distance from the centre', at(60, 850).title.includes('Dış halka'));
+check('far outside the circle is explained', at(5, 5).title === 'Dairenin dışı');
+check('empty ground still gets a card', at(560 * K, 440 * K).title === 'Boş zemin');
+check('a modern equivalent is attached where researched', at(560 * K, 100 * K).title === 'Cabarka');
+check('every card has text and a status', ex.annotations.every((a) => a.paragraphs.length > 0 || a.status === 'label-only'));
+
+// the card renders without innerHTML, shows the no-source note, and the list dialog reads the same data
+ex.focusAnnotation('canbalik');
+const xcard = window.document.querySelector('.xcard');
+check('pinned card is shown', xcard && !xcard.hidden && xcard.classList.contains('is-pinned'));
+check('label-only card says the source search is ongoing', xcard.textContent.includes('kaynak taraması sürüyor'));
+check('card has a close button', !!xcard.querySelector('button[aria-label="Açıklama kartını kapat"]'));
+ex.focusAnnotation('balasagun');
+check('card of a sourced label lists sources as buttons', window.document.querySelectorAll('.xcard .xcard__sources button').length >= 3);
+check('card shows the researched modern equivalent', window.document.querySelector('.xcard').textContent.includes('Günümüzdeki karşılığı'));
+ex.hide();
+check('closing a pinned card hides it', window.document.querySelector('.xcard').hidden === true);
+check('labels dialog lists every card', $('labels-body').querySelectorAll('details').length >= 100);
+$('labels-search').value = 'hazar';
+$('labels-search').dispatchEvent(new window.Event('input'));
+check('labels dialog search narrows the list', $('labels-body').querySelectorAll('details').length >= 1 && $('labels-body').querySelectorAll('details').length < 30);
+$('labels-search').value = '';
+$('labels-search').dispatchEvent(new window.Event('input'));
+
+// top bar menus
+const menus = [...window.document.querySelectorAll('[data-menu]')];
+check('top bar has four grouped menus', menus.length === 4);
+const learn = $('menu-learn-btn');
+learn.click();
+check('a menu trigger opens its panel', !$('menu-learn').hidden && learn.getAttribute('aria-expanded') === 'true');
+$('menu-practice-btn').click();
+check('opening another menu closes the first', $('menu-learn').hidden === true && !$('menu-practice').hidden);
+$('menu-practice').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+check('Escape closes an open menu', $('menu-practice').hidden === true);
+$('menu-learn-btn').click();
+$('btn-labels').click();
+check('a menu item opens its dialog and closes the menu', $('dlg-labels').hasAttribute('open') && $('menu-learn').hidden === true);
+$('dlg-labels').close();
+check('menu items have a purpose line', [...window.document.querySelectorAll('.menu__item')].every((b) => b.querySelector('.menu__desc')?.textContent.length > 15));
+$('menu-view-btn').click();
+$('btn-text-larger').click();
+check('settings stay open while adjusting text size', $('menu-view').hidden === false);
+$('btn-text-smaller').click();
+$('menu-view-btn').click();
+
+// switching base
+$('base-original').click();
+check('original base shows record markers again', app.views.schematic.base === 'original' && Object.values(app.views.schematic.groups).every((g) => app.views.schematic.map.hasLayer(g)));
+check('the choice is remembered locally', JSON.parse(window.localStorage.getItem('dlt:schematicBase')) === 'original');
+$('base-redraw').click();
+check('switching back works', app.views.schematic.base === 'redraw');
 check('default categories listed (3 results)', $('results').children.length === 3);
 check('route filter disabled (no route records)', $('cat-route').disabled === true);
 
@@ -76,9 +144,10 @@ check('hiding geography leaves 2 results', $('results').children.length === 2);
 geo.checked = true; geo.dispatchEvent(new window.Event('change'));
 check('showing geography again restores 3', $('results').children.length === 3);
 
-// selection and info card
+// selection and info card (selecting a record switches the pane to the original image)
 $('results').querySelector('button').click();
 check('clicking a result opens the info card', $('info-card').hidden === false);
+check('selecting a record switches the pane to the original image', app.views.schematic.base === 'original');
 check('card shows demo warning', $('info-card').textContent.includes('Örnek içerik'));
 check('card says no modern marker for demo-001', $('info-card').textContent.includes('günümüz haritasında işaretlenmemiştir'));
 check('progress counts the viewed record', $('progress').textContent.includes('1 / 3'));
@@ -95,7 +164,7 @@ $('layer-original').checked = false; $('layer-original').dispatchEvent(new windo
 check('last visible map cannot be switched off', $('layer-original').checked === true);
 
 // sources + legend
-check('sources dialog lists 7 sources', $('sources-body').querySelectorAll('.source').length === 7);
+check('sources dialog lists 10 sources', $('sources-body').querySelectorAll('.source').length === 10);
 check('unverified citations are flagged', $('sources-body').textContent.includes('Künye doğrulanacak'));
 check('legend lists 4 location types', window.document.querySelector('[data-legend]').querySelectorAll('.legend-list')[0].children.length === 4);
 

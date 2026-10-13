@@ -11,7 +11,8 @@
       "year": null,
       "url": null,
       "role": "Eserin Türkçe çevirisi; kayıtlarda sayfa bilgisiyle anılacak.",
-      "citation_verified": false
+      "citation_verified": false,
+      "short": "Atalay çevirisi"
     },
     {
       "id": "src-dlt-dankoff-kelly",
@@ -22,7 +23,8 @@
       "year": null,
       "url": null,
       "role": "Eserin İngilizce çevirisi; harita ve harita üzerindeki adlar için karşılaştırmalı kaynak.",
-      "citation_verified": false
+      "citation_verified": false,
+      "short": "Dankoff ve Kelly çevirisi"
     },
     {
       "id": "src-myoldmaps-kashghari",
@@ -33,7 +35,8 @@
       "year": null,
       "url": "https://www.myoldmaps.com/early-medieval-monographs/214-al-kashgaris-world-map/214-al-kashghari.pdf",
       "role": "Haritanın yönelimi, ölçeksizliği, yazma bilgisi (Millet Genel Kütüphanesi, Ali Emiri 4189) ve haritadaki adların günümüz karşılıkları.",
-      "citation_verified": false
+      "citation_verified": false,
+      "short": "Monografi (myoldmaps)"
     },
     {
       "id": "src-gomec-yer-adlari",
@@ -44,7 +47,8 @@
       "year": null,
       "url": "https://dergipark.org.tr/tr/download/article-file/782062",
       "role": "Eserin metninde geçen ülke, şehir ve bölge adlarının tarihî coğrafya ile konumlandırılması; yazar kendi eşleştirmelerinin bazılarını temkinli sunar.",
-      "citation_verified": false
+      "citation_verified": false,
+      "short": "Gömeç, yer adları"
     },
     {
       "id": "src-ormanoglu-2022",
@@ -55,7 +59,44 @@
       "year": 2022,
       "url": "https://krtknadmn.karatekin.edu.tr/files/cakutad/%C3%87AK%C3%9CTAD%20C2S1/5.%20%C3%87i%C4%9Fdem%20Ormano%C4%9Flu.pdf",
       "role": "Haritanın yönelimi, ölçeği ve deniz, göl, çöl gibi unsurların günümüz karşılıkları. Makalenin metninde sayfa numarası görünmediği için bölüm başlıklarıyla anılır.",
-      "citation_verified": false
+      "citation_verified": false,
+      "short": "Ormanoğlu ve ark. 2022"
+    },
+    {
+      "id": "src-tdv-ia",
+      "group": "study",
+      "title": "DÎVÂNÜ LUGĀTİ'T-TÜRK maddesi",
+      "author": "Mustafa S. Kaçalin",
+      "publisher": "TDV İslâm Ansiklopedisi, c. 9 (İstanbul)",
+      "year": 1994,
+      "url": "https://islamansiklopedisi.org.tr/divanu-lugatit-turk",
+      "role": "Haritanın renkleri (dağ kırmızı, deniz yeşil, ırmak mavi, kumluk sarı), merkezinin Balasagun olması ve bazı adların haritada gösterilmemesi.",
+      "citation_verified": false,
+      "short": "Kaçalin, TDV İA 1994"
+    },
+    {
+      "id": "src-alyilmaz-2025",
+      "group": "study",
+      "title": "Kȃşgarlı Mahmud, Dîvânu Lugâti't-Türk ve Dîvânu Lugâti't-Türk'teki haritanın önemi",
+      "author": "C. Alyılmaz ve S. Alyılmaz",
+      "publisher": "Geomatik, 10(2), 274–293",
+      "year": 2025,
+      "url": "https://doi.org/10.29128/geomatik.1641762",
+      "role": "Haritanın renkleri, dairesel biçimi ve Balasagun merkezli düzeni.",
+      "citation_verified": false,
+      "short": "Alyılmaz ve Alyılmaz 2025"
+    },
+    {
+      "id": "src-alevi-sehri",
+      "group": "study",
+      "title": "Dîvânu Lugâti't-Türk'te geçen “Alevi Şehri” üzerine bir inceleme",
+      "author": "(yazar bilgisi doğrulanacak)",
+      "publisher": "İnönü Üniversitesi açık erişim arşivi",
+      "year": null,
+      "url": "https://abakus.inonu.edu.tr/items/cd9bc34b-a3d3-4ec3-b87b-0e91bc24f597",
+      "role": "Alevîler Şehri'nin haritadaki komşu adları (Câfu, Kadınlar Şehri, Cabarka, Beşbalık, İli Nehri).",
+      "citation_verified": false,
+      "short": "Alevi Şehri makalesi"
     },
     {
       "id": "src-leaflet",
@@ -66,7 +107,8 @@
       "year": 2023,
       "url": "https://leafletjs.com",
       "role": "Etkileşimli harita kütüphanesi (sürüm 1.9.4, BSD-2-Clause lisanslı, uygulamayla birlikte dağıtılır).",
-      "citation_verified": true
+      "citation_verified": true,
+      "short": "Leaflet"
     },
     {
       "id": "src-osm",
@@ -77,7 +119,8 @@
       "year": null,
       "url": "https://www.openstreetmap.org/copyright",
       "role": "Günümüz altlık harita karoları (ODbL). Yalnızca konum bulmaya yardımcı modern altlıktır; 11. yüzyıl siyasi durumunu göstermez.",
-      "citation_verified": true
+      "citation_verified": true,
+      "short": "OpenStreetMap"
     }
   ]
 }

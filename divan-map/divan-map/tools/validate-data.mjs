@@ -144,19 +144,72 @@ function validateEquivalents(data, sourceIds) {
   }
 }
 
+
+const ANNOTATION_STATUSES = new Set(['sourced', 'partial', 'interpretation', 'label-only']);
+const ANNOTATION_KINDS = new Set(['place', 'region', 'river', 'water', 'steppe', 'mountain', 'legend', 'direction', 'note', 'line', 'symbol', 'area']);
+const ANNOTATION_LAYERS = new Set(['label', 'shape', 'area']);
+
+/** Explanation cards of the redraw map (data/map-annotations.json). */
+function validateAnnotations(data, sourceIds, equivalentIds, redraw) {
+  if (!data) return;
+  const { width, height } = data.coordinateSpace ?? {};
+  if (!redraw || width !== redraw.width || height !== redraw.height) fail('map-annotations.json: coordinateSpace must equal config.redrawMap width and height');
+  const checkCard = (card, where, { needsStatus = true } = {}) => {
+    if (!card.paragraphs || !Array.isArray(card.paragraphs)) fail(`${where}: "paragraphs" must be an array`);
+    if (needsStatus && !ANNOTATION_STATUSES.has(card.status)) fail(`${where}: unknown status "${card.status}"`);
+    if (card.status === 'label-only' && (card.sources ?? []).length) fail(`${where}: a label-only card must not list sources`);
+    if (['sourced', 'partial'].includes(card.status) && !(card.sources ?? []).length && card.status === 'sourced') fail(`${where}: a "sourced" card needs at least one source`);
+    if (card.status === 'label-only' && (card.paragraphs ?? []).some((p) => /\bkaynak(ta|lara|lar)? (göre|belirt)/i.test(p))) fail(`${where}: a label-only card must not claim a source`);
+    for (const ref of card.sources ?? []) {
+      if (!sourceIds.has(ref.source_id)) fail(`${where}: unknown source "${ref.source_id}"`);
+      if (!ref.locator) fail(`${where}: source without locator`);
+    }
+  };
+  for (const [id, card] of Object.entries(data.classes ?? {})) {
+    if (!card.title) fail(`map-annotations.json: class "${id}" has no title`);
+    checkCard(card, `map-annotations.json class "${id}"`);
+  }
+  for (const needed of ['mountain-line', 'river-line', 'sea-fill', 'settlement-dot', 'sand-fill', 'dotted-line', 'ocean-ring', 'empty-land', 'outside']) {
+    if (!data.classes?.[needed]) fail(`map-annotations.json: missing class "${needed}"`);
+  }
+  const ids = new Set();
+  (data.annotations ?? []).forEach((a, i) => {
+    const where = `map-annotations.json annotation #${i + 1} (${a.id ?? '?'})`;
+    if (!a.id || ids.has(a.id)) fail(`${where}: missing or duplicate id`);
+    ids.add(a.id);
+    if (!a.label) fail(`${where}: no label`);
+    if (!ANNOTATION_KINDS.has(a.kind)) fail(`${where}: unknown kind "${a.kind}"`);
+    if (!ANNOTATION_LAYERS.has(a.layer)) fail(`${where}: unknown layer "${a.layer}"`);
+    if (!Array.isArray(a.areas) || a.areas.length === 0) fail(`${where}: needs at least one area`);
+    for (const area of a.areas ?? []) {
+      const points = Array.isArray(area) ? [[area[0], area[1]], [area[0] + area[2], area[1] + area[3]]] : area.poly;
+      if (!points || (Array.isArray(area) && area.length !== 4) || (!Array.isArray(area) && points.length < 3)) fail(`${where}: bad area ${JSON.stringify(area).slice(0, 50)}`);
+      for (const [x, y] of points ?? []) {
+        if (!(x >= 0 && x <= width && y >= 0 && y <= height)) fail(`${where}: area outside the image (${x}, ${y})`);
+      }
+    }
+    checkCard(a, where);
+    if (a.equivalentId && !equivalentIds.has(a.equivalentId)) fail(`${where}: unknown equivalentId "${a.equivalentId}"`);
+  });
+}
+
 async function main() {
-  const [config, places, sources, quiz, instruments, equivalents] = await Promise.all([
+  const [config, places, sources, quiz, instruments, equivalents, annotations] = await Promise.all([
     readJson('data/config.json'),
     readJson('data/places.json'),
     readJson('data/sources.json'),
     readJson('data/quiz.json'),
     readJson('data/research-instruments.json'),
     readJson('data/modern-equivalents.json'),
+    readJson('data/map-annotations.json'),
   ]);
   if (!config || !places || !sources) return finish();
 
   if (!(config.originalMap?.width > 0 && config.originalMap?.height > 0)) {
     fail('config.json: originalMap.width and height must be positive numbers');
+  }
+  if (config.redrawMap && config.redrawMap.provenanceVerified === false && !config.redrawMap.credit) {
+    fail('config.json: the redraw map is unverified, so its credit line must say so');
   }
   if (config.originalMap?.imagePath && !config.originalMap.licenseVerified) {
     fail('config.json: an original map image is set but licenseVerified is false');
@@ -180,6 +233,7 @@ async function main() {
   validateQuiz(quiz);
   validateInstruments(instruments);
   validateEquivalents(equivalents, sourceIds);
+  validateAnnotations(annotations, sourceIds, new Set((equivalents?.records ?? []).map((r) => r.id)), config.redrawMap);
   finish(places.records?.length ?? 0);
 }
 

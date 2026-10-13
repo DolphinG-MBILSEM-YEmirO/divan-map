@@ -65,16 +65,36 @@ export class MapView {
       zoomSnap: 0.25,
       maxBounds: this.bounds.pad(0.5),
       maxBoundsViscosity: 0.8,
+      attributionControl: false, // no Leaflet flag on the historical map; credits are shown below the map and in the bibliography
     });
     this._drawSchematicBase(map);
+    this._createRedrawBase(map);
     map.fitBounds(this.bounds);
     return map;
+  }
+
+  /**
+   * The Turkish-labelled redraw is a second base image for the same pane.
+   * It keeps the pane's coordinate space (the original map's pixels) and is centred, at the same height.
+   */
+  _createRedrawBase(map) {
+    const redraw = this.config.redrawMap;
+    if (!redraw?.imagePath) return;
+    const { width, height } = this.config.originalMap;
+    const drawnWidth = (height * redraw.width) / redraw.height;
+    const x0 = (width - drawnWidth) / 2;
+    this.redrawBounds = L.latLngBounds([[0, x0], [height, x0 + drawnWidth]]);
+    this.redrawLayer = L.imageOverlay(redraw.imagePath, this.redrawBounds, {
+      attribution: '',
+      alt: redraw.title ?? '',
+      interactive: false,
+    });
   }
 
   _drawSchematicBase(map) {
     const { imagePath, width, height, license } = this.config.originalMap;
     if (imagePath) {
-      L.imageOverlay(imagePath, this.bounds, { attribution: '', alt: this.config.originalMap.title ?? '', interactive: false }).addTo(map);
+      this.originalLayer = L.imageOverlay(imagePath, this.bounds, { attribution: '', alt: this.config.originalMap.title ?? '', interactive: false }).addTo(map);
       return;
     }
     // No licensed image yet: show an honest placeholder instead of an invented drawing.
@@ -95,12 +115,15 @@ export class MapView {
       icon: L.divIcon({ className: 'schematic-note-wrap', html: note, iconSize: [340, 70], iconAnchor: [170, 35] }),
     }).addTo(base);
     base.addTo(map);
+    this.originalLayer = base;
   }
 
   _createModernMap(container) {
     const basemap = this.config.modernBasemap;
     const { center, zoom } = this.config.initialView.modern;
-    const map = L.map(container, { minZoom: 2, maxZoom: basemap.maxZoom, worldCopyJump: true });
+    // The Leaflet prefix is left out; the OpenStreetMap credit that its licence requires stays.
+    const map = L.map(container, { minZoom: 2, maxZoom: basemap.maxZoom, worldCopyJump: true, attributionControl: false });
+    L.control.attribution({ prefix: false }).addTo(map);
     map.setView(center, zoom);
 
     const tiles = L.tileLayer(basemap.urlTemplate, { attribution: basemap.attribution, maxZoom: basemap.maxZoom });
@@ -115,6 +138,57 @@ export class MapView {
     });
     tiles.addTo(map);
     return map;
+  }
+
+  // ------------------------------------------------------------- base image
+
+  /** Which base image the schematic pane shows: 'redraw' (Turkish-labelled) or 'original'. */
+  get base() {
+    return this._base ?? 'original';
+  }
+
+  hasRedraw() {
+    return Boolean(this.redrawLayer);
+  }
+
+  /**
+   * Switches the schematic base image. Record markers are placed on the original
+   * image's pixels, so they are only shown on the original base.
+   */
+  setBase(name) {
+    if (this.kind !== 'schematic') return;
+    const next = name === 'redraw' && this.redrawLayer ? 'redraw' : 'original';
+    if (next === this.base && this._base) return;
+    this._base = next;
+    if (this.redrawLayer) {
+      if (next === 'redraw') {
+        if (this.originalLayer) this.map.removeLayer(this.originalLayer);
+        this.map.addLayer(this.redrawLayer);
+      } else {
+        this.map.removeLayer(this.redrawLayer);
+        if (this.originalLayer) this.map.addLayer(this.originalLayer);
+      }
+    }
+    for (const group of Object.values(this.groups ?? {})) {
+      if (next === 'original') this.map.addLayer(group);
+      else this.map.removeLayer(group);
+    }
+    this.onBaseChange?.(next);
+  }
+
+  /** Converts a map position to pixel coordinates of the redraw image (null when it is off the image). */
+  latLngToRedrawPixel(latlng) {
+    const b = this.redrawBounds;
+    const { width, height } = this.config.redrawMap;
+    const x = ((latlng.lng - b.getWest()) / (b.getEast() - b.getWest())) * width;
+    const y = ((b.getNorth() - latlng.lat) / (b.getNorth() - b.getSouth())) * height;
+    return { x, y };
+  }
+
+  redrawPixelToLatLng(x, y) {
+    const b = this.redrawBounds;
+    const { width, height } = this.config.redrawMap;
+    return L.latLng(b.getNorth() - (y / height) * (b.getNorth() - b.getSouth()), b.getWest() + (x / width) * (b.getEast() - b.getWest()));
   }
 
   // ----------------------------------------------------------------- records

@@ -25,6 +25,9 @@ Dates are 2026. "Assumption" means the team has not confirmed it yet.
 | 2026-10-13 | The info card is a limited-height bottom sheet on phones. | The map must stay usable. |
 | 2026-10-13 | Team answers: main field History; offline use not needed (no service worker planned); no original map image available, so the schematic base stays. | Direct answer from team. |
 | 2026-10-13 | Quiz questions in this version test map-reading principles, not historical facts. | No verified historical facts yet. |
+| 2026-10-13 | Explanation cards are our own DOM (no Leaflet popups or tooltips) and each card carries a visible status: sourced, partial, researcher's interpretation, or label-only. Cards without a found source say so instead of inventing text. | Honesty about evidence; a hover card must not look like a verified fact. |
+| 2026-10-13 | The Turkish-labelled redraw is a second base image of the original pane (same coordinate space, centred). Record markers stay on the original image; selecting a record switches back to it. | Marker positions were set on the original image's pixels. |
+| 2026-10-13 | The top bar's thirteen icon buttons became four labelled menus with purpose lines. Element ids and handlers stayed the same. | Fewer, clearer controls without removing any feature. |
 
 ## Known limits of this version
 
