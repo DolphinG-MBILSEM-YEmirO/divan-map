@@ -1,0 +1,16 @@
+{
+  "name": "divanu-lugati-t-turk-map",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interactive prototype of the Divanu Lugati't-Turk map for a TUBITAK 2204-A research project.",
+  "type": "module",
+  "scripts": {
+    "validate": "node tools/validate-data.mjs",
+    "serve": "python3 -m http.server 8000",
+    "test": "node tools/validate-data.mjs && node tools/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "jsdom": "^26.0.0"
+  }
+}

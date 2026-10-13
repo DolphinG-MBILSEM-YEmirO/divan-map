@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "id": "map-reading-basics-v0",
+  "title": "Harita okuma temelleri (örnek test)",
+  "notice": "Bu sorular uygulamanın harita okuma ilkelerini yoklar. Tarihî bilgi sorusu içermez. Araştırma amaçlı ön test ve son test araçları ayrıca hazırlanacaktır.",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Haritada kesikli kenarlı yuvarlak bir işaret neyi gösterir?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Konumun kesin olarak bilindiğini"
+        },
+        {
+          "id": "b",
+          "text": "Konumun yaklaşık olduğunu"
+        },
+        {
+          "id": "c",
+          "text": "Yerin bugün de aynı adla anıldığını"
+        },
+        {
+          "id": "d",
+          "text": "Kaydın kaynağının bulunmadığını"
+        }
+      ],
+      "correct": "b",
+      "explanation": "Yaklaşık konumlar kesikli kenarlı yuvarlak simge ve yarı saydam bir belirsizlik alanıyla gösterilir. Alanın içinde herhangi bir yer olabilir."
+    },
+    {
+      "id": "q2",
+      "prompt": "Bir kaydın güven düzeyi \"düşük\" ise bunu nasıl yorumlamalısın?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bilgi kesin kabul edilmemeli, kaynaklara bakılmalı"
+        },
+        {
+          "id": "b",
+          "text": "Kayıt yanlıştır ve silinmelidir"
+        },
+        {
+          "id": "c",
+          "text": "Kayıt yalnızca öğretmenler içindir"
+        },
+        {
+          "id": "d",
+          "text": "Konum haritada gösterilmemelidir"
+        }
+      ],
+      "correct": "a",
+      "explanation": "Düşük güven, kaynakların bilgiyi zayıf desteklediği anlamına gelir. Kayıt gösterilir ama kesin bilgi gibi okunmamalıdır."
+    },
+    {
+      "id": "q3",
+      "prompt": "Günümüz altlık haritasındaki ülke sınırları ve adlar 11. yüzyıldaki siyasi durumu gösterir mi?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Evet, sınırlar o dönemle aynıdır"
+        },
+        {
+          "id": "b",
+          "text": "Evet, ama yalnızca denizlerde"
+        },
+        {
+          "id": "c",
+          "text": "Hayır, altlık yalnızca konum bulmaya yardımcı modern bir haritadır"
+        },
+        {
+          "id": "d",
+          "text": "Hayır, altlık hiçbir konum bilgisi içermez"
+        }
+      ],
+      "correct": "c",
+      "explanation": "Modern altlık, tarihî yerlerin bugünkü coğrafyada yaklaşık nereye denk gelebileceğini görmek içindir. Günümüz siyasi sınırları tarihî veri değildir."
+    },
+    {
+      "id": "q4",
+      "prompt": "Özgün harita ile günümüz haritası neden ayrı katmanlarda gösterilir?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Özgün harita modern anlamda ölçekli ve koordinatlı olmadığı için ikisi karıştırılmamalıdır"
+        },
+        {
+          "id": "b",
+          "text": "Özgün harita yalnızca masaüstünde açıldığı için"
+        },
+        {
+          "id": "c",
+          "text": "Günümüz haritası tarihî olduğu için"
+        },
+        {
+          "id": "d",
+          "text": "İkisi tamamen aynı olduğu için"
+        }
+      ],
+      "correct": "a",
+      "explanation": "Özgün haritayı modern haritaya aktarırken her konum bir yorumdur. Ayrı katmanlar bu yorumun nerede başladığını görünür kılar."
+    },
+    {
+      "id": "q5",
+      "prompt": "Doğru mu yanlış mı: Şematik bir haritada iki yer arasındaki uzaklığı cetvelle ölçerek gerçek mesafeyi bulabilirsin.",
+      "options": [
+        {
+          "id": "t",
+          "text": "Doğru"
+        },
+        {
+          "id": "f",
+          "text": "Yanlış"
+        }
+      ],
+      "correct": "f",
+      "explanation": "Şematik haritalar ölçekli değildir. Uzaklıklar ve şekiller yaklaşık veya sadeleştirilmiştir."
+    },
+    {
+      "id": "q6",
+      "prompt": "Doğru mu yanlış mı: Bir kaydın yanında 'örnek içerik' etiketi varsa bu kayıt gerçek bir tarihî bilgi sunar.",
+      "options": [
+        {
+          "id": "t",
+          "text": "Doğru"
+        },
+        {
+          "id": "f",
+          "text": "Yanlış"
+        }
+      ],
+      "correct": "f",
+      "explanation": "Örnek içerik yalnızca uygulamanın nasıl çalıştığını göstermek içindir; gerçek tarihî bilgi içermez."
+    },
+    {
+      "id": "q7",
+      "prompt": "Doğru mu yanlış mı: Bir bilginin hangi kaynağa dayandığını görmek, bilgiyi değerlendirmene yardımcı olur.",
+      "options": [
+        {
+          "id": "t",
+          "text": "Doğru"
+        },
+        {
+          "id": "f",
+          "text": "Yanlış"
+        }
+      ],
+      "correct": "t",
+      "explanation": "Kaynak, bilginin nereden geldiğini ve ne kadar güvenilir olabileceğini anlamanı sağlar."
+    }
+  ]
+}

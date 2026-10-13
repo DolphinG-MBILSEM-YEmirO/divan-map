@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "notice": "Bu dosyadaki kayıtlar yalnızca arayüzü göstermek için eklenmiş ÖRNEK içeriktir. Gerçek tarihî veri değildir. Gerçek kayıtlar kaynak ve güven düzeyi doğrulandıktan sonra eklenecektir.",
+  "records": [
+    {
+      "id": "demo-001",
+      "is_demo": true,
+      "historical_name": "Örnek Yer Adı A",
+      "alt_spellings": [],
+      "modern_name": null,
+      "category": "place",
+      "feature_type": null,
+      "related_group": null,
+      "description": "Bu kayıt yalnızca arayüzü göstermek için eklenmiş örnek içeriktir. Gerçek bir tarihî yer değildir.",
+      "location_type": "schematic",
+      "schematic_xy": [260, 420],
+      "lat_lng": null,
+      "uncertainty_radius_km": null,
+      "confidence": "demo",
+      "sources": [],
+      "editor_note": "Örnek: özgün haritadaki şematik konumu gösteren işaret biçimi (kare).",
+      "last_updated": "2026-10-13"
+    },
+    {
+      "id": "demo-002",
+      "is_demo": true,
+      "historical_name": "Örnek Topluluk B",
+      "alt_spellings": ["Örnek Topluluk B (alternatif yazım)"],
+      "modern_name": null,
+      "category": "group",
+      "feature_type": null,
+      "related_group": null,
+      "description": "Bu kayıt yalnızca yaklaşık konum gösteriminin nasıl göründüğünü anlatmak için eklenmiş örnek içeriktir. Gerçek bir topluluk değildir ve işaretlenen nokta tarihî bir iddia taşımaz.",
+      "location_type": "approximate",
+      "schematic_xy": [520, 380],
+      "lat_lng": [42, 70],
+      "uncertainty_radius_km": 250,
+      "confidence": "demo",
+      "sources": [],
+      "editor_note": "Örnek: yaklaşık konum, kesikli kenarlı simge ve yarı saydam belirsizlik alanı ile gösterilir.",
+      "last_updated": "2026-10-13"
+    },
+    {
+      "id": "demo-003",
+      "is_demo": true,
+      "historical_name": "Örnek Dağ C",
+      "alt_spellings": [],
+      "modern_name": null,
+      "category": "geography",
+      "feature_type": "mountain",
+      "related_group": null,
+      "description": "Bu kayıt yalnızca tartışmalı konum gösteriminin nasıl göründüğünü anlatmak için eklenmiş örnek içeriktir. Gerçek bir dağ değildir ve işaretlenen nokta tarihî bir iddia taşımaz.",
+      "location_type": "disputed",
+      "schematic_xy": [650, 250],
+      "lat_lng": [44, 80],
+      "uncertainty_radius_km": 300,
+      "confidence": "demo",
+      "sources": [],
+      "editor_note": "Örnek: farklı görüşler varsa elmas simge ve noktalı belirsizlik alanı kullanılır.",
+      "last_updated": "2026-10-13"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "notice": "Künyesi 'doğrulanacak' işaretli kayıtlar bu projede henüz kaynaktan teyit edilmemiştir. Yayımlamadan önce yayın bilgileri ve sayfa numaraları kontrol edilmelidir.",
+  "sources": [
+    {
+      "id": "src-dlt-atalay",
+      "group": "work",
+      "title": "Divanü Lûgat-it-Türk Tercümesi",
+      "author": "Mahmud el-Kâşgarî; çeviri: Besim Atalay",
+      "publisher": "Türk Dil Kurumu",
+      "year": null,
+      "url": null,
+      "role": "Eserin Türkçe çevirisi; kayıtlarda sayfa bilgisiyle anılacak.",
+      "citation_verified": false
+    },
+    {
+      "id": "src-dlt-dankoff-kelly",
+      "group": "work",
+      "title": "Compendium of the Turkic Dialects (Dīwān Lughāt at-Turk)",
+      "author": "Mahmûd al-Kāšġarī; çeviri: Robert Dankoff, James Kelly",
+      "publisher": "Harvard University, Office of the University Publisher",
+      "year": null,
+      "url": null,
+      "role": "Eserin İngilizce çevirisi; harita ve harita üzerindeki adlar için karşılaştırmalı kaynak.",
+      "citation_verified": false
+    },
+    {
+      "id": "src-myoldmaps-kashghari",
+      "group": "study",
+      "title": "World Map of al-Kashghari (monografi PDF'i)",
+      "author": "(yazar bilgisi doğrulanacak; Kaplony, Akalın ve Pinto'ya atıf yapar)",
+      "publisher": "myoldmaps.com",
+      "year": null,
+      "url": "https://www.myoldmaps.com/early-medieval-monographs/214-al-kashgaris-world-map/214-al-kashghari.pdf",
+      "role": "Haritanın yönelimi, ölçeksizliği, yazma bilgisi (Millet Genel Kütüphanesi, Ali Emiri 4189) ve haritadaki adların günümüz karşılıkları.",
+      "citation_verified": false
+    },
+    {
+      "id": "src-gomec-yer-adlari",
+      "group": "study",
+      "title": "Divanü Lûgat-it-Türk'de Geçen Yer Adları",
+      "author": "Saadettin Gömeç",
+      "publisher": "(dergi ve yıl bilgisi doğrulanacak)",
+      "year": null,
+      "url": "https://dergipark.org.tr/tr/download/article-file/782062",
+      "role": "Eserin metninde geçen ülke, şehir ve bölge adlarının tarihî coğrafya ile konumlandırılması; yazar kendi eşleştirmelerinin bazılarını temkinli sunar.",
+      "citation_verified": false
+    },
+    {
+      "id": "src-ormanoglu-2022",
+      "group": "study",
+      "title": "Dîvânu Lugâti't-Türk'teki Harita ve Ortaöğretimde Tanınırlığı",
+      "author": "Çiğdem Ormanoğlu, Emine Ünal, Zeynep Çevlik",
+      "publisher": "ÇAKÜTAD",
+      "year": 2022,
+      "url": "https://krtknadmn.karatekin.edu.tr/files/cakutad/%C3%87AK%C3%9CTAD%20C2S1/5.%20%C3%87i%C4%9Fdem%20Ormano%C4%9Flu.pdf",
+      "role": "Haritanın yönelimi, ölçeği ve deniz, göl, çöl gibi unsurların günümüz karşılıkları. Makalenin metninde sayfa numarası görünmediği için bölüm başlıklarıyla anılır.",
+      "citation_verified": false
+    },
+    {
+      "id": "src-leaflet",
+      "group": "software",
+      "title": "Leaflet",
+      "author": "Volodymyr Agafonkin ve katkıda bulunanlar",
+      "publisher": null,
+      "year": 2023,
+      "url": "https://leafletjs.com",
+      "role": "Etkileşimli harita kütüphanesi (sürüm 1.9.4, BSD-2-Clause lisanslı, uygulamayla birlikte dağıtılır).",
+      "citation_verified": true
+    },
+    {
+      "id": "src-osm",
+      "group": "software",
+      "title": "OpenStreetMap",
+      "author": "OpenStreetMap contributors",
+      "publisher": "OpenStreetMap Foundation",
+      "year": null,
+      "url": "https://www.openstreetmap.org/copyright",
+      "role": "Günümüz altlık harita karoları (ODbL). Yalnızca konum bulmaya yardımcı modern altlıktır; 11. yüzyıl siyasi durumunu göstermez.",
+      "citation_verified": true
+    }
+  ]
+}

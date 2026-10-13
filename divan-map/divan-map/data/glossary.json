@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "notice": "Bu sözlük harita okuma terimlerini açıklar. Tarihî ad veya olgu içermez; tarihî adlar kaynaklarla doğrulandıktan sonra ayrı bir bölüm olarak eklenecektir.",
+  "terms": [
+    { "id": "schematic", "term": "Şematik harita", "definition": "Yerlerin birbirine göre durumunu basitleştirerek gösteren harita. Uzaklıklar ve şekiller ölçülü değildir; bu yüzden üzerinden mesafe hesaplanmaz." },
+    { "id": "basemap", "term": "Altlık harita", "definition": "Üzerine bilgi eklenen, günümüze ait zemin harita. Bu uygulamada günümüz altlığı, özgün haritadan ayrı bir katmandır." },
+    { "id": "precise", "term": "Kesin konum", "definition": "Kaynakların yer hakkında birleştiği ve konumun belirli bir noktaya bağlanabildiği durum. Tarihî haritalarda çok seyrek kullanılır." },
+    { "id": "approximate", "term": "Yaklaşık konum", "definition": "Yerin belirli bir bölge içinde olduğu düşünülür ama tam nokta bilinmez. Haritada kesikli kenarlı yuvarlak simge ve yarı saydam alanla gösterilir." },
+    { "id": "disputed", "term": "Tartışmalı konum", "definition": "Araştırmacıların yeri farklı yerlere bağladığı durum. Haritada eşkenar dörtgen simge ve noktalı alanla gösterilir." },
+    { "id": "schematic-location", "term": "Haritada şematik konum", "definition": "Yer yalnızca özgün haritadaki konumuyla gösterilir; günümüz haritasında bir karşılığı yoktur veya verilmemiştir. Kare simgeyle gösterilir." },
+    { "id": "confidence", "term": "Güven düzeyi", "definition": "Bir kaydın kaynaklarla ne kadar desteklendiğini söyleyen not (yüksek, orta, düşük). Düşük güven, bilginin kesin olmadığı anlamına gelir." },
+    { "id": "uncertainty-area", "term": "Belirsizlik alanı", "definition": "Bir yerin bulunabileceği tahmini bölgeyi gösteren yarı saydam daire. Yer, alanın içinde herhangi bir yerde olabilir." },
+    { "id": "primary-source", "term": "Birincil kaynak", "definition": "Olayın veya dönemin kendisinden gelen kaynak, örneğin eserin kendisi." },
+    { "id": "secondary-source", "term": "İkincil kaynak", "definition": "Birincil kaynaklardan yararlanarak yazılmış çalışma, örneğin bir çeviri, makale veya ders kitabı." },
+    { "id": "scale", "term": "Ölçek", "definition": "Haritadaki uzaklığın gerçek uzaklığa oranı. Şematik haritalarda ölçek yoktur veya belirsizdir." },
+    { "id": "demo", "term": "Örnek içerik", "definition": "Uygulamanın nasıl çalıştığını göstermek için konmuş, gerçek tarihî bilgi içermeyen kayıt. Her zaman 'örnek' etiketi taşır." }
+  ]
+}

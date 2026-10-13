@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "title": "Haritada belirtilen yerler günümüzde neredeler",
+  "summary": [
+    "Haritadaki yerlerin günümüze aktarılması için tek ve kesin bir cevap yoktur. Aşağıdaki liste, üç kaynağın verdiği eşleştirmeleri bir araya getirir; bu sitenin kendi kararı değildir.",
+    "Harita doğu üstte olacak biçimde çizilmiş, dairesel ve şematiktir. Ölçeği ve koordinatı yoktur; kaynaklardan biri, ölçeğin merkezden kenara doğru küçüldüğünü (balık gözü etkisi) belirtir. Bu yüzden listedeki yerler haritada nokta olarak değil, bölge olarak düşünülmelidir.",
+    "Büyük göller, denizler ve nehirler için kaynaklar genelde aynı karşılığı verir. Şehir ve boy adlarında ise eşleştirmeler çoğu zaman 'olası' veya 'tartışmalı'dır; bazı adlar hiç belirlenememiştir."
+  ],
+  "scopeNote": "Kaynaklardan bazıları haritanın kendisini, bazıları ise eserin metninde geçen yer adlarını inceler. İkisi her zaman aynı şey değildir.",
+  "verificationNote": "Bu liste, kaynakların çevrimiçi metinlerinden özetlenmiştir. Sayfa numaraları ve bazı künyeler doğrulanmamıştır. Rapora yazmadan önce her satır basılı veya resmî yayından kontrol edilmelidir.",
+  "records": [
+    {
+      "id": "w-hazar",
+      "historical_name": "Hazar Denizi (Bahrü'l-Âbiskün)",
+      "modern_equivalent": "Hazar Denizi (Hazar Gölü)",
+      "status": "agreed",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "deniz bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-aral",
+      "historical_name": "Aral Gölü",
+      "modern_equivalent": "Aral Gölü",
+      "status": "agreed",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "deniz bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-balkas",
+      "historical_name": "Balkaş Gölü",
+      "modern_equivalent": "Balkaş Gölü",
+      "status": "single",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "deniz bölümü"
+        }
+      ],
+      "note": "Yalnızca bir kaynakta bulundu; diğer kaynaklarla karşılaştırılmalı."
+    },
+    {
+      "id": "w-isik",
+      "historical_name": "Isık Göl",
+      "modern_equivalent": "Issık-Göl (Kırgızistan)",
+      "status": "agreed",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "deniz bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "Haritanın merkezine yakın gösterilir."
+    },
+    {
+      "id": "w-balasagun",
+      "historical_name": "Balasagun",
+      "modern_equivalent": "Bugünkü Kırgızistan'da, Tokmak'ın güneybatısı",
+      "status": "agreed",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "Balasagun (yer adları listesi)"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "Kaynaklar bölge konusunda birleşir; tam nokta için ayrıca kaynak gerekir."
+    },
+    {
+      "id": "w-itil",
+      "historical_name": "İtil",
+      "modern_equivalent": "Volga Nehri",
+      "status": "single",
+      "sources": [
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "Ormanoğlu ve ark. adı sayar ama karşılık vermez."
+    },
+    {
+      "id": "w-ila",
+      "historical_name": "İla",
+      "modern_equivalent": "İli Nehri",
+      "status": "single",
+      "sources": [
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-seyhun",
+      "historical_name": "Seyhun ve Ceyhun",
+      "modern_equivalent": "Siriderya ve Amuderya",
+      "status": "single",
+      "sources": [
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "Kaynak, İndüs'ün haritada hatalı olarak Seyhun diye anıldığını da belirtir."
+    },
+    {
+      "id": "w-endulus",
+      "historical_name": "Endülüs",
+      "modern_equivalent": "İspanya (İber Yarımadası)",
+      "status": "agreed",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "Türk dünyası haritası bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-cabarka",
+      "historical_name": "Cabarka (Cabarga, Cabirka, Çaparka)",
+      "modern_equivalent": "Japonya",
+      "status": "disputed",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "Japonya bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "Adın yazımı araştırmacılar arasında farklıdır; ad eşleştirmesi bu yüzden tek yazımla verilmez."
+    },
+    {
+      "id": "w-halic",
+      "historical_name": "Haliç",
+      "modern_equivalent": "İstanbul; olasılıkla Marmara Denizi",
+      "status": "tentative",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "Türk coğrafyası ve deniz bölümleri"
+        }
+      ],
+      "note": "Yazar, Marmara karşılığını 'olası' diye sunar."
+    },
+    {
+      "id": "w-bengal",
+      "historical_name": "Bengal Körfezi olarak yorumlanan deniz",
+      "modern_equivalent": "Bengal Körfezi",
+      "status": "tentative",
+      "sources": [
+        {
+          "source_id": "src-ormanoglu-2022",
+          "locator": "deniz bölümü"
+        },
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": "İki kaynak da bu eşleştirmeyi temkinli sunar."
+    },
+    {
+      "id": "w-bulgar",
+      "historical_name": "Bulgar",
+      "modern_equivalent": "Büyük olasılıkla Volga Bulgarları; bugünkü Bulgaristan değil",
+      "status": "tentative",
+      "sources": [
+        {
+          "source_id": "src-myoldmaps-kashghari",
+          "locator": "haritadaki adların listesi"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-barsgan",
+      "historical_name": "Barsgan",
+      "modern_equivalent": "Issık-Göl'ün güneydoğusu, Talas yakını",
+      "status": "disputed",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "Barsgan (yer adları listesi)"
+        }
+      ],
+      "note": "Yazar, Barsgan ile Barşan'ın aynı yer olup olmadığından emin değildir."
+    },
+    {
+      "id": "w-besbalik",
+      "historical_name": "Beş Balık",
+      "modern_equivalent": "Urumçi çevresi (Tanrı Dağları'nın kuzeyi)",
+      "status": "single",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "Beş Balık (yer adları listesi)"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-karacuk",
+      "historical_name": "Karaçuk",
+      "modern_equivalent": "Karatav eteklerinde, güney Kazakistan",
+      "status": "disputed",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "Karaçuk (yer adları listesi)"
+        }
+      ],
+      "note": "Yazar, tartışmanın sürdüğünü belirtir."
+    },
+    {
+      "id": "w-ascan",
+      "historical_name": "Aşçan",
+      "modern_equivalent": "Belirlenemedi (yazar tahminen Kâşgar'ın doğusu der)",
+      "status": "unidentified",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "Aşçan (yer adları listesi)"
+        }
+      ],
+      "note": null
+    },
+    {
+      "id": "w-inckend",
+      "historical_name": "İnçkend",
+      "modern_equivalent": "Belirlenemedi",
+      "status": "unidentified",
+      "sources": [
+        {
+          "source_id": "src-gomec-yer-adlari",
+          "locator": "İnçkend (yer adları listesi)"
+        }
+      ],
+      "note": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Team drawing template for the schematic map. Empty on purpose: it contains NO historical content.
+     Size 1000x700 matches data/config.json (originalMap.width/height). 1 unit = 1 map coordinate.
+     Draw only what the sources support; keep each layer in its own group. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+  <title>Ekip çizimi şematik harita şablonu (boş)</title>
+  <rect id="paper" x="0" y="0" width="1000" height="700" fill="#f6f1e4"/>
+  <g id="grid" stroke="#c9bfa5" stroke-width="1" fill="none">
+    <path d="M100 0V700M200 0V700M300 0V700M400 0V700M500 0V700M600 0V700M700 0V700M800 0V700M900 0V700"/>
+    <path d="M0 100H1000M0 200H1000M0 300H1000M0 400H1000M0 500H1000M0 600H1000"/>
+  </g>
+  <g id="layer-water" fill="#bcd6e6" stroke="#4a7a99"></g>
+  <g id="layer-mountains" fill="none" stroke="#6b5a3c"></g>
+  <g id="layer-routes" fill="none" stroke="#6b3f8c" stroke-dasharray="6 4"></g>
+  <g id="layer-labels" font-family="serif" font-size="16" fill="#222"></g>
+  <rect id="frame" x="2" y="2" width="996" height="696" fill="none" stroke="#333" stroke-width="3"/>
+  <text x="12" y="690" font-family="sans-serif" font-size="12" fill="#555">Şablon - içerik yok. Ekip çizimi; kaynak: (doldurulacak)</text>
+</svg>

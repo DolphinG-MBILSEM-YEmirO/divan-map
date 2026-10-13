@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "status": "TASLAK - pilot ve uzman görüşü alınmadan araştırma verisi olarak kullanılmaz.",
+  "consentText": [
+    "Bu araç, uygulamanın harita okuma becerisine katkısını ölçmeyi planlayan bir araştırmanın TASLAK ölçme aracıdır.",
+    "Katılım gönüllüdür; istediğin an bırakabilirsin. Ad, soyad, e-posta veya benzeri bilgi yazma.",
+    "Yanıtların yalnızca bu cihazda saklanır; uygulama bunları otomatik olarak hiçbir yere göndermez. Dosya olarak paylaşmak istersen bunu sen yaparsın.",
+    "Gerçek öğrencilerle kullanım için okul/MEB izni, öğrencinin gönüllü onamı ve (18 yaş altı için) veli onamı tamamlanmış olmalıdır."
+  ],
+  "forms": {
+    "A": {
+      "title": "Harita okuma görevi - Form A",
+      "items": [
+        {
+          "id": "a1",
+          "prompt": "Bir haritada kesikli kenarlı bir daire ve çevresinde yarı saydam bir alan görüyorsun. Bu simge en iyi neyi anlatır?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Yerin konumu kesin olarak bilinir"
+            },
+            {
+              "id": "b",
+              "text": "Yerin bu bölge içinde bir yerde olduğu düşünülür"
+            },
+            {
+              "id": "c",
+              "text": "Yer bugün de aynı adla anılır"
+            },
+            {
+              "id": "d",
+              "text": "Yerin kaynağı yoktur"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "a2",
+          "prompt": "Şematik bir haritada iki yer arasındaki gerçek mesafeyi öğrenmek için ne yapmak doğrudur?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Cetvelle ölçüp sonucu kilometre sayarım"
+            },
+            {
+              "id": "b",
+              "text": "Mesafe için ölçekli bir harita veya kaynak aramalıyım"
+            },
+            {
+              "id": "c",
+              "text": "Simgelerin büyüklüğüne bakarım"
+            },
+            {
+              "id": "d",
+              "text": "Harita rengine bakarım"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "a3",
+          "prompt": "Bir kaydın 'güven düzeyi' düşük olarak işaretlenmiş. Bu kaydı nasıl yorumlarsın?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Bilgi kesindir"
+            },
+            {
+              "id": "b",
+              "text": "Bilgi kaynaklarla zayıf destekleniyor; kesin gibi sunmamalıyım"
+            },
+            {
+              "id": "c",
+              "text": "Kayıt silinmelidir"
+            },
+            {
+              "id": "d",
+              "text": "Kayıt günümüz sınırlarını gösterir"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "a4",
+          "prompt": "Tarihî bir haritayı günümüz altlık haritasıyla birlikte gösterirken en önemli dikkat nedir?",
+          "options": [
+            {
+              "id": "a",
+              "text": "İkisini tek harita gibi karıştırmak"
+            },
+            {
+              "id": "b",
+              "text": "Hangisinin tarihî, hangisinin günümüze ait olduğunu ayrı tutmak"
+            },
+            {
+              "id": "c",
+              "text": "Günümüz sınırlarını tarihî haritaya çizmek"
+            },
+            {
+              "id": "d",
+              "text": "Altlığı hiç kullanmamak"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "a5",
+          "prompt": "Bir bilginin dayandığı kaynağı görmek neden önemlidir?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sayfa daha kalabalık görünür"
+            },
+            {
+              "id": "b",
+              "text": "Bilginin nereden geldiğini ve ne kadar güvenilir olabileceğini değerlendirmemi sağlar"
+            },
+            {
+              "id": "c",
+              "text": "Bilgiyi kesin yapar"
+            },
+            {
+              "id": "d",
+              "text": "Gereksizdir"
+            }
+          ],
+          "correct": "b"
+        }
+      ]
+    },
+    "B": {
+      "title": "Harita okuma görevi - Form B",
+      "items": [
+        {
+          "id": "b1",
+          "prompt": "Bir haritada eşkenar dörtgen bir simge ve noktalı bir alan var. Bu simge en iyi neyi anlatır?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Araştırmacılar yerin konumu konusunda farklı görüştedir"
+            },
+            {
+              "id": "b",
+              "text": "Yer kesin olarak bellidir"
+            },
+            {
+              "id": "c",
+              "text": "Yer günümüzde yoktur"
+            },
+            {
+              "id": "d",
+              "text": "Kaynak gerekmez"
+            }
+          ],
+          "correct": "a"
+        },
+        {
+          "id": "b2",
+          "prompt": "Bir tarihî harita şematik olduğunda, harita üzerinden ölçtüğün uzaklık hakkında ne söylenebilir?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Gerçek uzaklığı kesin gösterir"
+            },
+            {
+              "id": "b",
+              "text": "Gerçek uzaklığı güvenilir biçimde vermez"
+            },
+            {
+              "id": "c",
+              "text": "Her zaman kilometre cinsindendir"
+            },
+            {
+              "id": "d",
+              "text": "Altlıkla aynıdır"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "b3",
+          "prompt": "Bir yer için hem 'yaklaşık konum' hem 'düşük güven' yazıyor. Bu iki bilgi birlikte neyi gösterir?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Konum kesin ve kaynak sağlam"
+            },
+            {
+              "id": "b",
+              "text": "Konum ve destekleyen kaynaklar belirsiz; temkinli yorumlamalıyım"
+            },
+            {
+              "id": "c",
+              "text": "Yer haritadan silinmiştir"
+            },
+            {
+              "id": "d",
+              "text": "Yer günümüz şehridir"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "b4",
+          "prompt": "Özgün harita ile günümüz altlığı neden ayrı katmanlarda sunulur?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Süs için"
+            },
+            {
+              "id": "b",
+              "text": "Tarihî çizim ile günümüz verisinin karışıp kesinlik izlenimi vermemesi için"
+            },
+            {
+              "id": "c",
+              "text": "Daha hızlı yüklenmesi için"
+            },
+            {
+              "id": "d",
+              "text": "Kaynak gerektirmediği için"
+            }
+          ],
+          "correct": "b"
+        },
+        {
+          "id": "b5",
+          "prompt": "Bir kaydın 'örnek içerik' etiketi taşıması ne anlama gelir?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Gerçek tarihî bilgidir"
+            },
+            {
+              "id": "b",
+              "text": "Uygulamayı göstermek için konmuş, gerçek tarihî bilgi içermeyen kayıttır"
+            },
+            {
+              "id": "c",
+              "text": "Kaynağı güçlüdür"
+            },
+            {
+              "id": "d",
+              "text": "Konumu kesindir"
+            }
+          ],
+          "correct": "b"
+        }
+      ]
+    }
+  },
+  "survey": {
+    "title": "Kullanılabilirlik anketi (taslak; kendi maddelerimiz, hazır bir ölçek değildir)",
+    "scale": [
+      "Hiç katılmıyorum",
+      "Katılmıyorum",
+      "Kararsızım",
+      "Katılıyorum",
+      "Tamamen katılıyorum"
+    ],
+    "items": [
+      {
+        "id": "u1",
+        "prompt": "Uygulamayı kullanmayı kolay buldum."
+      },
+      {
+        "id": "u2",
+        "prompt": "Haritadaki simgelerin ne anlama geldiğini anladım."
+      },
+      {
+        "id": "u3",
+        "prompt": "Aradığım kaydı kolayca buldum."
+      },
+      {
+        "id": "u4",
+        "prompt": "Bilginin hangi kaynağa dayandığını görebildim."
+      },
+      {
+        "id": "u5",
+        "prompt": "Telefonda veya tablette de rahat kullanabildim."
+      },
+      {
+        "id": "u6",
+        "prompt": "Yazılar ve renkler okunaklıydı."
+      }
+    ]
+  }
+}
