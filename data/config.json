@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "originalMap": {
+    "imagePath": "assets/original-map.jpg",
+    "width": 741,
+    "height": 670,
+    "title": "Dîvânu Lugâti't-Türk dünya haritası (Commons kopyası)",
+    "license": "Mahmud al-Kashgari, 11. yy. Kaynak: Wikimedia Commons, File:Kashgari_map.jpg (etiket: PD-old). Düşük çözünürlüklü kopya.",
+    "licenseVerified": true,
+    "note": "Etiket Commons sayfasından okundu (13.10.2026). Kaynak sayfası Linden Müzesi kopyasını gösterir; Millet Kütüphanesi bilgisi doğrulanmadı. Tarama/fotoğraf hakkı konusu danışmanla değerlendirilmeli."
+  },
+  "modernBasemap": {
+    "urlTemplate": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy; OpenStreetMap contributors",
+    "maxZoom": 18,
+    "licenseNote": "OpenStreetMap verisi ODbL lisanslıdır. Yoğun kullanım veya yayın öncesi karo sunucusu kullanım politikası yeniden kontrol edilmelidir."
+  },
+  "initialView": {
+    "modern": {
+      "center": [
+        42,
+        75
+      ],
+      "zoom": 3
+    }
+  },
+  "redrawMap": {
+    "imagePath": "assets/turkish-redraw-map.webp",
+    "width": 1746,
+    "height": 1672,
+    "title": "Türkçe etiketli yeniden çizim",
+    "credit": "Türkçe etiketli yeniden çizim: proje ekibi tarafından sağlandı; çizeni, kaynağı ve lisansı henüz doğrulanmadı.",
+    "provenanceVerified": false,
+    "circle": {
+      "cx": 895,
+      "cy": 848,
+      "r": 812,
+      "oceanFromRatio": 0.917
+    },
+    "note": "Yeniden çizimin özgün haritaya sadakati bu çalışmada yazıt yazıt karşılaştırılmadı. Kart metinleri yazıları açıklar; çizimin kendisini doğrulamaz."
+  }
+}

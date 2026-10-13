@@ -1,0 +1,3344 @@
+{
+ "schemaVersion": 1,
+ "title": "Haritadaki yazı, çizgi ve renklerin açıklamaları",
+ "notice": "Bu açıklamalar, listelenen kaynaklardan özetlenmiştir; sayfa numaraları ve bazı künyeler henüz doğrulanmamıştır. “Yalnızca haritadaki yazı” işaretli kartlar için elimizdeki kaynaklarda ayrıntılı açıklama bulunamamıştır; bu kartlar, kaynak taraması sürdüğü için henüz bilgi taşımaz.",
+ "coordinateSpace": {
+  "width": 1746,
+  "height": 1672,
+  "note": "Koordinatlar, turkish-redraw-map.webp görselinin piksel konumlarıdır (x, y, genişlik, yükseklik) veya çokgen köşeleridir."
+ },
+ "classes": {
+  "mountain-line": {
+   "title": "Kırmızı çizgi",
+   "kind": "line",
+   "status": "sourced",
+   "paragraphs": [
+    "Haritada kırmızı çizgiler, kaynaklara göre dağları ve tepeleri gösterir.",
+    "Aynı kırmızı çizgi güneydeki bölümde ülke ve bölge sınırı olarak da okunur. Çizginin dağ mı sınır mı olduğunu haritanın kendisi söylemez; bu yüzden her kırmızı çizgiyi kesin bir dağ ya da sınır saymıyoruz."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "kırmızı renk bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 3–4, 7–8"
+    },
+    {
+     "source_id": "src-tdv-ia",
+     "locator": "harita bölümü"
+    }
+   ]
+  },
+  "river-line": {
+   "title": "Mavi çizgi",
+   "kind": "line",
+   "status": "sourced",
+   "paragraphs": [
+    "Haritada ırmaklar mavi çizgiyle gösterilir. Ormanoğlu ve arkadaşları, haritada Seyhun, Ceyhun, Yamar, İtil, İrtiş ve İla ırmaklarının adlarının yazılı olduğunu belirtir.",
+    "Monografi, bazı araştırmacıların ırmak rengini mavi değil gri (arduvaz) olarak andığını da aktarır; yani renk kaynaklarda tek tip anlatılmaz."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 1, 3, 7"
+    }
+   ]
+  },
+  "sea-fill": {
+   "title": "Turkuaz alan (deniz veya göl)",
+   "kind": "water",
+   "status": "sourced",
+   "paragraphs": [
+    "Kaynaklara göre denizler yeşil renkle gösterilir. Bu Türkçe etiketli çizimde yeşil yerine turkuaz kullanılmıştır; özgün yazmada renk, bakır pigmentinin zamanla kararması yüzünden koyu görünür."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 3, 7"
+    },
+    {
+     "source_id": "src-tdv-ia",
+     "locator": "harita bölümü"
+    }
+   ]
+  },
+  "settlement-dot": {
+   "title": "Sarı daire (yerleşim işareti)",
+   "kind": "symbol",
+   "status": "sourced",
+   "paragraphs": [
+    "Şehirler ve yerleşim yerleri, içi sarı, çerçevesi siyah küçük dairelerle işaretlenmiştir. Bazı dairelerin yanına ad yazılmamıştır.",
+    "Monografi, sarı noktaların Türk boylarını da gösterdiğini; Kaplony’nin ise bu noktaların harita kenarındaki yazılarla açıklanmadığını belirttiğini aktarır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "sarı daireler bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 3, 5, 8"
+    }
+   ]
+  },
+  "sand-fill": {
+   "title": "Açık sarı alan (kumluk)",
+   "kind": "area",
+   "status": "sourced",
+   "paragraphs": [
+    "Haritada sarı renk, kumluk alanları ve çölleri gösterir. Çizimde bu alan “Kumlar” yazısının çevresindedir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "sarı daireler bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    }
+   ]
+  },
+  "dotted-line": {
+   "title": "Noktalı gri çizgi",
+   "kind": "line",
+   "status": "partial",
+   "paragraphs": [
+    "Bu çizim, noktalı gri hatları “Kum”, “Kumlar”, “Zülkarneyn Seddi” gibi yazılarla birlikte kullanıyor.",
+    "Noktalı gösterimin özgün yazmadaki karşılığı bu çalışmada doğrulanmadı; çizimi hazırlayanın tercihi olabilir."
+   ],
+   "sources": []
+  },
+  "ocean-ring": {
+   "title": "Dış halka (çevreleyen deniz)",
+   "kind": "water",
+   "status": "sourced",
+   "paragraphs": [
+    "En dıştaki halka, dünyayı çevreleyen denizi (okyanusu) simgeler. Monografi, bunu İslam dünyası haritalarında sık görülen bir öge olarak anar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "dış halka"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 3–4, 7"
+    }
+   ]
+  },
+  "empty-land": {
+   "title": "Boş zemin",
+   "kind": "area",
+   "status": "sourced",
+   "paragraphs": [
+    "Burada yazı, çizgi ya da simge yok. Harita ölçeksiz ve şematiktir: boşlukların uzunluğu gerçek mesafeyi göstermez. Monografiye göre ölçek merkezden kenara doğru küçülüyor gibidir; Ormanoğlu ve arkadaşları ise ölçek kullanılıp kullanılmadığının belli olmadığını söyler.",
+    "Haritanın merkezinde Balasagun şehri vardır; diğer yerler ona göre konumlandırılmıştır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 1"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "daire bölümü"
+    },
+    {
+     "source_id": "src-tdv-ia",
+     "locator": "harita bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    }
+   ]
+  },
+  "outside": {
+   "title": "Dairenin dışı",
+   "kind": "area",
+   "status": "sourced",
+   "paragraphs": [
+    "Haritanın dairesi burada bitiyor. Çemberin dışındaki köşelerde Arapça yazılar ve bu çizimde Türkçe yön adları (Kuzey, Doğu, Batı, Güney) bulunur."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü"
+    }
+   ]
+  }
+ },
+ "annotations": [
+  {
+   "id": "cabarka",
+   "label": "Cabarka",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     838,
+     149,
+     117,
+     35
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Doğuda bir ada olarak gösterilen yer; araştırmacılar bunu Japonya olarak yorumlar. Ormanoğlu ve arkadaşları, Japonya’yı bir harita üzerinde gösteren ilk kişinin Kâşgarlı olarak anıldığını aktarır.",
+    "Adın okunuşu kaynaklarda farklı verilir (Cabarka, Cabarga, Cabirka, Çaparka). Monografiye göre ada yeşil bir yarım daireyle çevrilidir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Japonya / Cabarka bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2, 5"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274"
+    }
+   ],
+   "link": [
+    "dot",
+    "sea"
+   ],
+   "equivalentId": "w-cabarka"
+  },
+  {
+   "id": "cafu",
+   "label": "Câfu",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     608,
+     178,
+     76,
+     35
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Alevi Şehri hakkındaki makale, Câfu’yu Alevi Şehri’nin kuzeyindeki yer olarak anar; yalnızca o yerin sınırını tarif etmek için geçer."
+   ],
+   "sources": [
+    {
+     "source_id": "src-alevi-sehri",
+     "locator": "özet"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "alevi-sehri",
+   "label": "Alevîler Şehri",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     602,
+     227,
+     187,
+     38
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada “Beldetü’l-Aleviyye” (Alevi Şehri) adıyla geçen yer. Makaleye göre kuzeyde Câfu, batıda Kadınlar Şehri, kuzeydoğuda Cabarka, güneydoğuda Beşbalık, güneybatıda İli Nehri ile çevrilidir.",
+    "Makale yerin tam konumunu, adının kökenini ve günümüzdeki karşılığını açıklamaz; bunları araştırma sorusu olarak ortaya koyar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-alevi-sehri",
+     "locator": "özet"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kadinlar-sehri",
+   "label": "Kadınlar Şehri",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     462,
+     265,
+     98,
+     54
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Alevi Şehri hakkındaki makalede, Alevi Şehri’nin batısındaki yer olarak anılır; yalnızca sınır tarifi için geçer, ayrıca açıklanmaz."
+   ],
+   "sources": [
+    {
+     "source_id": "src-alevi-sehri",
+     "locator": "özet"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "macin",
+   "label": "Maçin",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1002,
+     243,
+     92,
+     38
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "katunsini",
+   "label": "Katunsını",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     986,
+     332,
+     121,
+     32
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "uygur-ulkesi",
+   "label": "Uygur Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     992,
+     362,
+     146,
+     35
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Divan’da Uygur illerinin özellikleri anlatılır: ayrı bir ağız, ayrı bir yazı, Beş Balık adı verilen şehirler ve Uygur hanının mührü.",
+    "Kâşgarlı, Uygur adını Zülkarneyn’in yaptırdığı beş şehirli bir vilayetle açıklar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 18–19 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "koco-sulmi",
+   "label": "Koço Sulmı",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     998,
+     395,
+     130,
+     32
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "pek-cok-turk",
+   "label": "Pek çok Türk",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    [
+     703,
+     303,
+     181,
+     38
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, bu bölgede çok sayıda Türk yaşadığını belirtir. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "besbalik",
+   "label": "Beşbalık",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     681,
+     365,
+     121,
+     38
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Uygurların beş şehri olarak anılır. Tanrı Dağları’nın kuzeyinde, bugünkü Ürümçi çevresinde gösterilir; İpek Yolu üzerindeki stratejik önemi vurgulanır.",
+    "Monografi de Beşbalık’ı haritanın ortasındaki Türk şehirleri arasında sayar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 22 (yaklaşık)"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ],
+   "link": [
+    "dot"
+   ],
+   "equivalentId": "w-besbalik"
+  },
+  {
+   "id": "canbalik",
+   "label": "Canbalık",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     824,
+     363,
+     127,
+     38
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kumlar",
+   "label": "Kumlar",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       337,
+       390
+      ],
+      [
+       352,
+       402
+      ],
+      [
+       408,
+       322
+      ],
+      [
+       390,
+       311
+      ]
+     ]
+    }
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Yazının çevresindeki açık sarı bant kumluk alanı gösterir; kaynaklara göre sarı renk kumlukları ve çölleri belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "sarı daireler bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    }
+   ]
+  },
+  {
+   "id": "yamar-irmagi",
+   "label": "Yamar Irmağı",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       397,
+       400
+      ],
+      [
+       406,
+       416
+      ],
+      [
+       541,
+       363
+      ],
+      [
+       535,
+       346
+      ]
+     ]
+    }
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşları, haritada Yamar adının yazılı olduğunu belirtir. Yazıdaki “Irmağı” sözü bunun bir ırmak adı olduğunu gösterir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    }
+   ]
+  },
+  {
+   "id": "comul-meskeni",
+   "label": "Çömül Meskeni",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       424,
+       452
+      ],
+      [
+       435,
+       468
+      ],
+      [
+       586,
+       408
+      ],
+      [
+       578,
+       390
+      ]
+     ]
+    }
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Meskeni” sözü, bir topluluğun oturduğu yeri anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "kay-meskeni",
+   "label": "Kay Meskeni",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     463,
+     471,
+     105,
+     51
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Meskeni” sözü, bir topluluğun oturduğu yeri anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "ertis-irmagi",
+   "label": "Ertiş Irmağı",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       436,
+       603
+      ],
+      [
+       449,
+       616
+      ],
+      [
+       551,
+       543
+      ],
+      [
+       540,
+       529
+      ]
+     ]
+    }
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada İrtiş (Ertiş) adı geçer; Ormanoğlu ve arkadaşları ile monografi bu adı ırmaklar arasında sayar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ]
+  },
+  {
+   "id": "yemek-bozkiri",
+   "label": "Yemek Bozkırı",
+   "kind": "steppe",
+   "layer": "label",
+   "areas": [
+    [
+     590,
+     530,
+     89,
+     54
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Bozkırı” sözü, geniş ağaçsız otlak alanı anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "kumi-talas",
+   "label": "Kümi Talas",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     710,
+     506,
+     121,
+     29
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Yazıda iki ad yan yana görünür. Talas, Gömeç’in incelemesinde Argu bölgesi ile Çigil oymaklarından biri bağlamında anılır: Argu, Talas ile Balasagun arasındaki yerlere verilen addır; Çigil’in bir oymağı Talas yakınında yaşar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 10, 21 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "ekki-oguz",
+   "label": "Ekki Öğüz",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     706,
+     573,
+     114,
+     29
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "basgirt-bozkirlari",
+   "label": "Başgırt Bozkırları",
+   "kind": "steppe",
+   "layer": "label",
+   "areas": [
+    [
+     459,
+     611,
+     105,
+     54
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Bozkırları” sözü, geniş ağaçsız otlak alanlarını anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "ila-irmagi",
+   "label": "Ilâ Irmağı",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    [
+     579,
+     633,
+     108,
+     29
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada İla adı ırmaklar arasında geçer; modern karşılığı olarak İli Nehri önerilir.",
+    "Alevi Şehri makalesi de İli Nehri’ni Alevi Şehri’nin güneybatısındaki sınır olarak anar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "adların listesi"
+    },
+    {
+     "source_id": "src-alevi-sehri",
+     "locator": "özet"
+    }
+   ],
+   "equivalentId": "w-ila"
+  },
+  {
+   "id": "yavinc",
+   "label": "Yavınç",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     713,
+     662,
+     79,
+     29
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "basmil-bozkirlari",
+   "label": "Basmıl Bozkırları",
+   "kind": "steppe",
+   "layer": "label",
+   "areas": [
+    [
+     373,
+     683,
+     108,
+     48
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Bozkırları” sözü, geniş ağaçsız otlak alanlarını anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "tatar-bozkirlari",
+   "label": "Tatar Bozkırları",
+   "kind": "steppe",
+   "layer": "label",
+   "areas": [
+    [
+     530,
+     683,
+     167,
+     32
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "“Bozkırları” sözü, geniş ağaçsız otlak alanlarını anlatır."
+   ],
+   "sources": []
+  },
+  {
+   "id": "sikal-muhdese",
+   "label": "Sikal-i Muhdese Şehri",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     486,
+     725,
+     235,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "nzl",
+   "label": "Nzl",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     733,
+     736,
+     41,
+     27
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "taraz",
+   "label": "Taraz",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     714,
+     808,
+     67,
+     29
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, Barsgan’ın Taraz’a yakın olduğunu belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 22 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "balasagun",
+   "label": "Balasagun",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     802,
+     856,
+     159,
+     33
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Haritanın merkezindeki şehir. Bugünkü Kırgızistan sınırları içinde, İpek Yolu üzerinde yer aldığı kabul edilir; Gömeç, onu Tokmak’ın güneybatısında gösterir. Diğer şehirler ve yer adları bu şehre göre konumlandırılmıştır.",
+    "Gömeç, Balasagun yakınında bir “Ordu” (merkez) bulunduğunu ve asıl merkezin burası olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-tdv-ia",
+     "locator": "harita bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    },
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 21"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 1, 5"
+    }
+   ],
+   "link": [
+    "dot"
+   ],
+   "equivalentId": "w-balasagun"
+  },
+  {
+   "id": "barsgan",
+   "label": "Barsgan",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     967,
+     738,
+     83,
+     27
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Kâşgarlı’nın babasının şehri olarak geçer. Gömeç, Issık Köl’ün güneydoğusunda, Taraz’a yakın gösterir; Divan’daki Barsgan ile Barşan’ın aynı yer olup olmadığının düşünülmesi gerektiğini söyler.",
+    "Monografi, Issık Göl’ün haritada Barsgan yakınında, adı yazılmamış bir göl olarak çizildiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 3, 21–22 (yaklaşık)"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ],
+   "link": [
+    "dot"
+   ],
+   "equivalentId": "w-barsgan"
+  },
+  {
+   "id": "isik-gol",
+   "label": "Işık Göl (mavi çizgilerin birleştiği yer)",
+   "kind": "water",
+   "layer": "shape",
+   "areas": [
+    [
+     908,
+     789,
+     95,
+     48
+    ]
+   ],
+   "status": "interpretation",
+   "paragraphs": [
+    "Mavi çizgilerin birleştiği bu koyu mavi leke, araştırmacılarca haritanın ortasındaki Işık Göl olarak yorumlanır: dağlık alanlarla çevrili ve ırmakları olan bir göl. Çizimde bu şeklin üstünde ad yazılı değildir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ],
+   "equivalentId": "w-isik"
+  },
+  {
+   "id": "kuca",
+   "label": "Kuça",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1054,
+     506,
+     60,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, Hoten ile Kuça arasında 15 günlük mesafe bulunduğunu Hoten maddesinde belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 23 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "barman",
+   "label": "Barman",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1046,
+     560,
+     83,
+     27
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Divan’da Yungu deresinin aktığı kasabanın adı olarak geçer; kasabayı Afrasyab’ın oğlunun yaptırdığı anlatılır. Gömeç yerin konumunu vermez."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 4 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "sancu",
+   "label": "Şancu",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1149,
+     598,
+     63,
+     27
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "uc",
+   "label": "Üç",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1071,
+     649,
+     41,
+     27
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, Divan metnindeki “Üç” sözünün bir yer adı olmadığını, “Üç Karluk” ifadesinde geçtiğini belirtir. Haritadaki yazının aynı söz olup olmadığı bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 12 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "curcan",
+   "label": "Curçan",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1125,
+     646,
+     73,
+     27
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "hoten",
+   "label": "Hoten",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1138,
+     771,
+     67,
+     27
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Yarkend’in güneydoğusunda, Tarım’ın kollarından Hoten Suyu kenarında kurulmuş şehir. Gömeç, Divan’daki tanımı karışık bulur."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 23 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "yarkend",
+   "label": "Yarkend",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1133,
+     838,
+     83,
+     27
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, Hoten’in Yarkend’in güneydoğusunda olduğunu belirtir; Yarkend ayrı bir madde olarak işlenmez."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 23 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kucngar-basi",
+   "label": "Kuçngar Başı",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1054,
+     824,
+     86,
+     54
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kasgar",
+   "label": "Kaşgar",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1130,
+     898,
+     83,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, Barşan’ın Kaşgar bölgesi olduğunu, Çigil köylerinin Kaşgar’da gösterildiğini ve Yabaku’nun Kaşgar yakınında olabileceğini not eder; Kaşgar ayrı bir madde olarak işlenmez."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 3, 10, 19 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kismir",
+   "label": "Kişmir",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1316,
+     849,
+     67,
+     29
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "ozcend",
+   "label": "Özçend",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1189,
+     978,
+     79,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Gömeç, “Özkend” (Özkent) adının bölge halkına verildiğini ve bölgenin Fergana civarında gösterildiğini belirtir. Haritadaki “Özçend” yazısının aynı yer olup olmadığı bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 11 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "marginan",
+   "label": "Marginan",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1157,
+     1010,
+     89,
+     27
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "hocend",
+   "label": "Hoçend",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1130,
+     1029,
+     76,
+     27
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "semerkand",
+   "label": "Semerkand",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1038,
+     1057,
+     111,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "ceyhun",
+   "label": "Ceyhun",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    [
+     1235,
+     1030,
+     79,
+     33
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada Seyhun ve Ceyhun adları yazılıdır. Monografi, bu adları Siriderya ve Amuderya ile eşleştirir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2, 7"
+    }
+   ],
+   "equivalentId": "w-seyhun"
+  },
+  {
+   "id": "sicistan",
+   "label": "Sicistan Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1249,
+     1065,
+     124,
+     38
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "“Ülkesi” sözü, bir bölge ya da devlet adını gösterir.",
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "sind",
+   "label": "Sind Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1432,
+     1052,
+     67,
+     51
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşları, Hint, Sint (Sind), Çad, Berber, Habeş ve Zenci ülkelerinin haritanın güneyinde yer aldığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "hind",
+   "label": "Hind Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1519,
+     1010,
+     114,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşları, Hint ülkesinin haritanın güneyinde yer aldığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "seyhun",
+   "label": "Seyhun",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    [
+     1505,
+     1057,
+     105,
+     63
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada Seyhun adı yazılıdır. Monografi, İndüs Nehri’nin haritada hatalı olarak “Seyhun” diye anıldığını aktarır (Kaplony’ye atıfla). Bu çizimde yazı, güneydoğudaki parlak mavi çizginin yanındadır; yazının tam olarak hangi çizgiyi adlandırdığı bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    }
+   ],
+   "equivalentId": "w-seyhun"
+  },
+  {
+   "id": "serendib",
+   "label": "Serendib",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     1560,
+     935,
+     92,
+     27
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Serendib (Seylan) adası. Monografiye göre adanın güneyindeki kırmızı nokta, Âdem Tepesi ile özdeşleştirilir ve Âdem’in cennetten sürüldüğü yer olduğu sanılır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2, 6"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "serendib-dagi",
+   "label": "Serendib Dağı",
+   "kind": "mountain",
+   "layer": "label",
+   "areas": [
+    [
+     1495,
+     975,
+     143,
+     33
+    ],
+    [
+     1524,
+     898,
+     44,
+     83
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşlarına göre haritada adı verilen yalnızca iki dağdan biri Serendib dağlarıdır (diğeri Karaçuk)."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "kırmızı renk bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ]
+  },
+  {
+   "id": "adem-ayak-izi",
+   "label": "Ademin ayak izi",
+   "kind": "legend",
+   "layer": "label",
+   "areas": [
+    [
+     1451,
+     863,
+     156,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Monografi, Serendib adasındaki kırmızı noktanın Âdem Tepesi ile özdeşleştirildiğini ve burasının Âdem’in sürüldüğü yer olduğunun sanıldığını belirtir. Haritadaki bu yazıyla aynı yeri kastedip kastetmediği bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 6"
+    }
+   ],
+   "link": [
+    "dotted"
+   ]
+  },
+  {
+   "id": "kum-dogu",
+   "label": "Kum",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1443,
+     792,
+     52,
+     29
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada sarı renk kumlukları ve çölleri gösterir; bu çizimde “Kum” yazısı noktalı gri hatlarla birlikte kullanılmıştır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "sarı daireler bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    }
+   ],
+   "link": [
+    "dotted"
+   ]
+  },
+  {
+   "id": "kum-bati",
+   "label": "Kum",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1098,
+     1111,
+     57,
+     29
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada sarı renk kumlukları ve çölleri gösterir; bu çizimde “Kum” yazısı noktalı gri hatlarla birlikte kullanılmıştır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "sarı daireler bölümü"
+    },
+    {
+     "source_id": "src-alyilmaz-2025",
+     "locator": "s. 274, 284"
+    }
+   ],
+   "link": [
+    "dotted"
+   ]
+  },
+  {
+   "id": "bengal-sea",
+   "label": "Güneydeki koni biçimli deniz",
+   "kind": "water",
+   "layer": "shape",
+   "areas": [
+    {
+     "poly": [
+      [
+       1460,
+       829
+      ],
+      [
+       1492,
+       803
+      ],
+      [
+       1571,
+       790
+      ],
+      [
+       1644,
+       789
+      ],
+      [
+       1651,
+       889
+      ],
+      [
+       1595,
+       876
+      ],
+      [
+       1524,
+       854
+      ]
+     ]
+    }
+   ],
+   "status": "interpretation",
+   "paragraphs": [
+    "Haritanın güneydoğusundaki koni biçimli deniz parçası, araştırmacılarca Bengal Körfezi olarak yorumlanabilir. Çizimde bu şeklin üstünde ad yazılı değildir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ],
+   "equivalentId": "w-bengal"
+  },
+  {
+   "id": "yecuc-mecuc",
+   "label": "Yecüc ve Mecüc Diyarı",
+   "kind": "legend",
+   "layer": "label",
+   "areas": [
+    [
+     1360,
+     506,
+     181,
+     63
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Efsanevi bir ülke: İslam coğrafya geleneğinde dünyanın uzak köşelerinde, dağlarla kapatılmış bir yer olarak anlatılır. Monografi, kırmızı dağların bu ülkeyi çevrelediğini belirtir.",
+    "Kaynaklar bunu gözlemlenmiş bir yer değil, gelenekten gelen efsanevi bir konumlandırma olarak sunar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Yecüc-Mecüc bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 6–7"
+    }
+   ]
+  },
+  {
+   "id": "yecuc-region",
+   "label": "Yecüc ve Mecüc Diyarı (bölge)",
+   "kind": "legend",
+   "layer": "area",
+   "areas": [
+    {
+     "poly": [
+      [
+       1403,
+       273
+      ],
+      [
+       1346,
+       365
+      ],
+      [
+       1314,
+       476
+      ],
+      [
+       1325,
+       587
+      ],
+      [
+       1381,
+       683
+      ],
+      [
+       1476,
+       733
+      ],
+      [
+       1587,
+       749
+      ],
+      [
+       1660,
+       743
+      ],
+      [
+       1660,
+       273
+      ]
+     ]
+    }
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Kırmızı çizgiyle sınırlanmış bu geniş alan, yazıya göre Yecüc ve Mecüc Diyarı’dır. Kaynaklar bunu gözlemlenmiş bir yer değil, gelenekten gelen efsanevi bir konumlandırma olarak sunar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Yecüc-Mecüc bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 6–7"
+    }
+   ]
+  },
+  {
+   "id": "zulkarneyn-seddi",
+   "label": "Zülkarneyn Seddi",
+   "kind": "legend",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       1344,
+       657
+      ],
+      [
+       1370,
+       654
+      ],
+      [
+       1456,
+       790
+      ],
+      [
+       1433,
+       810
+      ]
+     ]
+    }
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Efsanevi bir yerleştirme: İslam coğrafya geleneğinde Zülkarneyn’in yaptırdığı sed. Ormanoğlu ve arkadaşları “Sedd-i Zi’l-karneyn”i, Yecüc ve Mecüc gibi, haritanın efsanevi konumlandırmaları arasında sayar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Zülkarneyn seddi bölümü"
+    }
+   ],
+   "link": [
+    "dotted"
+   ]
+  },
+  {
+   "id": "basaklarla-kapli",
+   "label": "Başaklarla kaplı diyar",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       1138,
+       517
+      ],
+      [
+       1171,
+       524
+      ],
+      [
+       1295,
+       298
+      ],
+      [
+       1270,
+       279
+      ]
+     ]
+    }
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, başaklarla kaplı bir diyarı anlatır. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "suyun-yutulan",
+   "label": "Suyun yutularak kaybolduğu kırlar ve kumlar",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    [
+     1110,
+     222,
+     186,
+     86
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, suyun yutularak kaybolduğu kırları ve kumlukları anlatır. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "bulgar",
+   "label": "Bulgar",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     356,
+     768,
+     86,
+     32
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Monografi, haritadaki “Bulgar” adının, konumuna bakılarak, bugünkü Bulgaristan’a değil büyük olasılıkla Volga Bulgarları’na işaret ettiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 5"
+    }
+   ],
+   "link": [
+    "dot"
+   ],
+   "equivalentId": "w-bulgar"
+  },
+  {
+   "id": "kifcak-oguz",
+   "label": "Kıfçak ve Oğuz Meskeni",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     471,
+     768,
+     229,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "“Meskeni” sözü, bir topluluğun oturduğu yeri anlatır. Monografi, haritada Kıpçak illerinin ve Oğuz yurdunun anıldığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ]
+  },
+  {
+   "id": "karacuk-dagi",
+   "label": "Karaçuk Dağı",
+   "kind": "mountain",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       524,
+       863
+      ],
+      [
+       663,
+       803
+      ],
+      [
+       673,
+       830
+      ],
+      [
+       575,
+       873
+      ],
+      [
+       536,
+       879
+      ]
+     ]
+    }
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşlarına göre haritada adı verilen yalnızca iki dağdan biridir (diğeri Serendib).",
+    "Karaçuk, Oğuz şehirlerinden biri olarak da geçer ve destanda Oğuz Han’ın merkezi sayılır. Gömeç, yerin tam konumunda tartışmanın sürdüğünü, genellikle Güney Kazakistan’daki Karatav eteklerinde arandığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "kırmızı renk bölümü"
+    },
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 24 (yaklaşık)"
+    }
+   ],
+   "equivalentId": "w-karacuk"
+  },
+  {
+   "id": "oguz-ulkesi",
+   "label": "Oğuz Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     554,
+     879,
+     124,
+     83
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Monografi, haritada Oğuz yurdunun Türk bölgeleri arasında anıldığını belirtir. Gömeç, Karaçuk’u Oğuz Han’ın destandaki merkezi olarak anar."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    },
+    {
+     "source_id": "src-gomec-yer-adlari",
+     "locator": "s. 24 (yaklaşık)"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "etil-irmagi",
+   "label": "Etil Irmağı",
+   "kind": "river",
+   "layer": "label",
+   "areas": [
+    [
+     305,
+     948,
+     60,
+     48
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritada İtil (Etil) adı geçer; araştırmacılar bunu Volga Nehri ile eşleştirir. Monografi, Kıpçakların İtil’in kuzey sınırları yakınında yaşadığını aktarır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2, 7"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "nehirler bölümü"
+    }
+   ],
+   "equivalentId": "w-itil"
+  },
+  {
+   "id": "suvar",
+   "label": "Suvâr",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     384,
+     983,
+     73,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "TDV İslâm Ansiklopedisi maddesi, Divan’da adı geçen bazı toplulukların (örneğin Çigiller ve Suvarlar) haritada gösterilmediğini belirtir; bu çizimde ise “Suvâr” yazısı vardır. Aradaki farkın nedeni (okuma farkı ya da çizimdeki bir ek) bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-tdv-ia",
+     "locator": "harita bölümü"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "kipcak-meskeni",
+   "label": "Kıpçak Meskeni",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     300,
+     1010,
+     171,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "“Meskeni” sözü, bir topluluğun oturduğu yeri anlatır. Ormanoğlu ve arkadaşları, Kıpçak ve Frenk yerleşim alanlarının İtil boylarına kadar uzandığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Kıpçak bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 2"
+    }
+   ]
+  },
+  {
+   "id": "kollarindan-biri",
+   "label": "Onların kollarından biri",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    [
+     340,
+     1046,
+     146,
+     51
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, yanındaki ırmağın kollarından birini anlatan bir not gibi görünür. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "cend",
+   "label": "Çend",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     535,
+     1006,
+     67,
+     32
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "man-kislak",
+   "label": "Man Kışlak",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     511,
+     1083,
+     121,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "rus",
+   "label": "Rus",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     449,
+     1090,
+     51,
+     29
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Monografi, Rusların ülkesinin haritada kuzeyde gösterildiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "harizm",
+   "label": "Harizm",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     724,
+     1106,
+     67,
+     24
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "abisgun-denizi",
+   "label": "Âbısgün Denizi",
+   "kind": "water",
+   "layer": "label",
+   "areas": [
+    [
+     614,
+     1121,
+     92,
+     48
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Hazar Denizi’nin Divan’daki adı. Haritada Hazar ve Aral su damlası biçiminde çizilmiş ve büyük olasılıkla birleştirilmiştir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ],
+   "link": [
+    "sea"
+   ],
+   "equivalentId": "w-hazar"
+  },
+  {
+   "id": "taberistan",
+   "label": "Taberistan",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     625,
+     1173,
+     102,
+     25
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "varang",
+   "label": "Varang",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     303,
+     1149,
+     83,
+     32
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "sakaliba",
+   "label": "Sakalıba",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     395,
+     1184,
+     95,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "derbend-hazaran",
+   "label": "Derbend Hazaran",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     527,
+     1189,
+     95,
+     48
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "amic",
+   "label": "Amıç",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     344,
+     1270,
+     57,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "becenek",
+   "label": "Beçenek",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     411,
+     1260,
+     102,
+     30
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [],
+   "sources": [],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "yabanil-hayvanlar",
+   "label": "Yabanıl hayvanlar",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       162,
+       803
+      ],
+      [
+       187,
+       814
+      ],
+      [
+       232,
+       610
+      ],
+      [
+       208,
+       598
+      ]
+     ]
+    }
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, bu kesimde yabanıl hayvanların yaşadığını belirtir. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "nesnas",
+   "label": "Nesnâs’ın (ilkel adamlar) bozkırlarda yaşadığı söylenir",
+   "kind": "legend",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       202,
+       875
+      ],
+      [
+       235,
+       884
+      ],
+      [
+       283,
+       714
+      ],
+      [
+       356,
+       481
+      ],
+      [
+       319,
+       462
+      ],
+      [
+       254,
+       603
+      ]
+     ]
+    }
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Yazıya göre “ilkel adamlar” olarak anılan Nesnâs bu bozkırlarda yaşar. “Söylenir” sözü, bunun kesin bir bilgi değil, anlatılan bir söylenti olduğunu gösterir. Ormanoğlu ve arkadaşları bu ad için ayrıca bilgi vermez."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "Nesnâs, Tatar, Basmıl, Yemek… bölümü"
+    }
+   ]
+  },
+  {
+   "id": "asiri-soguk",
+   "label": "Aşırı soğuk nedeniyle yaşanamaz",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       286,
+       1305
+      ],
+      [
+       308,
+       1290
+      ],
+      [
+       198,
+       924
+      ],
+      [
+       175,
+       943
+      ]
+     ]
+    }
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, bu kesimin aşırı soğuk yüzünden yaşanamaz olduğunu belirtir. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "asiri-sicak",
+   "label": "Aşırı sıcak nedeniyle yaşanamaz",
+   "kind": "note",
+   "layer": "label",
+   "areas": [
+    [
+     946,
+     1519,
+     225,
+     57
+    ]
+   ],
+   "status": "label-only",
+   "paragraphs": [
+    "Yazı, bu kesimin aşırı sıcak yüzünden yaşanamaz olduğunu belirtir. Bu ifadeyi ayrıca açıklayan bir kaynak bu çalışmada kullanılmadı."
+   ],
+   "sources": []
+  },
+  {
+   "id": "devlem",
+   "label": "Devlem Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       522,
+       1311
+      ],
+      [
+       541,
+       1322
+      ],
+      [
+       633,
+       1241
+      ],
+      [
+       616,
+       1230
+      ]
+     ]
+    }
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "adarbadgan",
+   "label": "Adarbadgan Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     617,
+     1260,
+     121,
+     43
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Monografi, bu bölümde Azerbaycan adının geçtiğini belirtir; “Adarbadgan” yazımı aynı bölgeye işaret ediyor olabilir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 5, 8"
+    }
+   ]
+  },
+  {
+   "id": "kurt-ulkesi",
+   "label": "Kürt Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     567,
+     1329,
+     117,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "misir-siniri",
+   "label": "Mısır Sınırı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     559,
+     1386,
+     121,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşlarına göre Mısır, Mağrip ve Endülüs haritanın güneybatısında gösterilir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "suriye",
+   "label": "Suriye Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     400,
+     1338,
+     143,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "iskenderiye",
+   "label": "İskenderiye",
+   "kind": "place",
+   "layer": "label",
+   "areas": [
+    [
+     483,
+     1438,
+     124,
+     35
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşlarına göre Mısır bölgesi haritanın güneybatısında gösterilir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "horasan",
+   "label": "Horasan Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     857,
+     1227,
+     165,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "iki-irak",
+   "label": "İki Irak Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     884,
+     1298,
+     152,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Monografi, bu bölümde Irak adının geçtiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 5, 8"
+    }
+   ]
+  },
+  {
+   "id": "hicaz",
+   "label": "Hicâz Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     860,
+     1389,
+     137,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "kayravan",
+   "label": "Kayravan ve Diğerlerinin Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     710,
+     1459,
+     324,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "magrip",
+   "label": "Magrip Diyarları: Bu Endülüs’tür",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     705,
+     1522,
+     181,
+     57
+    ]
+   ],
+   "status": "sourced",
+   "paragraphs": [
+    "Yazı, Mağrip diyarlarının Endülüs olduğunu belirtir. Ormanoğlu ve arkadaşlarına göre Mısır, Mağrip ve Endülüs haritanın güneybatısında gösterilir; araştırmacılar Endülüs’ü İspanya (İber Yarımadası) ile eşleştirir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ],
+   "equivalentId": "w-endulus"
+  },
+  {
+   "id": "kirman",
+   "label": "Kirman Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    {
+     "poly": [
+      [
+       1278,
+       1132
+      ],
+      [
+       1289,
+       1144
+      ],
+      [
+       1405,
+       1106
+      ],
+      [
+       1395,
+       1095
+      ]
+     ]
+    }
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "fars",
+   "label": "Fars Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1221,
+     1144,
+     127,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "huzistan",
+   "label": "Huzistan Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1233,
+     1192,
+     102,
+     57
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "yemen",
+   "label": "Yemen Diyarı",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1217,
+     1278,
+     140,
+     32
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Monografi, bu bölümde Yemen adının geçtiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 5, 8"
+    }
+   ]
+  },
+  {
+   "id": "berber",
+   "label": "Berber Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1416,
+     1179,
+     130,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşları, Hint, Sint, Çad, Berber, Habeş ve Zenci ülkelerinin haritanın güneyinde yer aldığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "cad",
+   "label": "Çad Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1400,
+     1240,
+     111,
+     30
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşları, Çad’ın haritanın güneyinde gösterildiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "habesliler",
+   "label": "Habeşliler Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1379,
+     1297,
+     98,
+     52
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşları, Habeş ülkesinin haritanın güneyinde gösterildiğini; monografi ise bu bölümde Habeşistan’ın (Etiyopya) anıldığını belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 5, 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ]
+  },
+  {
+   "id": "zenci",
+   "label": "Zenci Ülkesi",
+   "kind": "region",
+   "layer": "label",
+   "areas": [
+    [
+     1236,
+     1402,
+     73,
+     51
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Ormanoğlu ve arkadaşları, Zenci ülkesinin haritanın güneyinde gösterildiğini belirtir."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    },
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "güney bölgeleri"
+    }
+   ],
+   "link": [
+    "dot"
+   ]
+  },
+  {
+   "id": "horasan-alani",
+   "label": "Horasan Diyarı (alan)",
+   "kind": "region",
+   "layer": "area",
+   "areas": [
+    [
+     746,
+     1219,
+     452,
+     73
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Bu alan, yazıya göre Horasan Diyarı’dır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "irak-alani",
+   "label": "İki Irak Diyarı (alan)",
+   "kind": "region",
+   "layer": "area",
+   "areas": [
+    [
+     738,
+     1295,
+     460,
+     83
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Bu alan, yazıya göre İki Irak Diyarı’dır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "hicaz-alani",
+   "label": "Hicâz Diyarı (alan)",
+   "kind": "region",
+   "layer": "area",
+   "areas": [
+    [
+     746,
+     1378,
+     452,
+     79
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Bu alan, yazıya göre Hicâz Diyarı’dır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "kayravan-alani",
+   "label": "Kayravan ve Diğerlerinin Diyarı (alan)",
+   "kind": "region",
+   "layer": "area",
+   "areas": [
+    [
+     698,
+     1460,
+     508,
+     60
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Haritanın güney kesimindeki bu tablo, İslam dünyasının topraklarını doğu İran’dan İspanya’ya kadar sıralar. Monografi, kırmızı çizgilerin burada dağ değil ülke ve bölge sınırı olarak okunduğunu aktarır; tabloyu çoğaltan kâtibin (Muhammed b. Ebî Bekr) onu zamanının siyasi durumuna uydurmak için eklemiş olabileceğini de belirtir.",
+    "Bu alan, yazıya göre Kayravan ve Diğerlerinin Diyarı’dır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 8"
+    }
+   ]
+  },
+  {
+   "id": "hazar-aral-sekli",
+   "label": "Su damlası biçimli deniz (Hazar ve Aral)",
+   "kind": "water",
+   "layer": "shape",
+   "areas": [
+    {
+     "poly": [
+      [
+       416,
+       865
+      ],
+      [
+       460,
+       838
+      ],
+      [
+       516,
+       857
+      ],
+      [
+       533,
+       913
+      ],
+      [
+       525,
+       984
+      ],
+      [
+       546,
+       1079
+      ],
+      [
+       560,
+       1167
+      ],
+      [
+       532,
+       1152
+      ],
+      [
+       476,
+       1098
+      ],
+      [
+       438,
+       1016
+      ],
+      [
+       416,
+       936
+      ]
+     ]
+    }
+   ],
+   "status": "interpretation",
+   "paragraphs": [
+    "Hazar ve Aral, bu haritada su damlası biçiminde, muhtemelen birleştirilerek çizilmiştir. Monografi, Hazar’ın anahtar deliği biçiminde çizildiğini belirtir.",
+    "Çizimde şeklin üstünde ad yazılı değildir; yakınındaki “Âbısgün Denizi” yazısı Hazar için kullanılan addır."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ],
+   "link": [
+    "sea"
+   ],
+   "equivalentId": "w-hazar"
+  },
+  {
+   "id": "balkas-sekli",
+   "label": "Üçgen biçimli su alanı (Balkaş Gölü olarak yorumlanır)",
+   "kind": "water",
+   "layer": "shape",
+   "areas": [
+    {
+     "poly": [
+      [
+       325,
+       581
+      ],
+      [
+       452,
+       676
+      ],
+      [
+       378,
+       679
+      ],
+      [
+       313,
+       668
+      ]
+     ]
+    }
+   ],
+   "status": "interpretation",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşları, Balkaş Gölü’nün haritada Hazar’ın kuzeydoğusunda üçgen biçiminde gösterildiğini belirtir. Çizimde bu şeklin üstünde ad yazılı değildir; eşleştirme araştırmacıların yorumudur."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "deniz ve göller bölümü"
+    }
+   ],
+   "equivalentId": "w-balkas"
+  },
+  {
+   "id": "dogu",
+   "label": "Doğu",
+   "kind": "direction",
+   "layer": "label",
+   "areas": [
+    [
+     1613,
+     389,
+     92,
+     44
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Kaynaklara göre haritada doğu üsttedir: üstte doğu, altta batı, sağda güney, solda kuzey yer alır (Adalıoğlu’na atıfla). Doğunun esas alınması Göktürk ve Orhun dönemi inançlarına dayandırılır (Sarıcaoğlu’na atıfla). Kaplony ise kuzeyin solda olduğunu belirtir; modern kopya ise kuzey üstte olacak biçimde yeniden yönlendirilmiştir.",
+    "Bu Türkçe çizimde yön adları köşelerde yazılıdır; çizimin yön düzeni özgün yazmayla bu çalışmada karşılaştırılmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 1, 4–5, 7"
+    }
+   ]
+  },
+  {
+   "id": "kuzey",
+   "label": "Kuzey",
+   "kind": "direction",
+   "layer": "label",
+   "areas": [
+    [
+     38,
+     463,
+     114,
+     70
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Kaynaklara göre haritada doğu üsttedir: üstte doğu, altta batı, sağda güney, solda kuzey yer alır (Adalıoğlu’na atıfla). Doğunun esas alınması Göktürk ve Orhun dönemi inançlarına dayandırılır (Sarıcaoğlu’na atıfla). Kaplony ise kuzeyin solda olduğunu belirtir; modern kopya ise kuzey üstte olacak biçimde yeniden yönlendirilmiştir.",
+    "Bu Türkçe çizimde yön adları köşelerde yazılıdır; çizimin yön düzeni özgün yazmayla bu çalışmada karşılaştırılmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ]
+  },
+  {
+   "id": "bati",
+   "label": "Batı",
+   "kind": "direction",
+   "layer": "label",
+   "areas": [
+    [
+     133,
+     1356,
+     70,
+     41
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Kaynaklara göre haritada doğu üsttedir: üstte doğu, altta batı, sağda güney, solda kuzey yer alır (Adalıoğlu’na atıfla). Doğunun esas alınması Göktürk ve Orhun dönemi inançlarına dayandırılır (Sarıcaoğlu’na atıfla). Kaplony ise kuzeyin solda olduğunu belirtir; modern kopya ise kuzey üstte olacak biçimde yeniden yönlendirilmiştir.",
+    "Bu Türkçe çizimde yön adları köşelerde yazılıdır; çizimin yön düzeni özgün yazmayla bu çalışmada karşılaştırılmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ]
+  },
+  {
+   "id": "guney",
+   "label": "Güney",
+   "kind": "direction",
+   "layer": "label",
+   "areas": [
+    [
+     1521,
+     1436,
+     117,
+     44
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Kaynaklara göre haritada doğu üsttedir: üstte doğu, altta batı, sağda güney, solda kuzey yer alır (Adalıoğlu’na atıfla). Doğunun esas alınması Göktürk ve Orhun dönemi inançlarına dayandırılır (Sarıcaoğlu’na atıfla). Kaplony ise kuzeyin solda olduğunu belirtir; modern kopya ise kuzey üstte olacak biçimde yeniden yönlendirilmiştir.",
+    "Bu Türkçe çizimde yön adları köşelerde yazılıdır; çizimin yön düzeni özgün yazmayla bu çalışmada karşılaştırılmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü"
+    },
+    {
+     "source_id": "src-myoldmaps-kashghari",
+     "locator": "s. 7"
+    }
+   ]
+  },
+  {
+   "id": "arapca-koseler",
+   "label": "Köşelerdeki Arapça yazılar",
+   "kind": "legend",
+   "layer": "label",
+   "areas": [
+    [
+     1552,
+     294,
+     108,
+     102
+    ],
+    [
+     16,
+     524,
+     79,
+     178
+    ],
+    [
+     92,
+     1267,
+     133,
+     146
+    ],
+    [
+     1433,
+     1394,
+     98,
+     98
+    ]
+   ],
+   "status": "partial",
+   "paragraphs": [
+    "Ormanoğlu ve arkadaşlarına göre dış çemberdeki yön adları Arapça yazılmıştır. Aynı makale, köşelerdeki ibarelerin renklerin anlamını da gösterdiğini aktarır; örneğin sağ alt köşedeki ibare kırmızının dağ olduğunu belirtir (Çitgez’e atıfla).",
+    "Bu çizimde hangi ibarenin hangi köşede olduğu bu çalışmada doğrulanmadı."
+   ],
+   "sources": [
+    {
+     "source_id": "src-ormanoglu-2022",
+     "locator": "yön bölümü, kırmızı renk bölümü"
+    }
+   ]
+  }
+ ]
+}

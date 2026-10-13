@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dîvânu Lugâti't-Türk Haritası</title>
+  <meta name="description" content="Dîvânu Lugâti't-Türk'teki 11. yüzyıl dünya haritasını etkileşimli olarak keşfet. Prototip sürüm.">
+  <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Opening animation: school identity and project team. Skippable; shown before the cover. -->
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-school">
+    <div class="intro__stage">
+      <div class="intro__emblem">
+        <svg class="intro__ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" /></svg>
+        <img src="assets/school-logo.jpg" width="200" height="200" alt="Maltepe Fen Lisesi logosu">
+      </div>
+      <p class="intro__eyebrow">Araştırma projesi</p>
+      <h1 id="intro-school" class="intro__school">Maltepe Fen Lisesi</h1>
+      <div class="intro__rule" aria-hidden="true"></div>
+      <p class="intro__project">Dîvânu Lugâti’t-Türk Haritası’nın<br>Etkileşimli Dijital Ortama Aktarılması</p>
+      <dl class="intro__team">
+        <div><dt>Danışman</dt><dd>Sevil Orhan</dd></div>
+        <div><dt>Öğrenci</dt><dd>Yunus Emir OKUMUŞ</dd></div>
+      </dl>
+      <p class="intro__motto">Türk dilinin ilk büyük sözlüğünün haritasını,<br>yeni nesil için yeniden okunur kılıyoruz.</p>
+    </div>
+    <button type="button" id="intro-skip" class="intro__skip">Geç <span aria-hidden="true">›</span></button>
+  </div>
+  <a class="skip-link" href="#maps">Haritaya geç</a>
+
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="logo" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg></span>
+      <div class="topbar__title">
+        <h1>Dîvânu Lugâti't-Türk Haritası</h1>
+        <p class="topbar__subtitle">Tarihî Harita Okuma Ortamı</p>
+      </div>
+    </div>
+    <nav class="topbar__nav" aria-label="Uygulama bölümleri">
+      <button type="button" class="menu__trigger menu__trigger--plain" data-open-dialog="dlg-welcome"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg><span>Kapak</span></button>
+      <div class="menu" data-menu>
+        <button type="button" class="menu__trigger" id="menu-learn-btn" aria-expanded="false" aria-controls="menu-learn"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5V5.5"/><path d="M9 8h7"/></svg><span>Öğren</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <ul class="menu__panel" id="menu-learn" hidden>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-help"><span class="menu__name">Harita nasıl okunur?</span><span class="menu__desc">Simgelerin, renklerin ve belirsizlik düzeylerinin anlamı.</span></button></li>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-labels" id="btn-labels"><span class="menu__name">Haritadaki yazılar</span><span class="menu__desc">Her yazının ve çizginin açıklaması, kaynaklarıyla birlikte tek listede.</span></button></li>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-where"><span class="menu__name">Yerler günümüzde neredeler?</span><span class="menu__desc">Araştırmacıların eski adlar için önerdiği günümüz karşılıkları.</span></button></li>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-glossary"><span class="menu__name">Sözlük</span><span class="menu__desc">Haritada ve eserde geçen terimlerin kısa açıklamaları.</span></button></li>
+        </ul>
+      </div>
+      <div class="menu" data-menu>
+        <button type="button" class="menu__trigger" id="menu-practice-btn" aria-expanded="false" aria-controls="menu-practice"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Dene</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <ul class="menu__panel" id="menu-practice" hidden>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-quiz" id="btn-quiz"><span class="menu__name">Mini test</span><span class="menu__desc">Harita okumayı kısa sorularla dene; sonucun yalnızca bu cihazda kalır.</span></button></li>
+          <li><button type="button" class="menu__item" id="btn-activity"><span class="menu__name">Haritada bul etkinliği</span><span class="menu__desc">Verilen yeri haritada bul; her yanıttan sonra geri bildirim al.</span></button></li>
+        </ul>
+      </div>
+      <div class="menu" data-menu>
+        <button type="button" class="menu__trigger" id="menu-sources-btn" aria-expanded="false" aria-controls="menu-sources"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10M10 21V10M14 21V10M19 21V10M2 10l10-6 10 6"/></svg><span>Kaynaklar</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <ul class="menu__panel" id="menu-sources" hidden>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-sources"><span class="menu__name">Kaynakça</span><span class="menu__desc">Kartlardaki ve karşılıklardaki bilgilerin dayandığı eserler ve incelemeler.</span></button></li>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-research"><span class="menu__name">Araştırma planı</span><span class="menu__desc">Projenin sorusu, yöntemi ve katılımcıların korunması (taslak).</span></button></li>
+          <li><button type="button" class="menu__item" data-open-dialog="dlg-about"><span class="menu__name">Proje hakkında</span><span class="menu__desc">Temel ilkeler, gizlilik ve lisanslar.</span></button></li>
+        </ul>
+      </div>
+      <div class="menu menu--end" data-menu>
+        <button type="button" class="menu__trigger" id="menu-view-btn" aria-expanded="false" aria-controls="menu-view"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg><span>Görünüm</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="menu__panel menu__panel--settings" id="menu-view" hidden>
+          <div class="menu__row">
+            <span class="menu__name">Yazı boyutu</span>
+            <span class="menu__pair">
+              <button type="button" class="btn btn--small" id="btn-text-smaller" aria-label="Metni küçült">A−</button>
+              <button type="button" class="btn btn--small" id="btn-text-larger" aria-label="Metni büyüt">A+</button>
+            </span>
+          </div>
+          <button type="button" class="menu__toggle" id="btn-present" aria-pressed="false" data-keep-open>
+            <span class="menu__name">Sınıf modu</span>
+            <span class="menu__desc">Haritayı büyütür; kayıtlar arasında PageDown ve PageUp ile gezilir.</span>
+          </button>
+          <button type="button" class="menu__toggle" id="btn-contrast" aria-pressed="false" data-keep-open>
+            <span class="menu__name">Yüksek karşıtlık</span>
+            <span class="menu__desc">Siyah-beyaz, kalın kenarlı görünüm.</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div id="demo-banner" class="banner banner--demo" role="note" hidden>
+    Bu sürümde yalnızca <strong>örnek içerik</strong> vardır. Haritadaki kayıtlar gerçek tarihî veri değildir.
+  </div>
+  <div id="status-banner" class="banner banner--status" role="status" hidden></div>
+  <section id="activity-bar" class="banner banner--activity" aria-label="Haritada bul etkinliği" hidden>
+    <p data-activity-prompt></p>
+    <p data-activity-feedback role="status" aria-live="polite"></p>
+    <button type="button" class="btn btn--primary" data-activity-next hidden>Sonraki görev</button>
+    <button type="button" class="btn" data-activity-stop>Etkinliği kapat</button>
+  </section>
+
+  <main class="layout" id="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Arama, katmanlar ve filtreler">
+      <form id="search-form" class="panel" role="search">
+        <label for="search-input" class="panel__title">Yer, boy veya coğrafi unsur ara</label>
+        <div class="search-row">
+          <input id="search-input" type="search" autocomplete="off" placeholder="Örneğin: dağ, topluluk adı" aria-describedby="search-count">
+          <button type="submit" class="btn btn--primary btn--sq" aria-label="Ara" data-tip="Ara"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </div>
+        <p id="search-count" class="hint" aria-live="polite"></p>
+      </form>
+
+      <fieldset class="panel">
+        <legend class="panel__title">Harita katmanları</legend>
+        <label class="check"><input type="checkbox" id="layer-original" checked> <span>Özgün harita (şematik)</span></label>
+        <label class="check"><input type="checkbox" id="layer-modern" checked> <span>Günümüz altlığı</span></label>
+        <p class="hint">İkisi birlikte açıkken iki harita yan yana görünür. Özgün harita ile günümüz haritası birbirine karıştırılmamalıdır. Özgün harita bölmesinde Türkçe etiketli çizim ile özgün görsel arasında geçiş yapabilirsin.</p>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend class="panel__title">Gösterilecek kayıtlar</legend>
+        <div id="category-filters"></div>
+      </fieldset>
+
+      <section class="panel" aria-labelledby="results-title">
+        <h2 id="results-title" class="panel__title">Kayıtlar</h2>
+        <ul id="results" class="results"></ul>
+        <p id="results-empty" class="hint" hidden>Aramana uygun kayıt bulunamadı. Başka bir yazım dene veya filtreleri kontrol et.</p>
+      </section>
+
+      <section class="panel panel--footer">
+        <p id="progress" class="hint"></p>
+        <button type="button" class="btn btn--tool-light" id="btn-reset-view" aria-label="Başlangıç görünümüne dön" data-tip="Başlangıç görünümü"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg></button>
+      </section>
+    </aside>
+
+    <section id="maps" class="maps" data-mode="both" aria-label="Harita alanı">
+      <div class="map-pane" id="pane-schematic">
+        <h2 class="map-pane__title" id="schematic-title">Özgün harita</h2>
+        <div class="map-pane__tools" id="schematic-tools">
+          <div class="seg" role="group" aria-label="Özgün harita görünümü">
+            <button type="button" class="seg__btn" id="base-redraw" aria-pressed="true" hidden>Türkçe etiketli çizim</button>
+            <button type="button" class="seg__btn" id="base-original" aria-pressed="false" hidden>Özgün görsel</button>
+          </div>
+          <button type="button" class="btn btn--small" id="btn-labels-pane" data-open-dialog="dlg-labels" hidden>Haritadaki yazılar</button>
+          <p class="map-pane__note" id="base-note" role="status"></p>
+        </div>
+        <div id="map-schematic" class="map-canvas" role="application" aria-label="Özgün harita. Oklar ile kaydır, artı ve eksi ile yakınlaştır."></div>
+        <p class="map-credit" id="map-credit" hidden></p>
+      </div>
+      <div class="map-pane" id="pane-modern">
+        <h2 class="map-pane__title">Günümüz altlığı</h2>
+        <div id="map-modern" class="map-canvas" role="application" aria-label="Günümüz altlık haritası. Oklar ile kaydır, artı ve eksi ile yakınlaştır."></div>
+      </div>
+      <button type="button" class="btn btn--primary btn--sq map-toggle-sidebar" id="btn-sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Arama ve katmanlar"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
+    </section>
+
+    <aside id="info-card" class="info-card" aria-label="Kayıt bilgisi" hidden></aside>
+  </main>
+
+  <!-- Welcome -->
+  <dialog id="dlg-welcome" class="cover" aria-labelledby="welcome-title">
+    <div class="cover__inner">
+      <div class="cover__text">
+        <p class="cover__eyebrow">Lise Öğrencileri Araştırma Projesi · Prototip sürüm</p>
+        <h2 id="welcome-title">Dîvânu Lugâti't-Türk Haritası</h2>
+        <p class="cover__rule" aria-hidden="true"></p>
+        <p class="cover__lead">Kâşgarlı Mahmud'un 11. yüzyılda yazdığı eserdeki dünya haritasını, kaynakları ve belirsizlik düzeyleriyle birlikte okumak için hazırlanmış etkileşimli ortam.</p>
+        <ul class="cover__legend" aria-label="Konum simgeleri">
+          <li><span class="mk mk--sample mk--precise" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Kesin</span></li>
+          <li><span class="mk mk--sample mk--approximate" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Yaklaşık</span></li>
+          <li><span class="mk mk--sample mk--disputed" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Tartışmalı</span></li>
+          <li><span class="mk mk--sample mk--schematic" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Şematik</span></li>
+        </ul>
+        <p class="cover__note">Bu harita ölçekli ve koordinatlı değildir. Hiçbir yer veya sınır kesin değildir; her kaydın kaynağı ve güven düzeyi gösterilir. Bu sürümdeki kayıtlar örnek içeriktir.</p>
+        <div class="cover__actions">
+          <button type="button" class="btn btn--cover" data-close-dialog autofocus>Haritayı aç <svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button type="button" class="btn btn--tool-dark" data-open-dialog="dlg-help" aria-label="Harita nasıl okunur?" data-tip="Harita nasıl okunur?"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9.2a3 3 0 0 1 5.8 1c0 2-2.9 2.6-2.9 4.3"/><path d="M12 17.6h.01"/></svg></button>
+        </div>
+      </div>
+      <figure class="cover__figure">
+        <img src="assets/original-map.jpg" width="741" height="670" alt="Dîvânu Lugâti't-Türk'teki dairesel dünya haritasının bir kopyası">
+        <figcaption>Özgün harita (Wikimedia Commons, PD-old; düşük çözünürlüklü kopya)</figcaption>
+      </figure>
+    </div>
+  </dialog>
+
+  <!-- Help / legend -->
+  <dialog id="dlg-help" aria-labelledby="help-title">
+    <div class="dialog__head"><h2 id="help-title">Harita nasıl okunur?</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <div data-legend></div>
+    <h3>Renk ve harf</h3>
+    <p>Her kayıt türünün bir rengi ve bir harfi vardır. Renk tek başına anlam taşımaz; harf her zaman yanındadır.</p>
+    <h3>Haritayı kullanma</h3>
+    <ul>
+      <li>Sürükleyerek veya ok tuşlarıyla kaydır.</li>
+      <li>Fare tekerleği, artı ve eksi düğmeleri veya iki parmakla yakınlaştır.</li>
+      <li>Türkçe etiketli çizimde fareni gezdirdiğin her yazı, çizgi, renk ve daire için bir açıklama kartı açılır. Kartı sabitlemek için tıkla; kapatmak için × veya Esc.</li>
+      <li>Fare kullanamıyorsan “Öğren” menüsündeki “Haritadaki yazılar” listesinden her açıklamayı okuyabilirsin.</li>
+      <li>Özgün görselde simgeye tıkla veya Enter tuşuna bas: bilgi kartı açılır.</li>
+      <li>Sınıf modunda PageDown/PageUp (veya N/P) tuşlarıyla kayıtlar arasında gez.</li>
+      <li>Kayıtlar listesinden de seçebilirsin; liste haritayla aynı kayıtları gösterir.</li>
+      <li>"Başlangıç görünümüne dön" düğmesi seni ilk görünüme getirir.</li>
+    </ul>
+  </dialog>
+
+  <!-- Quiz -->
+  <dialog id="dlg-quiz" aria-labelledby="quiz-title">
+    <div class="dialog__head"><h2 id="quiz-title">Mini test</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p class="hint" id="quiz-notice"></p>
+    <div id="quiz-body"></div>
+  </dialog>
+
+  <!-- Modern equivalents (research findings) -->
+  <dialog id="dlg-where" class="dialog--wide" aria-labelledby="where-title">
+    <div class="dialog__head"><h2 id="where-title">Haritada belirtilen yerler günümüzde neredeler</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <div id="where-body"></div>
+  </dialog>
+
+  <!-- Glossary -->
+  <dialog id="dlg-glossary" aria-labelledby="glossary-title">
+    <div class="dialog__head"><h2 id="glossary-title">Sözlük</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p class="hint" id="glossary-notice"></p>
+    <dl id="glossary-body" class="glossary"></dl>
+  </dialog>
+
+  <!-- Labels on the map: every explanation card as a readable list -->
+  <dialog id="dlg-labels" class="dialog--wide" aria-labelledby="labels-title">
+    <div class="dialog__head"><h2 id="labels-title">Haritadaki yazılar ve açıklamaları</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p class="hint" id="labels-notice"></p>
+    <div class="labels-filter">
+      <label for="labels-search">Listede ara</label>
+      <input id="labels-search" type="search" autocomplete="off" placeholder="Örneğin: Balasagun, ırmak, Hazar">
+      <p id="labels-count" class="hint" aria-live="polite"></p>
+    </div>
+    <div id="labels-body"></div>
+  </dialog>
+
+  <!-- Sources -->
+  <dialog id="dlg-sources" aria-labelledby="sources-title">
+    <div class="dialog__head"><h2 id="sources-title">Kaynakça</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p class="hint" id="sources-notice"></p>
+    <div id="sources-body"></div>
+  </dialog>
+
+  <!-- Research plan (draft) -->
+  <dialog id="dlg-research" aria-labelledby="research-title">
+    <div class="dialog__head"><h2 id="research-title">Araştırma planı (taslak)</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p class="hint">Bu bölüm bir plandır. Henüz hiçbir veri toplanmadı ve hiçbir sonuç yoktur.</p>
+    <h3>Araştırma sorusu</h3>
+    <p>Belirsizlik düzeyini gösteren ve özgün haritayı günümüz haritasından ayrı tutan etkileşimli ortam, öğrencilerin tarihî harita okuma becerisini geliştirir mi?</p>
+    <h3>Planlanan yöntem</h3>
+    <ul>
+      <li>Kullanım öncesi ve sonrası harita okuma görevi (tarihî bilgi değil, okuma becerisi ölçülür).</li>
+      <li>Kullanılabilirlik anketi.</li>
+      <li>Kontrol grubu kararı henüz verilmedi.</li>
+    </ul>
+    <h3>Katılımcı koruması</h3>
+    <ul>
+      <li>Gerçek öğrencilerle uygulama, okul ve MEB izinleri ile gönüllü ve veli onamı tamamlanmadan yapılmaz.</li>
+      <li>Ad veya benzeri kişisel bilgi istenmez; anonim kod kullanılır.</li>
+    </ul>
+    <div class="dialog__actions">
+      <button type="button" class="btn" data-open-dialog="dlg-research-test" id="btn-research-test">Pilot ölçme aracını aç (taslak)</button>
+      <button type="button" class="btn btn--primary" data-close-dialog>Kapat</button>
+    </div>
+  </dialog>
+
+  <!-- Research instruments (draft) -->
+  <dialog id="dlg-research-test" aria-labelledby="rt-title">
+    <div class="dialog__head"><h2 id="rt-title">Pilot ölçme aracı (taslak)</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <div id="research-body"></div>
+  </dialog>
+
+  <!-- About -->
+  <dialog id="dlg-about" aria-labelledby="about-title">
+    <div class="dialog__head"><h2 id="about-title">Proje hakkında</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
+    <p><strong>Çalışma adı:</strong> Dîvânu Lugâti't-Türk Haritasının Etkileşimli Dijital Ortama Aktarılması ve Öğrencilerin Tarihî Harita Okuryazarlığına Katkısı.</p>
+    <p>Bu bir prototip sürümdür. Tarihî kayıtlar henüz kaynaklarla doğrulanmadığı için yalnızca açıkça etiketlenmiş örnek içerik bulunur.</p>
+    <h3>Temel ilkeler</h3>
+    <ul>
+      <li>Haritadaki hiçbir yer veya sınır kesinmiş gibi gösterilmez.</li>
+      <li>Özgün harita ile günümüz altlığı ayrı katmanlardır.</li>
+      <li>Her bilgi bir kaynağa ve güven düzeyine bağlanır.</li>
+    </ul>
+    <h3>Gizlilik</h3>
+    <ul>
+      <li>Hesap gerekmez. Ad, e-posta veya benzeri kişisel bilgi istenmez.</li>
+      <li>Keşfettiğin kayıtlar, test sonucun ve görünüm ayarların yalnızca bu cihazın tarayıcısında saklanır; hiçbir yere gönderilmez.</li>
+      <li>Günümüz altlığı açıkken harita karoları OpenStreetMap sunucularından yüklenir. Bu sırada IP adresin o sunucuya iletilir.</li>
+      <li>Bu sürümde analitik veya izleme aracı yoktur.</li>
+    </ul>
+    <h3>Lisanslar</h3>
+    <p>Harita kütüphanesi Leaflet (BSD-2-Clause). Günümüz altlığı © OpenStreetMap contributors (ODbL). Özgün harita görseli Wikimedia Commons kopyasıdır (PD-old etiketli, düşük çözünürlüklü). Türkçe etiketli yeniden çizimi proje ekibi sağlamıştır; çizeni, kaynağı ve lisansı henüz doğrulanmamıştır.</p>
+    <div class="dialog__actions">
+      <button type="button" class="btn" id="btn-clear-local">Bu cihazdaki kayıtlı verilerimi sil</button>
+      <button type="button" class="btn btn--primary" data-close-dialog>Kapat</button>
+    </div>
+    <p id="clear-feedback" class="hint" role="status"></p>
+  </dialog>
+
+  <noscript><p class="banner banner--status">Bu uygulama JavaScript gerektirir.</p></noscript>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+import { JSDOM } from 'jsdom';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildSync } from 'esbuild';
+
+/**
+ * Logic smoke test: bundles the app, runs it in jsdom and exercises boot, filters, search,
+ * info card, layers, sources and quiz. It does NOT check visual rendering or real map tiles;
+ * test those in a real browser (see README).
+ */
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const bundle = buildSync({ entryPoints: [path.join(ROOT, 'js/main.js')], bundle: true, format: 'iife', write: false, logLevel: 'warning' }).outputFiles[0].text;
+const html = readFileSync(path.join(ROOT, 'index.html'), 'utf8').replace(/<script[\s\S]*?<\/script>/g, '');
+const dom = new JSDOM(html, { url: 'http://localhost:8000/', runScripts: 'outside-only', pretendToBeVisual: true });
+const { window } = dom;
+
+let failures = 0;
+const check = (name, cond, extra = '') => {
+  console.log(`${cond ? 'PASS' : 'FAIL'}  ${name}${extra ? '  ' + extra : ''}`);
+  if (!cond) failures += 1;
+};
+
+// jsdom gaps
+window.matchMedia = (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} });
+window.HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+window.HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); this.dispatchEvent(new window.Event('close')); };
+window.Element.prototype.scrollIntoView = function () {};
+window.fetch = async (url) => {
+  const body = readFileSync(path.join(ROOT, url), 'utf8');
+  return { ok: true, status: 200, json: async () => JSON.parse(body) };
+};
+const errors = [];
+window.addEventListener('error', (e) => errors.push(e.message));
+
+window.eval(readFileSync(path.join(ROOT, 'vendor/leaflet/leaflet.js'), 'utf8'));
+window.eval(bundle);
+await new Promise((r) => setTimeout(r, 400));
+
+const $ = (id) => window.document.getElementById(id);
+const app = window.__dlt;
+check('app booted without script errors', !!app && errors.length === 0, errors.join(' | '));
+if (!app) process.exit(1);
+
+check('3 demo records loaded', app.state.records.length === 3);
+check('demo banner visible', $('demo-banner').hidden === false);
+check('intro shows school, advisor and student', !!$('intro') && ['Maltepe Fen Lisesi', 'Sevil Orhan', 'Yunus Emir OKUMUŞ', 'yeni nesil için'].every((t) => $('intro').textContent.includes(t)));
+check('cover waits for the intro', !$('dlg-welcome').hasAttribute('open'));
+$('intro-skip').click();
+await new Promise((r) => setTimeout(r, 900));
+check('intro removed after skip', $('intro') === null);
+check('cover opened after intro', $('dlg-welcome').hasAttribute('open'));
+check('page not inert after intro', !window.document.querySelector('[inert]'));
+// Turkish-labelled redraw as the default base: record markers are hidden until the original image is shown
+check('redraw is the default base of the schematic pane', app.views.schematic.base === 'redraw' && $('base-redraw').getAttribute('aria-pressed') === 'true');
+check('pane title names the redraw', $('schematic-title').textContent.includes('Türkçe etiketli'));
+check('redraw credit says its source is unverified', $('map-credit').textContent.includes('doğrulanmadı'));
+check('record markers are not drawn on the redraw', Object.values(app.views.schematic.groups).every((g) => !app.views.schematic.map.hasLayer(g)));
+check('Leaflet attribution control is not added to the schematic map', !window.document.querySelector('#map-schematic .leaflet-control-attribution'));
+check('modern map shows the OSM credit without the Leaflet prefix', (() => { const a = window.document.querySelector('#map-modern .leaflet-control-attribution'); return !!a && a.textContent.includes('OpenStreetMap') && !a.textContent.includes('Leaflet'); })());
+
+// explanation cards: hit testing by label, shape, colour class and fallbacks
+const ex = app.explainer;
+const at = (x, y) => ex.hitTest(x, y, 4);
+const K = 1746 / 1100;
+check('explainer has annotations and classes', !!ex && ex.annotations.length > 100 && Object.keys(ex.classes).length >= 9);
+check('hovering "Balasagun" explains Balasagun with sources', (() => { const r = at(550 * K, 549 * K); return r.title === 'Balasagun' && r.status === 'sourced' && r.sources.length >= 3; })());
+check('a label without a source is marked label-only', (() => { const r = at(558 * K, 241 * K); return r.title === 'Canbalık' && r.status === 'label-only' && r.sources.length === 0; })());
+check('a polygon area (rotated text) is hit', at(770 * K, 250 * K).title === 'Başaklarla kaplı diyar');
+check('a shape beats the colour under it (Işık Göl)', at(600 * K, 512 * K).title.startsWith('Işık Göl'));
+check('the outer ring is explained by distance from the centre', at(60, 850).title.includes('Dış halka'));
+check('far outside the circle is explained', at(5, 5).title === 'Dairenin dışı');
+check('empty ground still gets a card', at(560 * K, 440 * K).title === 'Boş zemin');
+check('a modern equivalent is attached where researched', at(560 * K, 100 * K).title === 'Cabarka');
+check('every card has text and a status', ex.annotations.every((a) => a.paragraphs.length > 0 || a.status === 'label-only'));
+
+// the card renders without innerHTML, shows the no-source note, and the list dialog reads the same data
+ex.focusAnnotation('canbalik');
+const xcard = window.document.querySelector('.xcard');
+check('pinned card is shown', xcard && !xcard.hidden && xcard.classList.contains('is-pinned'));
+check('label-only card says the source search is ongoing', xcard.textContent.includes('kaynak taraması sürüyor'));
+check('card has a close button', !!xcard.querySelector('button[aria-label="Açıklama kartını kapat"]'));
+ex.focusAnnotation('balasagun');
+check('card of a sourced label lists sources as buttons', window.document.querySelectorAll('.xcard .xcard__sources button').length >= 3);
+check('card shows the researched modern equivalent', window.document.querySelector('.xcard').textContent.includes('Günümüzdeki karşılığı'));
+ex.hide();
+check('closing a pinned card hides it', window.document.querySelector('.xcard').hidden === true);
+check('labels dialog lists every card', $('labels-body').querySelectorAll('details').length >= 100);
+$('labels-search').value = 'hazar';
+$('labels-search').dispatchEvent(new window.Event('input'));
+check('labels dialog search narrows the list', $('labels-body').querySelectorAll('details').length >= 1 && $('labels-body').querySelectorAll('details').length < 30);
+$('labels-search').value = '';
+$('labels-search').dispatchEvent(new window.Event('input'));
+
+// top bar menus
+const menus = [...window.document.querySelectorAll('[data-menu]')];
+check('top bar has four grouped menus', menus.length === 4);
+const learn = $('menu-learn-btn');
+learn.click();
+check('a menu trigger opens its panel', !$('menu-learn').hidden && learn.getAttribute('aria-expanded') === 'true');
+$('menu-practice-btn').click();
+check('opening another menu closes the first', $('menu-learn').hidden === true && !$('menu-practice').hidden);
+$('menu-practice').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+check('Escape closes an open menu', $('menu-practice').hidden === true);
+$('menu-learn-btn').click();
+$('btn-labels').click();
+check('a menu item opens its dialog and closes the menu', $('dlg-labels').hasAttribute('open') && $('menu-learn').hidden === true);
+$('dlg-labels').close();
+check('menu items have a purpose line', [...window.document.querySelectorAll('.menu__item')].every((b) => b.querySelector('.menu__desc')?.textContent.length > 15));
+$('menu-view-btn').click();
+$('btn-text-larger').click();
+check('settings stay open while adjusting text size', $('menu-view').hidden === false);
+$('btn-text-smaller').click();
+$('menu-view-btn').click();
+
+// switching base
+$('base-original').click();
+check('original base shows record markers again', app.views.schematic.base === 'original' && Object.values(app.views.schematic.groups).every((g) => app.views.schematic.map.hasLayer(g)));
+check('the choice is remembered locally', JSON.parse(window.localStorage.getItem('dlt:schematicBase')) === 'original');
+$('base-redraw').click();
+check('switching back works', app.views.schematic.base === 'redraw');
+check('default categories listed (3 results)', $('results').children.length === 3);
+check('route filter disabled (no route records)', $('cat-route').disabled === true);
+
+// markers per view
+check('schematic view has 3 markers', app.views.schematic.entries.size === 3);
+check('modern view has 2 markers (demo-001 has no lat/lng)', app.views.modern.entries.size === 2 && !app.views.modern.has('demo-001'));
+check('uncertainty areas drawn for approximate + disputed', [...app.views.modern.entries.values()].filter((e) => e.area).length === 2);
+
+// search: diacritics and Turkish letters fold together
+const search = (q) => { $('search-input').value = q; $('search-input').dispatchEvent(new window.Event('input')); };
+search('ornek dag');
+check('search "ornek dag" finds Örnek Dağ C', $('results').children.length === 1 && $('results').textContent.includes('Dağ C'));
+search('TOPLULUK B');
+check('search is case-insensitive', $('results').children.length === 1);
+search('yok boyle bir sey');
+check('empty result message shown', $('results-empty').hidden === false && $('search-count').textContent.includes('bulunamadı'));
+search('');
+
+// category filter
+const geo = $('cat-geography');
+geo.checked = false; geo.dispatchEvent(new window.Event('change'));
+check('hiding geography leaves 2 results', $('results').children.length === 2);
+geo.checked = true; geo.dispatchEvent(new window.Event('change'));
+check('showing geography again restores 3', $('results').children.length === 3);
+
+// selection and info card (selecting a record switches the pane to the original image)
+$('results').querySelector('button').click();
+check('clicking a result opens the info card', $('info-card').hidden === false);
+check('selecting a record switches the pane to the original image', app.views.schematic.base === 'original');
+check('card shows demo warning', $('info-card').textContent.includes('Örnek içerik'));
+check('card says no modern marker for demo-001', $('info-card').textContent.includes('günümüz haritasında işaretlenmemiştir'));
+check('progress counts the viewed record', $('progress').textContent.includes('1 / 3'));
+app.selectRecord('demo-002');
+check('approximate record card explains uncertainty radius', $('info-card').textContent.includes('250 km'));
+check('selected marker has highlight class (modern)', !!window.document.querySelector('#map-modern .mk.is-selected'));
+app.closeCard();
+check('closing card hides it', $('info-card').hidden === true);
+
+// layers
+$('layer-modern').checked = false; $('layer-modern').dispatchEvent(new window.Event('change'));
+check('unchecking modern hides its pane', $('pane-modern').hidden === true && $('maps').dataset.mode === 'schematic');
+$('layer-original').checked = false; $('layer-original').dispatchEvent(new window.Event('change'));
+check('last visible map cannot be switched off', $('layer-original').checked === true);
+
+// sources + legend
+check('sources dialog lists 10 sources', $('sources-body').querySelectorAll('.source').length === 10);
+check('unverified citations are flagged', $('sources-body').textContent.includes('Künye doğrulanacak'));
+check('legend lists 4 location types', window.document.querySelector('[data-legend]').querySelectorAll('.legend-list')[0].children.length === 4);
+
+// quiz flow: answer all correctly
+$('btn-quiz').click();
+const answers = ['b', 'a', 'c', 'a', 'f', 'f', 't'];
+for (let i = 0; i < answers.length; i += 1) {
+  const q = $('quiz-body');
+  q.querySelector(`input[value="${answers[i]}"]`).checked = true;
+  q.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+  check(`quiz q${i + 1} marks correct`, q.querySelector('.is-correct') !== null && q.textContent.includes('Doğru.'));
+  q.querySelector('button.btn--primary:not([hidden])').click();
+}
+check('quiz summary shows 7 / 7', $('quiz-body').textContent.includes('7 / 7 doğru'));
+const stored = JSON.parse(window.localStorage.getItem('dlt:quizResult'));
+check('quiz result stored locally without personal fields', stored && Object.keys(stored).sort().join() === 'date,quizId,score,total');
+
+// glossary
+check('glossary lists terms', $('glossary-body').querySelectorAll('dt').length >= 10);
+
+// find-it activity: wrong then right answer on the first task
+$('btn-activity').click();
+check('activity bar visible', $('activity-bar').hidden === false);
+const prompt1 = $('activity-bar').querySelector('[data-activity-prompt]').textContent;
+check('activity first task is shown', prompt1.startsWith('Görev 1 /'));
+const dlt = window.__dlt;
+dlt.selectRecord('demo-003'); // disputed record, not a precise one
+const fb = $('activity-bar').querySelector('[data-activity-feedback]');
+const firstIsPrecise = prompt1.includes('kesin');
+check('activity judges a pick', fb.textContent.length > 0);
+if (firstIsPrecise) check('wrong pick is not accepted', fb.textContent.includes('Tekrar dene'));
+$('activity-bar').querySelector('[data-activity-stop]').click();
+check('activity can be closed', $('activity-bar').hidden === true);
+
+// modern equivalents section
+check('equivalents table has rows', $('where-body').querySelectorAll('tbody tr').length >= 10);
+check('equivalents never claim certainty in the intro', $('where-body').textContent.includes('tek ve kesin bir cevap yoktur'));
+
+// classroom mode
+$('btn-present').click();
+check('classroom mode toggles body class', window.document.body.classList.contains('presenting'));
+window.document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'n', bubbles: true }));
+check('classroom mode steps to a record', window.__dlt.state.selectedId !== null);
+$('btn-present').click();
+check('classroom mode can be turned off', !window.document.body.classList.contains('presenting'));
+
+// research instruments (draft): consent gate, code check, pre-test, CSV
+$('btn-research-test').click();
+const rb = $('research-body');
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+check('consent is required before the test', rb.textContent.includes('onay kutusunu'));
+rb.querySelector('#rs-consent').checked = true;
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+rb.querySelector('#rs-code').value = 'Ali Veli'; // contains a space, looks like a name
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+check('a code that looks like a name is rejected', rb.textContent.includes('yalnızca harf ve rakam'));
+rb.querySelector('#rs-code').value = 'K7M2Q';
+rb.querySelector('#rs-phase').value = 'pre';
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+check('incomplete pre-test is not saved', rb.textContent.includes('tüm soruları'));
+['a1','a2','a3','a4','a5'].forEach((id) => { rb.querySelector(`input[name="${id}"][value="b"]`).checked = true; });
+rb.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+const rec = JSON.parse(window.localStorage.getItem('dlt:researchRecords'));
+check('pre-test saved locally with code only', rec.length === 1 && rec[0].code === 'K7M2Q' && rec[0].score === 5 && !('name' in rec[0]));
+const { recordsToCsv } = await import(path.join(ROOT, 'js/research.js'));
+const csv = recordsToCsv(rec, JSON.parse(readFileSync(path.join(ROOT, 'data/research-instruments.json'), 'utf8')));
+check('csv has header and one row', csv.split('\n').length === 2 && csv.startsWith('code,phase,date,score'));
+
+// clear local data
+$('btn-clear-local').click();
+check('clear button removes all dlt: keys', Object.keys(window.localStorage).filter((k) => k.startsWith('dlt:')).length === 0);
+
+// no innerHTML of record text: a hostile name must stay text
+app.state.records[0].historical_name = '<img src=x onerror=alert(1)>';
+app.selectRecord('demo-001');
+check('record text is not parsed as HTML', $('info-card').querySelector('img') === null);
+
+console.log(failures ? `\n${failures} check(s) FAILED` : '\nAll checks passed');
+process.exit(failures ? 1 : 0);
