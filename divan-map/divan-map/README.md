@@ -5,7 +5,7 @@ Interactive map prototype for the TÜBİTAK 2204-A research project
 Öğrencilerin Tarihî Harita Okuryazarlığına Katkısı".
 
 **Status:** prototype. It contains only clearly labelled *demo* records (`is_demo: true`).
-No real historical data, no original map image and no verified bibliography are included yet.
+No real historical place records and no verified bibliography are included yet. The original map image (Wikimedia Commons, public domain) is included and is kept separate from the modern base map.
 
 ## Run it
 
@@ -69,3 +69,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 ## Not in this version
 
 Real historical records and the research instruments (pre/post test, usability survey).
+
+## Opening animation
+
+`index.html` (`#intro`), `css/styles.css` (opening animation block) and `js/intro.js` show the school logo, school name, project title, advisor and student before the cover. It can be skipped (button, click, Esc/Enter/Space), closes by itself after about 10 seconds, and is shown without movement when the visitor prefers reduced motion. The logo is `assets/school-logo.jpg`.

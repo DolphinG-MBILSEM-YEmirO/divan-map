@@ -11,6 +11,7 @@ import { createResearch } from './research.js';
 import { clearAllLocal, readLocal, writeLocal } from './storage.js';
 import { normalizeText, el } from './text.js';
 import { renderCategoryFilters, renderInfoCard, renderEquivalents, renderGlossary, renderLegend, renderResults, renderSources } from './ui.js';
+import { playIntro } from './intro.js';
 
 const TEXT_SCALES = [100, 115, 130, 150];
 const NARROW_QUERY = window.matchMedia('(max-width: 860px)');
@@ -64,6 +65,7 @@ function showStatus(message) {
 }
 
 function showFatal(message) {
+  document.getElementById('intro')?.remove(); // never let the intro cover an error
   dom.layout.replaceChildren(el('p', { class: 'banner banner--status' }, message));
 }
 
@@ -440,6 +442,7 @@ async function boot() {
   applyLayout(); // fit the freshly created maps
   refresh();
 
+  await playIntro(); // opening animation, skippable
   openDialog('dlg-welcome'); // the cover is shown on every visit
 }
 

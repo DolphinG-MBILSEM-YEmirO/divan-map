@@ -44,7 +44,13 @@ if (!app) process.exit(1);
 
 check('3 demo records loaded', app.state.records.length === 3);
 check('demo banner visible', $('demo-banner').hidden === false);
-check('cover opened on load', $('dlg-welcome').hasAttribute('open'));
+check('intro shows school, advisor and student', !!$('intro') && ['Maltepe Fen Lisesi', 'Sevil Orhan', 'Yunus Emir OKUMUŞ', 'yeni nesil için'].every((t) => $('intro').textContent.includes(t)));
+check('cover waits for the intro', !$('dlg-welcome').hasAttribute('open'));
+$('intro-skip').click();
+await new Promise((r) => setTimeout(r, 900));
+check('intro removed after skip', $('intro') === null);
+check('cover opened after intro', $('dlg-welcome').hasAttribute('open'));
+check('page not inert after intro', !window.document.querySelector('[inert]'));
 check('default categories listed (3 results)', $('results').children.length === 3);
 check('route filter disabled (no route records)', $('cat-route').disabled === true);
 

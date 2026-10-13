@@ -9,6 +9,25 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <!-- Opening animation: school identity and project team. Skippable; shown before the cover. -->
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-school">
+    <div class="intro__stage">
+      <div class="intro__emblem">
+        <svg class="intro__ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" /></svg>
+        <img src="assets/school-logo.jpg" width="200" height="200" alt="Maltepe Fen Lisesi logosu">
+      </div>
+      <p class="intro__eyebrow">Araştırma projesi</p>
+      <h1 id="intro-school" class="intro__school">Maltepe Fen Lisesi</h1>
+      <div class="intro__rule" aria-hidden="true"></div>
+      <p class="intro__project">Dîvânu Lugâti’t-Türk Haritası’nın<br>Etkileşimli Dijital Ortama Aktarılması</p>
+      <dl class="intro__team">
+        <div><dt>Danışman</dt><dd>Sevil Orhan</dd></div>
+        <div><dt>Öğrenci</dt><dd>Yunus Emir OKUMUŞ</dd></div>
+      </dl>
+      <p class="intro__motto">Türk dilinin ilk büyük sözlüğünün haritasını,<br>yeni nesil için yeniden okunur kılıyoruz.</p>
+    </div>
+    <button type="button" id="intro-skip" class="intro__skip">Geç <span aria-hidden="true">›</span></button>
+  </div>
   <a class="skip-link" href="#maps">Haritaya geç</a>
 
   <header class="topbar">
