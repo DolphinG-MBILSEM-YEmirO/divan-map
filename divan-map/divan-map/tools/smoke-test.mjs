@@ -26,7 +26,17 @@ window.matchMedia = (q) => ({ matches: false, media: q, addEventListener() {}, r
 window.HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
 window.HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); this.dispatchEvent(new window.Event('close')); };
 window.Element.prototype.scrollIntoView = function () {};
-window.fetch = async (url) => {
+const apiCalls = [];
+let chatStatus = { available: false, codeRequired: false }; // what GET /api/chat reports
+let apiReply = { status: 200, body: { reply: 'Balasagun bölge olarak düşünülmelidir. Dayanak: Balasagun kartı.' } };
+window.fetch = async (url, options = {}) => {
+  if (String(url) === '/api/chat') {
+    if (options.method === 'POST') {
+      apiCalls.push({ url, options });
+      return { ok: apiReply.status === 200, status: apiReply.status, json: async () => apiReply.body };
+    }
+    return { ok: true, status: 200, json: async () => chatStatus };
+  }
   const body = readFileSync(path.join(ROOT, url), 'utf8');
   return { ok: true, status: 200, json: async () => JSON.parse(body) };
 };
@@ -112,6 +122,117 @@ $('btn-text-larger').click();
 check('settings stay open while adjusting text size', $('menu-view').hidden === false);
 $('btn-text-smaller').click();
 $('menu-view-btn').click();
+
+// the cover button is gone from the top bar (the cover still opens once per visit)
+check('top bar has no "Kapak" button', !window.document.querySelector('.topbar__nav').textContent.includes('Kapak'));
+
+// findings on the modern map
+const ml = app.modernLayer;
+check('modern layer draws 15 findings (8 water, 7 places)', !!ml && ml.entries.size === 15 && ml.count('water') === 8 && ml.count('place') === 7);
+check('unplaceable entries are listed with a reason, not drawn', ml.unplotted.length === 3 && !ml.has('w-ascan') && window.document.querySelector('.geo-legend').textContent.includes('Kaynaklar yeri belirleyemedi'));
+check('chips show the counts', $('geo-water-count').textContent === '(8)' && $('geo-place-count').textContent === '(7)');
+check('legend says the shapes are not borders', window.document.querySelector('.geo-legend').textContent.includes('Kesin sınır'));
+ml.focus('w-balasagun');
+const gcard = window.document.querySelector('.xcard--geo');
+check('focusing a finding pins its card', !gcard.hidden && gcard.classList.contains('is-pinned') && gcard.textContent.includes('Balasagun') && gcard.textContent.includes('Kırgızistan'));
+check('geo card repeats the status in words and says it is no border', gcard.textContent.includes('Kaynaklar aynı karşılığı veriyor') && gcard.textContent.includes('sınır ya da kesin konum değildir'));
+check('geo card links to the original map label', gcard.textContent.includes('Özgün haritada göster'));
+check('geo card lists sources', gcard.querySelectorAll('.xcard__sources button').length >= 1);
+ml.hideCard();
+check('closing the geo card hides it', gcard.hidden === true);
+$('geo-water').checked = false; $('geo-water').dispatchEvent(new window.Event('change'));
+check('the water group can be switched off', ![...ml.entries.values()].some((e) => e.feature.group === 'water' && e.layers.some((l) => app.views.modern.map.hasLayer(l))));
+$('geo-water').checked = true; $('geo-water').dispatchEvent(new window.Event('change'));
+check('and on again', [...ml.entries.values()].filter((e) => e.feature.group === 'water').every((e) => e.layers.every((l) => app.views.modern.map.hasLayer(l))));
+check('the findings table offers "Günümüz haritasında göster" for drawn entries only', $('where-body').querySelectorAll('.equiv-table__show').length === 15);
+
+// hovering a label of the original map outlines nothing on it but marks the linked finding on the modern map
+ex.focusAnnotation('balasagun');
+check('card of a label with a finding is outlined on the redraw', window.document.querySelectorAll('#map-schematic .xmark__shape').length >= 1);
+ex.hide();
+check('outline is removed with the card', window.document.querySelectorAll('#map-schematic .xmark__shape').length === 0);
+ex.markAnnotations(['balasagun']);
+check('linked outline can be drawn from the modern map', window.document.querySelectorAll('#map-schematic .xmark__shape--linked').length >= 1);
+ex.markAnnotations([]);
+
+// the AI assistant: opt-in, answered by the site's own /api/chat (no key anywhere in the page)
+const assistantModule = await import(path.join(ROOT, 'js/assistant.js'));
+const annotationData = JSON.parse(readFileSync(path.join(ROOT, 'data/map-annotations.json'), 'utf8'));
+const equivalentData = JSON.parse(readFileSync(path.join(ROOT, 'data/modern-equivalents.json'), 'utf8'));
+const sourceData = JSON.parse(readFileSync(path.join(ROOT, 'data/sources.json'), 'utf8'));
+const pack = assistantModule.buildContext({
+  question: "Balasagun nerede olabilir?",
+  annotations: annotationData.annotations,
+  classes: annotationData.classes,
+  equivalentsById: new Map(equivalentData.records.map((r) => [r.id, r])),
+  sourcesById: new Map(sourceData.sources.map((s) => [s.id, s])),
+});
+check('retrieval finds the Balasagun card and its sources', pack.used[0]?.id === 'balasagun' && pack.text.includes('KART: Balasagun') && pack.text.includes('Kaynaklar:'));
+check('retrieval stays small', pack.text.length < 9500);
+const emptyPack = assistantModule.buildContext({ question: 'xyzqw', annotations: annotationData.annotations, classes: annotationData.classes, equivalentsById: new Map(), sourcesById: new Map() });
+check('no match gives an honest empty pack', emptyPack.text.includes('bulunamadı') && emptyPack.used.length === 0);
+check('the page no longer builds the model instructions or handles a provider key', !('buildSystemPrompt' in assistantModule) && !('API_URL' in assistantModule) && !/x-api-key|anthropic/i.test(readFileSync(path.join(ROOT, 'js/assistant.js'), 'utf8').replace(/Anthropic/g, '').replace(/\/\*[\s\S]*?\*\//g, '')));
+check('request body limits history and question length', (() => {
+  const body = assistantModule.buildRequest({ history: Array.from({ length: 30 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'x' })), question: 'q'.repeat(900), context: 'c' });
+  return body.history.length === 12 && body.question.length === 500 && body.context === 'c' && Object.keys(body).sort().join() === 'context,history,question';
+})());
+check('error messages are plain Turkish for common results', [[401, 'bad_code'], [429, 'rate'], [403, 'origin'], [503, 'unavailable'], [503, 'busy'], [502], [400], [0]].every(([c, e]) => assistantModule.errorMessage(c, e).length > 15));
+
+check('assistant starts closed', $('assistant').hidden === true);
+$('btn-assistant').click();
+await new Promise((r) => setTimeout(r, 50));
+check('when the server says the assistant is off, the panel says so and offers no form', $('assistant').hidden === false && $('assistant-off').hidden === false && $('assistant-consent-row').hidden === true && $('assistant-save').parentElement.hidden === true && $('assistant-chat').hidden === true);
+$('assistant-close').click();
+
+chatStatus = { available: true, codeRequired: true };
+$('btn-assistant').click();
+await new Promise((r) => setTimeout(r, 50));
+check('menu item opens the assistant on the setup page once it is on', $('assistant-setup').hidden === false && $('assistant-consent-row').hidden === false && $('assistant-off').hidden === true && $('assistant-chat').hidden === true);
+check('setup page explains privacy and parent consent, and asks for no key', ['kişisel bilgi', 'velinden'].every((t) => $('assistant-setup').textContent.includes(t)) && !window.document.getElementById('assistant-key') && !/API anahtar/i.test($('assistant-setup').textContent));
+check('access code field is shown and is a password field', $('assistant-code').hidden === false && $('assistant-code').type === 'password' && $('assistant-code').getAttribute('autocomplete') === 'off');
+$('assistant-save').click();
+check('the code is required when the site asks for one', $('assistant-setup-msg').textContent.includes('erişim kodunu') && $('assistant-setup').hidden === false);
+$('assistant-code').value = 'sinif-kodu';
+$('assistant-save').click();
+check('consent is required before the first question', $('assistant-setup-msg').textContent.includes('işaretle') && $('assistant-setup').hidden === false);
+$('assistant-consent').checked = true;
+$('assistant-save').click();
+check('saving opens the chat and clears the code field', $('assistant-chat').hidden === false && $('assistant-code').value === '');
+check('the code is kept for this tab only', window.sessionStorage.getItem('dlt:assistant-code') === 'sinif-kodu' && window.localStorage.getItem('dlt:assistant-code') === null);
+$('assistant-input').value = 'Balasagun nerede olabilir?';
+$('assistant-form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+await new Promise((r) => setTimeout(r, 50));
+check('one call was made to the site\'s own endpoint with the access code', apiCalls.length === 1 && apiCalls[0].url === '/api/chat' && apiCalls[0].options.headers['x-access-code'] === 'sinif-kodu');
+const sent = JSON.parse(apiCalls[0].options.body);
+check('the call carries the question, history and the Balasagun card, and nothing else', sent.question === 'Balasagun nerede olabilir?' && Array.isArray(sent.history) && sent.context.includes('KART: Balasagun') && Object.keys(sent).sort().join() === 'context,history,question');
+check('no provider, model name or key is sent from the page', !/api\.anthropic|openai|x-api-key|authorization|sk-/i.test(JSON.stringify(apiCalls[0].options)));
+check('the reply is shown as text with related-card buttons', $('assistant-log').textContent.includes('bölge olarak düşünülmelidir') && $('assistant-log').querySelectorAll('.assistant__related button').length >= 1);
+$('assistant-log').querySelector('.assistant__related button').click();
+check('a related-card button opens that card on the map', window.document.querySelector('.xcard:not(.xcard--geo)').classList.contains('is-pinned'));
+ex.hide();
+apiReply = { status: 401, body: { error: 'bad_code' } };
+$('assistant-input').value = 'Bir soru daha';
+$('assistant-form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+await new Promise((r) => setTimeout(r, 50));
+check('a wrong code shows a friendly error, forgets the code and returns to setup', $('assistant-log').textContent.includes('Erişim kodu kabul edilmedi') && $('assistant-setup').hidden === false && window.sessionStorage.getItem('dlt:assistant-code') === null);
+apiReply = { status: 429, body: { error: 'rate' } };
+chatStatus = { available: true, codeRequired: false };
+$('assistant-close').click();
+$('btn-assistant').click();
+await new Promise((r) => setTimeout(r, 50));
+check('without a code requirement the saved consent opens the chat directly', $('assistant-chat').hidden === false && $('assistant-setup').hidden === true);
+$('assistant-input').value = 'Hazar nedir?';
+$('assistant-form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+await new Promise((r) => setTimeout(r, 50));
+check('no access-code header is sent when none is required', apiCalls.at(-1).options.headers['x-access-code'] === undefined);
+check('a rate limit shows a calm message', $('assistant-log').textContent.includes('Çok fazla soru'));
+window.sessionStorage.setItem('dlt:assistant-key', 'old-key');
+window.localStorage.setItem('dlt:assistant-key', 'old-key');
+$('assistant-forget').click();
+check('"delete" also wipes a key left by an earlier version', window.sessionStorage.getItem('dlt:assistant-key') === null && window.localStorage.getItem('dlt:assistant-key') === null);
+$('assistant-close').click();
+check('the assistant can be closed', $('assistant').hidden === true);
+apiReply = { status: 200, body: { reply: 'x' } };
 
 // switching base
 $('base-original').click();
