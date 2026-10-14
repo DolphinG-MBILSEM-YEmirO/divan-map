@@ -8,6 +8,7 @@
   <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body>
   <!-- Opening animation: school identity and project team. Skippable; shown before the cover. -->
@@ -102,6 +103,17 @@
 
   <main class="layout" id="layout">
     <aside id="sidebar" class="sidebar" aria-label="Arama, haritalar ve kayıtlar">
+      <div class="sidebar__head">
+        <h2 class="sidebar__title">Arama ve kayıtlar</h2>
+        <button type="button" class="sidebar__toggle" id="btn-sidebar-collapse" aria-controls="sidebar-body" aria-expanded="true" aria-label="Paneli daralt" title="Paneli daralt"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg></button>
+      </div>
+      <nav class="sidebar__rail" id="sidebar-rail" aria-label="Panel kısayolları">
+        <button type="button" class="rail__btn" data-rail-target="search-input" aria-label="Ara" title="Ara"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        <button type="button" class="rail__btn" data-rail-target="layer-original" aria-label="Haritalar" title="Haritalar"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
+        <button type="button" class="rail__btn" data-rail-target="category-filters" aria-label="Kayıt türleri" title="Kayıt türleri"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+        <button type="button" class="rail__btn" data-rail-target="results" aria-label="Kayıtlar" title="Kayıtlar"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg><span class="rail__count" id="rail-count" aria-hidden="true"></span></button>
+      </nav>
+      <div class="sidebar__body" id="sidebar-body">
       <form id="search-form" class="panel panel--search" role="search">
         <label for="search-input" class="visually-hidden">Yer, boy veya coğrafi unsur ara</label>
         <div class="search-box">
@@ -114,8 +126,10 @@
 
       <fieldset class="panel panel--layers">
         <legend class="panel__title">Haritalar</legend>
-        <label class="switch"><input type="checkbox" id="layer-original" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__text"><strong>Özgün harita</strong><small>Türkçe etiketli çizim ve özgün görsel</small></span></label>
-        <label class="switch"><input type="checkbox" id="layer-modern" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__text"><strong>Günümüz haritası</strong><small>Altlık ve araştırmacıların karşılıkları</small></span></label>
+        <div class="layer-tiles">
+          <label class="switch"><input type="checkbox" id="layer-original" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__text"><strong>Özgün harita</strong><small>Çizim ve özgün görsel</small></span></label>
+          <label class="switch"><input type="checkbox" id="layer-modern" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__text"><strong>Günümüz haritası</strong><small>Altlık ve karşılıklar</small></span></label>
+        </div>
         <details class="panel__help">
           <summary>İki haritayı birlikte okumak</summary>
           <p class="hint">İkisi birlikte açıkken yan yana görünür. Özgün harita ile günümüz haritası birbirine karıştırılmamalıdır: günümüz haritasındaki şekiller yalnızca araştırmacıların önerdiği karşılıkların yaklaşık yeridir. Özgün harita bölmesinde Türkçe etiketli çizim ile özgün görsel arasında geçiş yapabilirsin.</p>
@@ -140,6 +154,7 @@
         </div>
         <button type="button" class="btn btn--tool-light" id="btn-reset-view" aria-label="Başlangıç görünümüne dön" data-tip="Başlangıç görünümü"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg></button>
       </section>
+      </div>
     </aside>
 
     <section id="maps" class="maps" data-mode="both" aria-label="Harita alanı">
@@ -364,5 +379,6 @@
 
   <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/sidebar.js"></script>
 </body>
 </html>
