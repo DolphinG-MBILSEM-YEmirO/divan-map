@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, tests the assistant's server logic, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic and the side panel, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -40,6 +40,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/cardparts.js` | Parts shared by the cards of both maps: source list and the placement beside the pointer |
 | `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
 | `js/assistant.js` | Opt-in AI assistant panel (picks the matching cards, calls `/api/chat`; holds no key) |
+| `js/sidebar.js`, `css/sidebar.css` | Collapsible side panel: folds into a slim rail of shortcuts (desktop), remembered on this device; the maps refit while it moves |
 | `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
 | `vercel.json` | Function settings (answer time limit) |
 | `js/ui.js` | Rendering of results, filters, info card, legend, sources |
@@ -49,7 +50,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator, proxy test and smoke test |
+| `tools/` | Data validator, proxy test, side panel test and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -72,6 +73,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 - Keyboard only: Tab reaches search, filters, list, markers; Enter opens a card; Esc closes it.
 - Turn the network off: a message explains that the modern base map cannot load.
 - Text size buttons and the high-contrast toggle work and are remembered after reload.
+- Side panel: the « button folds it into a rail and both maps grow to fill the space; the rail's icons reopen the panel at search, maps, record types or records; the choice survives a reload. On a phone the panel is still the drawer opened by the layers button.
 
 ## Not in this version
 
