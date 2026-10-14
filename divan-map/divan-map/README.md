@@ -9,7 +9,7 @@ No real historical place records and no verified bibliography are included yet. 
 
 ## Run it
 
-The app is plain HTML, CSS and ES modules. There is no build step and no account or API key.
+The app is plain HTML, CSS and ES modules. There is no build step. The map needs no account or key; only the optional AI assistant needs a server-side key (see "AI assistant").
 Browsers block ES modules and `fetch` on `file://`, so serve the folder:
 
 ```bash
@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -39,7 +39,9 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/labels-list.js` | "Haritadaki yazılar" dialog: every card as a searchable list |
 | `js/cardparts.js` | Parts shared by the cards of both maps: source list and the placement beside the pointer |
 | `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
-| `js/assistant.js` | Opt-in AI assistant (own API key, answers from the site's cards) |
+| `js/assistant.js` | Opt-in AI assistant panel (picks the matching cards, calls `/api/chat`; holds no key) |
+| `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
+| `vercel.json` | Function settings (answer time limit) |
 | `js/ui.js` | Rendering of results, filters, info card, legend, sources |
 | `js/quiz.js` | Mini quiz (multiple choice and true/false) |
 | `js/activity.js` | "Find it on the map" activity |
@@ -47,7 +49,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator and smoke test |
+| `tools/` | Data validator, proxy test and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -135,14 +137,40 @@ atlas or GIS source before they are quoted in a report. Hovering a card on one m
 
 ## AI assistant
 
-The "Asistan" button opens a panel. There is no server of ours: the visitor types **their own** Anthropic API key
-into the panel and the browser calls `https://api.anthropic.com/v1/messages` directly. Never put a key in the code.
+The "Asistan" button opens a panel. The page **never contains or asks for an API key**. It sends the question, the recent
+chat and the matching card texts to this site's own endpoint, `/api/chat` (`api/chat.js`, logic in `api/_proxy.js`), which
+adds the provider key and the fixed instructions and forwards the call. The key exists only as an environment variable on
+the server, so nobody who inspects the page, its code or its network calls can read it.
 
-- The key is kept in `sessionStorage` (this tab). Only if the visitor ticks "remember" it is also kept in `localStorage`.
-  "Anahtarı sil" and "Bu cihazdaki kayıtlı verilerimi sil" remove it.
-- Before each question the best-matching cards, equivalents and sources are picked locally (`buildContext`) and sent as
-  the only material the model may use. The system prompt forbids inventing facts, stating certainty and made-up page numbers.
-- The panel states what is sent, that it can cost money and that under-18 users need parent or teacher consent.
-- Answers are shown as plain text. They can still be wrong; the panel says so and offers buttons to open the cards used.
-- If the school prefers a hidden key, build a small server function (for example on Vercel) that holds the key in an
-  environment variable, limits requests per visitor and forwards the question; then point `API_URL` in `js/assistant.js` to it.
+### Switching it on (Vercel)
+
+In the Vercel project: *Settings → Environment Variables*, then redeploy (a change is applied only to new deployments).
+Type the key yourself in the dashboard; never put it in the code, in a commit or in a chat.
+
+| Variable | Needed | Meaning |
+|---|---|---|
+| `AI_API_KEY` | yes | The provider's key. |
+| `AI_MODEL` | yes | Model name exactly as the provider spells it. |
+| `AI_BASE_URL` | no | Default `https://api.openai.com/v1`. Any provider with an OpenAI-compatible `/chat/completions` works; the address must be `https://`. |
+| `AI_MAX_TOKENS_PARAM` | no | Name of the answer-length field, default `max_tokens` (some models need `max_completion_tokens`). |
+| `AI_ACCESS_CODE` | no | If set, visitors must type this code once per tab. Give it to students and teachers only. |
+| `AI_ALLOWED_ORIGINS` | no | Extra allowed hosts, comma separated (the site's own host is always allowed). |
+| `AI_IP_LIMIT` | no | Questions per visitor per 10 minutes, default 20. |
+| `AI_DAILY_LIMIT` | no | Questions per day for the whole site, default 400. |
+
+Until `AI_API_KEY` and `AI_MODEL` are set, the panel says the assistant is off and the rest of the site works as before.
+Locally (`npm run serve`) there is no `/api/chat`, so the assistant is off there too.
+
+### Safety notes
+
+- Also set a **spending limit** in the provider's account. The in-memory limits are per server instance and only slow abuse down.
+- The endpoint accepts only the site's own origin, only `{question, history, context}`, bounded sizes, and ignores any
+  instruction from the browser: the model's instructions are fixed in `api/_proxy.js`. Provider error messages (which can name
+  the key or the account) are never sent to the browser.
+- Before every question the best-matching cards, equivalents and sources are picked in the browser (`buildContext`) and sent as
+  the only material the model may use. The instructions forbid inventing facts, stating certainty and made-up page numbers.
+- The panel states what is sent and that under-18 users need parent or teacher approval. The site does not store questions;
+  the provider's own retention rules apply, so check them before use. Only the consent tick (and, if a code is required,
+  the code for this tab) is kept on the visitor's device; "Bu cihazdaki kayıtlı verilerimi sil" removes them.
+- Answers are shown as plain text. They can still be wrong; the panel offers buttons to open the cards used.
+- `npm test` includes `tools/proxy-test.mjs`, which runs the server logic against a fake provider (no network, no key).
