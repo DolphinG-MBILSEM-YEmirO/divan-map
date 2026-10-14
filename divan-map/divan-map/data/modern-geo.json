@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "title": "Günümüz haritasında araştırmacıların önerdiği karşılıklar",
+  "notice": "Bu dosya, data/modern-equivalents.json içindeki karşılıkların günümüz haritasında yaklaşık nerede durduğunu gösterir. Eşleştirmenin kendisi kaynaklara aittir; buradaki çizimler yalnızca bugünkü yerin kabaca konumudur. Çizimler sınır ya da kesin konum değildir ve eski haritanın kendisini doğrulamaz.",
+  "geometryNote": "Merkez koordinatları Vikipedi sayfalarından alınıp yuvarlanmıştır; çerçeveler ve çizgiler bilinen kıyı ve şehir konumlarından elle yuvarlanmış kaba çizimlerdir. Kesin sınır veya nehir yatağı olarak okunmamalıdır.",
+  "groups": {
+    "water": "Deniz, göl ve akarsular",
+    "place": "Yerler, bölgeler ve ülkeler"
+  },
+  "features": [
+    {
+      "equivalentId": "w-hazar",
+      "group": "water",
+      "label": "Hazar Denizi",
+      "geometry": { "type": "box", "bounds": [[36.5, 46.7], [47.1, 54.8]] },
+      "geometryNote": "Yaklaşık çerçeve; kıyı çizgisi değildir. Vikipedi merkezi 42,0°K 50,5°D."
+    },
+    {
+      "equivalentId": "w-aral",
+      "group": "water",
+      "label": "Aral Gölü",
+      "geometry": { "type": "box", "bounds": [[43.4, 58.0], [46.8, 61.8]] },
+      "geometryNote": "Yaklaşık çerçeve, göl küçülmeden önceki konumu gösterir; kıyı çizgisi değildir. Vikipedi merkezi 45,0°K 60,0°D."
+    },
+    {
+      "equivalentId": "w-balkas",
+      "group": "water",
+      "label": "Balkaş Gölü",
+      "geometry": { "type": "box", "bounds": [[44.9, 73.3], [46.9, 79.3]] },
+      "geometryNote": "Yaklaşık çerçeve; kıyı çizgisi değildir. Vikipedi merkezi 46,17°K 74,33°D."
+    },
+    {
+      "equivalentId": "w-isik",
+      "group": "water",
+      "label": "Issık-Göl",
+      "geometry": { "type": "box", "bounds": [[42.15, 76.17], [42.68, 78.33]] },
+      "geometryNote": "Yaklaşık çerçeve (uzunluk yaklaşık 178 km, genişlik yaklaşık 60 km); kıyı çizgisi değildir. Vikipedi merkezi 42,42°K 77,25°D."
+    },
+    {
+      "equivalentId": "w-itil",
+      "group": "water",
+      "label": "Volga Nehri",
+      "geometry": {
+        "type": "line",
+        "points": [[56.86, 35.9], [56.33, 44.0], [55.79, 49.12], [53.2, 50.15], [51.53, 46.03], [48.71, 44.51], [46.35, 48.04]]
+      },
+      "geometryNote": "Tver, Nijni Novgorod, Kazan, Samara, Saratov, Volgograd ve Astrahan'ı birleştiren kaba çizgi; nehrin gerçek yatağı değildir."
+    },
+    {
+      "equivalentId": "w-ila",
+      "group": "water",
+      "label": "İli Nehri",
+      "geometry": { "type": "line", "points": [[43.91, 81.33], [43.88, 77.07], [45.8, 74.1]] },
+      "geometryNote": "Yining, Kapçagay ve Balkaş Gölü'ndeki ağız bölgesini birleştiren kaba çizgi; nehrin gerçek yatağı değildir."
+    },
+    {
+      "equivalentId": "w-seyhun",
+      "group": "water",
+      "label": "Siriderya ve Amuderya",
+      "geometry": {
+        "type": "lines",
+        "lines": [
+          [[41.0, 71.67], [40.28, 69.62], [44.85, 65.51], [45.76, 62.11], [46.0, 61.0]],
+          [[37.22, 67.28], [39.07, 63.58], [42.46, 59.61], [43.77, 59.02]]
+        ]
+      },
+      "geometryNote": "Siriderya: Namangan, Hocend, Kızılorda, Kazalı. Amuderya: Termez, Türkmenabat, Nukus, Muynak. İki kaba çizgi; nehir yatakları değildir. Kaynak, İndüs'ün haritada hatalı olarak Seyhun diye anıldığını da belirtir; o yer burada gösterilmez."
+    },
+    {
+      "equivalentId": "w-bengal",
+      "group": "water",
+      "label": "Bengal Körfezi",
+      "geometry": { "type": "circle", "center": [15.0, 89.0], "radius_km": 700 },
+      "geometryNote": "Çok geniş yaklaşık alan; körfezin sınırı değildir."
+    },
+    {
+      "equivalentId": "w-balasagun",
+      "group": "place",
+      "label": "Balasagun (Burana Kulesi çevresi)",
+      "geometry": { "type": "circle", "center": [42.747, 75.249], "radius_km": 30 },
+      "geometryNote": "Burana Kulesi'nin Vikipedi koordinatı (42,747°K 75,249°D) merkez alınmıştır; kaynaklar bölge konusunda birleşir, tam nokta için ayrıca kaynak gerekir."
+    },
+    {
+      "equivalentId": "w-bulgar",
+      "group": "place",
+      "label": "Volga Bulgarları bölgesi",
+      "geometry": { "type": "circle", "center": [54.98, 49.06], "radius_km": 150 },
+      "geometryNote": "Bolgar kentinin koordinatı (54,98°K 49,06°D) merkez alınmıştır; Volga Bulgarlarının yurdunu gösteren geniş, yaklaşık bir alandır."
+    },
+    {
+      "equivalentId": "w-besbalik",
+      "group": "place",
+      "label": "Urumçi çevresi",
+      "geometry": { "type": "circle", "center": [43.83, 87.6], "radius_km": 120 },
+      "geometryNote": "Urumçi kent merkezi merkez alınmıştır; kaynak “Urumçi çevresi” der, tam nokta bildirmez."
+    },
+    {
+      "equivalentId": "w-karacuk",
+      "group": "place",
+      "label": "Karatav çevresi (güney Kazakistan)",
+      "geometry": { "type": "circle", "center": [42.89, 69.98], "radius_km": 100 },
+      "geometryNote": "Karatav Dağları'nın en yüksek noktası (42,89°K 69,98°D) merkez alınmıştır; sıradağın tamamını göstermez. Yazar tartışmanın sürdüğünü belirtir."
+    },
+    {
+      "equivalentId": "w-halic",
+      "group": "place",
+      "label": "İstanbul çevresi",
+      "geometry": { "type": "circle", "center": [41.01, 28.98], "radius_km": 35 },
+      "geometryNote": "Yazar Marmara karşılığını “olası” diye sunar; Marmara Denizi bu çizimde gösterilmemiştir."
+    },
+    {
+      "equivalentId": "w-endulus",
+      "group": "place",
+      "label": "İber Yarımadası",
+      "geometry": { "type": "box", "bounds": [[36.0, -9.5], [43.8, 3.3]] },
+      "geometryNote": "Yarımadanın yaklaşık çerçevesi; Endülüs'ün tarihî sınırı değildir."
+    },
+    {
+      "equivalentId": "w-cabarka",
+      "group": "place",
+      "label": "Japonya (tartışmalı)",
+      "geometry": { "type": "box", "bounds": [[31.0, 129.7], [45.5, 145.8]] },
+      "geometryNote": "Japon adalarının yaklaşık çerçevesi. Ad eşleştirmesi araştırmacılar arasında tartışmalıdır; bu çizim eşleştirmeyi doğrulamaz."
+    }
+  ],
+  "notPlotted": {
+    "w-barsgan": "Kaynakların konum tarifi tek bir alana çevrilemedi.",
+    "w-ascan": "Kaynaklar yeri belirleyemedi.",
+    "w-inckend": "Kaynaklar yeri belirleyemedi."
+  }
+}
