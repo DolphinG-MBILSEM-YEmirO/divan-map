@@ -153,6 +153,7 @@ Type the key yourself in the dashboard; never put it in the code, in a commit or
 | `AI_MODEL` | yes | Model name exactly as the provider spells it. |
 | `AI_BASE_URL` | no | Default `https://api.openai.com/v1`. Any provider with an OpenAI-compatible `/chat/completions` works; the address must be `https://`. |
 | `AI_MAX_TOKENS_PARAM` | no | Name of the answer-length field, default `max_tokens` (some models need `max_completion_tokens`). |
+| `AI_EXTRA_BODY` | no | JSON object of extra provider fields. Example for NVIDIA reasoning models, so the answer is not used up by "thinking": `{"chat_template_kwargs":{"enable_thinking":false}}`. |
 | `AI_ACCESS_CODE` | no | If set, visitors must type this code once per tab. Give it to students and teachers only. |
 | `AI_ALLOWED_ORIGINS` | no | Extra allowed hosts, comma separated (the site's own host is always allowed). |
 | `AI_IP_LIMIT` | no | Questions per visitor per 10 minutes, default 20. |
