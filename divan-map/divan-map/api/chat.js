@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
   const result = await handleChat(
     { method: req.method, headers: req.headers, body: req.body, ip: forwarded || req.socket?.remoteAddress || 'unknown' },
-    { env: process.env, fetchImpl: fetch, limiter },
+    { env: process.env, fetchImpl: fetch, limiter, log: console.error },
   );
   res.setHeader('Cache-Control', 'no-store');
   res.status(result.status).json(result.json);
