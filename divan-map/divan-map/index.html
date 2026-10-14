@@ -174,7 +174,7 @@
     <aside id="info-card" class="info-card" aria-label="Kayıt bilgisi" hidden></aside>
   </main>
 
-  <!-- AI assistant: opt-in, bring-your-own API key, answers grounded in the cards and sources of this site -->
+  <!-- AI assistant: opt-in, answered by the site's own /api/chat (the provider key stays on the server), grounded in the cards and sources of this site -->
   <aside id="assistant" class="assistant" aria-label="Yapay zekâ asistanı" hidden>
     <header class="assistant__head">
       <div>
@@ -188,24 +188,19 @@
     </header>
 
     <section id="assistant-setup" class="assistant__setup" aria-label="Asistan ayarları">
-      <ul class="assistant__rules">
+      <p id="assistant-off" class="hint" role="status" hidden>Yapay zekâ asistanı şu an kapalı. Site yöneticisi açtığında burada çalışacak; haritanın geri kalanı etkilenmez.</p>
+      <ul id="assistant-rules" class="assistant__rules">
         <li>Asistan, yalnızca bu sitedeki kartlara, karşılıklara ve kaynaklara dayanarak yanıt vermeye yönlendirilir. Yine de yanılabilir; kartı ve kaynağı kontrol et.</li>
-        <li>Sorun ve ilgili kart metinleri Anthropic'in yapay zekâ hizmetine gönderilir. Ad, okul, telefon gibi kişisel bilgi yazma.</li>
-        <li>Anahtar bu sitenin değil, senin (veya velin ya da öğretmeninin) hesabına aittir; kullandıkça ücret doğabilir. Hesapta harcama sınırı koy. 18 yaşından küçüksen kullanmadan önce velinden veya öğretmeninden onay al.</li>
+        <li>Sorun ve ilgili kart metinleri, site yöneticisinin seçtiği yapay zekâ hizmetine gönderilir. Ad, okul, telefon gibi kişisel bilgi yazma. Site soruları kaydetmez.</li>
+        <li>18 yaşından küçüksen kullanmadan önce velinden veya öğretmeninden onay al.</li>
       </ul>
-      <label for="assistant-key" class="assistant__label">API anahtarı</label>
-      <input id="assistant-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-describedby="assistant-key-help">
-      <p id="assistant-key-help" class="hint">Anahtar bu sayfanın kodunda saklanmaz; yalnızca bu tarayıcıda durur ve yalnızca Anthropic'e gönderilir.</p>
-      <label for="assistant-model" class="assistant__label">Model</label>
-      <select id="assistant-model">
-        <option value="claude-haiku-5-5">Claude Haiku 5.5 (hızlı, ucuz)</option>
-        <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (daha ayrıntılı)</option>
-      </select>
-      <label class="assistant__check"><input type="checkbox" id="assistant-remember"> <span>Anahtarı bu cihazda hatırla (ortak veya okul bilgisayarında işaretleme)</span></label>
-      <label class="assistant__check"><input type="checkbox" id="assistant-consent"> <span>Sorularımın ve ilgili kart metinlerinin Anthropic'e gönderileceğini anladım.</span></label>
-      <div class="assistant__actions">
+      <label for="assistant-code" id="assistant-code-label" class="assistant__label" hidden>Erişim kodu</label>
+      <input id="assistant-code" type="password" autocomplete="off" spellcheck="false" aria-describedby="assistant-code-help" hidden>
+      <p id="assistant-code-help" class="hint" hidden>Kodu öğretmeninden veya site yöneticisinden al. Yalnızca bu sekmede durur.</p>
+      <label id="assistant-consent-row" class="assistant__check"><input type="checkbox" id="assistant-consent"> <span>Sorularımın ve ilgili kart metinlerinin yapay zekâ hizmetine gönderileceğini anladım.</span></label>
+      <div id="assistant-actions" class="assistant__actions">
         <button type="button" class="btn btn--primary" id="assistant-save">Kaydet ve başla</button>
-        <button type="button" class="btn" id="assistant-forget">Anahtarı sil</button>
+        <button type="button" class="btn" id="assistant-forget">Erişim kodunu sil</button>
       </div>
       <p id="assistant-setup-msg" class="hint" role="status"></p>
     </section>
@@ -352,7 +347,7 @@
     <ul>
       <li>Hesap gerekmez. Ad, e-posta veya benzeri kişisel bilgi istenmez.</li>
       <li>Keşfettiğin kayıtlar, test sonucun ve görünüm ayarların yalnızca bu cihazın tarayıcısında saklanır; hiçbir yere gönderilmez.</li>
-      <li>Yapay zekâ asistanı isteğe bağlıdır ve varsayılan olarak kapalıdır. Kullanırsan, yazdığın soru ve ilgili kart metinleri senin API anahtarınla Anthropic'e gönderilir; site bunları kaydetmez. Anahtar yalnızca bu tarayıcıda durur.</li>
+      <li>Yapay zekâ asistanı isteğe bağlıdır ve varsayılan olarak kapalıdır. Kullanırsan, yazdığın soru ve ilgili kart metinleri sitenin sunucusu üzerinden yapay zekâ hizmetine gönderilir; site bunları kaydetmez. Sitede senin gireceğin bir anahtar yoktur.</li>
       <li>Günümüz altlığı açıkken harita karoları OpenStreetMap sunucularından yüklenir. Bu sırada IP adresin o sunucuya iletilir.</li>
       <li>Bu sürümde analitik veya izleme aracı yoktur.</li>
     </ul>
