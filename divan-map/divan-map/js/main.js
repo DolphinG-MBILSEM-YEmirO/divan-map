@@ -14,6 +14,8 @@ import { renderCategoryFilters, renderInfoCard, renderEquivalents, renderGlossar
 import { playIntro } from './intro.js';
 import { createExplainer } from './explain.js';
 import { renderLabelsList } from './labels-list.js';
+import { createModernLayer } from './modern-layer.js';
+import { createAssistant, forgetStoredKey } from './assistant.js';
 
 const TEXT_SCALES = [100, 115, 130, 150];
 const NARROW_QUERY = window.matchMedia('(max-width: 860px)');
@@ -58,6 +60,9 @@ const state = {
 const views = {};
 let activity = null;
 let explainer = null;
+let modernLayer = null;
+let assistant = null;
+let lastAnnotationId = null; // the card the visitor looked at last (context for the assistant)
 const shownOnce = new Set();
 
 // ------------------------------------------------------------------ messages
@@ -91,6 +96,7 @@ function refresh() {
 
   renderResults(dom.results, visible, { selectedId: state.selectedId, onPick: (id, trigger) => selectRecord(id, { focus: true, trigger }) });
   dom.resultsEmpty.hidden = visible.length > 0;
+  $('results-count').textContent = `(${visible.length})`;
   dom.searchCount.textContent = state.query
     ? visible.length
       ? `${visible.length} kayıt bulundu.`
@@ -101,6 +107,8 @@ function refresh() {
 function updateProgress() {
   const total = state.records.length;
   dom.progress.textContent = `Keşfedilen kayıt: ${state.viewed.size} / ${total}`;
+  const fill = $('progress-fill');
+  if (fill) fill.style.width = total ? `${Math.round((state.viewed.size / total) * 100)}%` : '0%';
 }
 
 // ------------------------------------------------------------------ selection
@@ -219,6 +227,35 @@ function showAnnotation(id) {
   });
 }
 
+/** The toggles of the modern pane: which groups of findings are drawn on the present-day map. */
+function wireGeoChips() {
+  for (const group of ['water', 'place']) {
+    const input = $(`geo-${group}`);
+    $(`geo-${group}-count`).textContent = `(${modernLayer.count(group)})`;
+    input.addEventListener('change', () => modernLayer.setGroupVisible(group, input.checked));
+  }
+}
+
+/** Shows one finding on the present-day map (used by the list of findings). */
+function showOnModernMap(id) {
+  if (!state.showModern) {
+    state.showModern = true;
+    dom.layerModern.checked = true;
+    applyLayout();
+  }
+  $('where-title').closest('dialog').close();
+  const group = modernLayer.entries.get(id)?.feature.group;
+  if (group && !$(`geo-${group}`).checked) {
+    $(`geo-${group}`).checked = true;
+    modernLayer.setGroupVisible(group, true);
+  }
+  requestAnimationFrame(() => {
+    views.modern.refreshSize();
+    modernLayer.focus(id);
+    closeSidebarOnNarrow();
+  });
+}
+
 function wireBaseSwitch() {
   const redrawAvailable = views.schematic.hasRedraw();
   for (const id of ['base-redraw', 'base-original', 'btn-labels-pane']) $(id).hidden = !redrawAvailable;
@@ -308,7 +345,6 @@ function wireMenus() {
   document.addEventListener('click', (event) => {
     if (!event.target.closest('[data-menu]')) closeAll();
   });
-  document.querySelectorAll('.topbar__nav > button').forEach((button) => button.addEventListener('click', () => closeAll()));
 }
 
 // -------------------------------------------------------------------- dialogs
@@ -395,6 +431,7 @@ function wireSettings() {
   contrastButton.addEventListener('click', () => setContrast(!document.body.classList.contains('hc')));
 
   $('btn-clear-local').addEventListener('click', () => {
+    forgetStoredKey();
     const removed = clearAllLocal();
     state.viewed.clear();
     updateProgress();
@@ -485,7 +522,7 @@ async function boot() {
 
   let data;
   try {
-    const [config, places, sources, quiz, glossary, instruments, equivalents, annotations] = await Promise.all([
+    const [config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo] = await Promise.all([
       loadJson('data/config.json'),
       loadJson('data/places.json'),
       loadJson('data/sources.json'),
@@ -494,8 +531,9 @@ async function boot() {
       loadJson('data/research-instruments.json'),
       loadJson('data/modern-equivalents.json'),
       loadJson('data/map-annotations.json'),
+      loadJson('data/modern-geo.json'),
     ]);
-    data = { config, places, sources, quiz, glossary, instruments, equivalents, annotations };
+    data = { config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo };
   } catch (error) {
     console.error(error);
     showFatal(
@@ -524,8 +562,9 @@ async function boot() {
 
   // Explanation cards belong to the Turkish-labelled redraw; without that image the map works as before.
   views.schematic.onBaseChange = syncBaseUi;
+  const equivalentsById = new Map(data.equivalents.records.map((r) => [r.id, r]));
+  const equivalentIdOf = (target) => target?.annotation?.equivalentId ?? target?.near?.equivalentId ?? null;
   if (views.schematic.hasRedraw()) {
-    const equivalentsById = new Map(data.equivalents.records.map((r) => [r.id, r]));
     explainer = createExplainer({
       view: views.schematic,
       pane: dom.paneSchematic,
@@ -534,6 +573,10 @@ async function boot() {
       sourcesById: state.sourcesById,
       equivalentsById,
       onOpenSource: openSource,
+      onTarget: (target) => {
+        if (target?.annotation) lastAnnotationId = target.annotation.id;
+        modernLayer?.highlight(equivalentIdOf(target));
+      },
     });
     renderLabelsList({
       body: $('labels-body'),
@@ -555,7 +598,34 @@ async function boot() {
   renderSources($('sources-body'), data.sources.sources);
   $('sources-notice').textContent = data.sources.notice;
   renderGlossary($('glossary-body'), data.glossary.terms);
-  renderEquivalents($('where-body'), data.equivalents, state.sourcesById, openSource);
+  modernLayer = createModernLayer({
+    view: views.modern,
+    pane: dom.paneModern,
+    geo: data.geo,
+    equivalents: data.equivalents.records,
+    annotations: data.annotations.annotations,
+    sourcesById: state.sourcesById,
+    onOpenSource: openSource,
+    onHover: (id) => {
+      if (!explainer || views.schematic.base !== 'redraw' || !state.showOriginal) return;
+      explainer.markAnnotations(id ? data.annotations.annotations.filter((a) => a.equivalentId === id).map((a) => a.id) : []);
+    },
+    onShowOnOriginal: (id) => {
+      const first = data.annotations.annotations.find((a) => a.equivalentId === id);
+      if (first) showAnnotation(first.id);
+    },
+  });
+  wireGeoChips();
+  renderEquivalents($('where-body'), data.equivalents, state.sourcesById, openSource, { plottedIds: new Set(modernLayer.entries.keys()), onShowOnMap: showOnModernMap });
+  assistant = createAssistant({
+    annotations: data.annotations.annotations,
+    classes: data.annotations.classes,
+    equivalentsById,
+    sourcesById: state.sourcesById,
+    getCurrentId: () => lastAnnotationId,
+    onShowCard: (id) => { if (explainer) showAnnotation(id); },
+  });
+  $('btn-assistant').addEventListener('click', () => assistant.open());
   $('glossary-notice').textContent = data.glossary.notice;
   $('quiz-notice').textContent = data.quiz.notice;
   const quiz = createQuiz({ container: $('quiz-body'), quiz: data.quiz });
@@ -582,4 +652,4 @@ async function boot() {
 boot();
 
 // Exposed for tests and debugging only; not part of the interface.
-window.__dlt = { state, views, selectRecord, closeCard, get explainer() { return explainer; } };
+window.__dlt = { state, views, selectRecord, closeCard, get explainer() { return explainer; }, get modernLayer() { return modernLayer; }, get assistant() { return assistant; } };

@@ -33,6 +33,7 @@ function categorySwatch(category) {
  */
 export function renderCategoryFilters(container, { counts, enabled, onChange }) {
   container.replaceChildren();
+  const unavailable = [];
   for (const [category, meta] of Object.entries(CATEGORY_META)) {
     const available = (counts[category] ?? 0) > 0;
     const input = el('input', { type: 'checkbox', id: `cat-${category}`, disabled: !available });
@@ -40,19 +41,18 @@ export function renderCategoryFilters(container, { counts, enabled, onChange }) 
     input.addEventListener('change', () => onChange(category, input.checked));
     const label = el(
       'label',
-      { class: `check${available ? '' : ' check--disabled'}`, for: `cat-${category}` },
+      { class: `chip${available ? '' : ' chip--disabled'}`, for: `cat-${category}` },
       input,
       categorySwatch(category),
-      el('span', {}, `${meta.label}${available ? ` (${counts[category]})` : ''}`),
+      el('span', {}, meta.label),
+      available ? el('b', { class: 'chip__count' }, String(counts[category])) : null,
     );
     container.append(label);
-    if (!available) {
-      const reason =
-        category === 'route'
-          ? 'Kaynakla desteklenen güzergâh kaydı olmadığı için kapalı.'
-          : 'Bu türde henüz kayıt yok.';
-      container.append(el('p', { class: 'hint' }, reason));
-    }
+    if (!available) unavailable.push(category);
+  }
+  if (unavailable.length) {
+    const reasons = unavailable.map((category) => (category === 'route' ? 'Güzergâh: kaynakla desteklenen kayıt olmadığı için kapalı.' : `${CATEGORY_META[category].label}: henüz kayıt yok.`));
+    container.append(el('p', { class: 'hint chips__note' }, reasons.join(' ')));
   }
 }
 
@@ -64,11 +64,12 @@ export function renderResults(listEl, records, { selectedId, onPick }) {
     const button = el(
       'button',
       { type: 'button', class: 'results__item', 'aria-current': record.id === selectedId ? 'true' : 'false' },
-      el('span', { class: 'results__name' }, record.historical_name),
+      categorySwatch(record.category),
       el(
         'span',
-        { class: 'results__meta' },
-        `${meta.singular} • ${LOCATION_TYPE_META[record.location_type].label}${record.is_demo ? ' • örnek içerik' : ''}`,
+        { class: 'results__text' },
+        el('span', { class: 'results__name' }, record.historical_name),
+        el('span', { class: 'results__meta' }, `${meta.singular} • ${LOCATION_TYPE_META[record.location_type].label}${record.is_demo ? ' • örnek içerik' : ''}`),
       ),
     );
     button.addEventListener('click', () => onPick(record.id, button));
@@ -235,7 +236,7 @@ export function renderGlossary(container, terms) {
 }
 
 /** "Where are the places today?" findings: intro text plus an accessible table. */
-export function renderEquivalents(container, data, sourcesById, onOpenSource) {
+export function renderEquivalents(container, data, sourcesById, onOpenSource, { plottedIds = new Set(), onShowOnMap = null } = {}) {
   container.replaceChildren();
   data.summary.forEach((text) => container.append(el('p', {}, text)));
   container.append(el('p', { class: 'hint' }, data.scopeNote), el('p', { class: 'card__demo' }, data.verificationNote));
@@ -258,7 +259,13 @@ export function renderEquivalents(container, data, sourcesById, onOpenSource) {
     });
     const modern = el('td', {}, record.modern_equivalent);
     if (record.note) modern.append(el('br'), el('span', { class: 'hint' }, record.note));
-    body.append(el('tr', {}, el('th', { scope: 'row' }, record.historical_name), modern, el('td', {}, el('span', { class: 'status-symbol', 'aria-hidden': 'true' }, status.symbol), ` ${status.label}`), sourceCell));
+    const nameCell = el('th', { scope: 'row' }, record.historical_name);
+    if (onShowOnMap && plottedIds.has(record.id)) {
+      const show = el('button', { type: 'button', class: 'btn btn--small equiv-table__show' }, 'Günümüz haritasında göster');
+      show.addEventListener('click', () => onShowOnMap(record.id));
+      nameCell.append(el('br'), show);
+    }
+    body.append(el('tr', {}, nameCell, modern, el('td', {}, el('span', { class: 'status-symbol', 'aria-hidden': 'true' }, status.symbol), ` ${status.label}`), sourceCell));
   }
   const wrap = el('div', { class: 'table-wrap' }, el('table', { class: 'equiv-table' }, el('caption', {}, 'Önerilen günümüz karşılıkları'), el('thead', {}, head), body));
   container.append(wrap);

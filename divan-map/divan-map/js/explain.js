@@ -3,7 +3,8 @@
  *
  * Wherever the pointer rests on the map (a label, a line, a coloured area, a dot, or even empty
  * ground) a small card explains what is there, which sources say so, and where nothing is known.
- * Cards are our own DOM, not Leaflet popups or tooltips.
+ * Cards are our own DOM, not Leaflet popups or tooltips. The card stays in the half of the pane the
+ * pointer is not in, and the explained spot is outlined on the map, so the card never hides what it explains.
  *
  * How a point is explained (first match wins):
  *   1. a "label" annotation (the area of a written name),
@@ -18,6 +19,7 @@
  */
 import { ANNOTATION_KIND, ANNOTATION_STATUS, EQUIVALENT_STATUS } from './labels.js';
 import { el, normalizeText } from './text.js';
+import { buildSourceBlock, markClipped, placeBeside } from './cardparts.js';
 
 const L = window.L;
 
@@ -46,7 +48,7 @@ function makeShape(area) {
     twice += x1 * y2 - x2 * y1;
   }
   return {
-    kind: 'poly', minX: Math.min(...xs), minY: Math.min(...ys), maxX: Math.max(...xs), maxY: Math.max(...ys), size: Math.abs(twice) / 2,
+    kind: 'poly', points: pts, minX: Math.min(...xs), minY: Math.min(...ys), maxX: Math.max(...xs), maxY: Math.max(...ys), size: Math.abs(twice) / 2,
     contains: (px, py) => {
       let inside = false;
       for (let i = 0, j = pts.length - 1; i < pts.length; j = i, i += 1) {
@@ -112,8 +114,10 @@ function readPixels(path, width, height) {
  * @param {Map<string, object>} options.sourcesById
  * @param {Map<string, object>} options.equivalentsById Records of data/modern-equivalents.json by id.
  * @param {(sourceId: string) => void} options.onOpenSource
+ * @param {(target: {annotation: object|null, near: object|null}|null) => void} [options.onTarget]
+ *   Called when the explained thing changes (null when the card closes); used to highlight the modern map.
  */
-export function createExplainer({ view, pane, config, data, sourcesById, equivalentsById, onOpenSource }) {
+export function createExplainer({ view, pane, config, data, sourcesById, equivalentsById, onOpenSource, onTarget = () => {} }) {
   const map = view.map;
   const container = map.getContainer();
   const redraw = config.redrawMap;
@@ -138,6 +142,57 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
 
   const card = el('aside', { class: 'xcard', 'aria-label': 'Harita açıklaması', hidden: true });
   pane.append(card);
+  const placement = { side: null };
+
+  // ------------------------------------------------- outline of the explained spot
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const overlay = document.createElementNS(SVG_NS, 'svg');
+  overlay.setAttribute('class', 'xmark');
+  overlay.setAttribute('aria-hidden', 'true');
+  const hoverGroup = document.createElementNS(SVG_NS, 'g');
+  const linkedGroup = document.createElementNS(SVG_NS, 'g');
+  overlay.append(linkedGroup, hoverGroup);
+  container.append(overlay);
+
+  let hoverMarks = null; // { shapes, nearShape, point } of the card on screen
+  let linkedIds = [];
+
+  const toScreen = (x, y) => map.latLngToContainerPoint(view.redrawPixelToLatLng(x, y));
+
+  function shapePoints(shape) {
+    const corners = shape.points ?? [[shape.minX, shape.minY], [shape.maxX, shape.minY], [shape.maxX, shape.maxY], [shape.minX, shape.maxY]];
+    return corners.map(([x, y]) => toScreen(x, y)).map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  }
+
+  function drawShape(group, shape, className) {
+    const polygon = document.createElementNS(SVG_NS, 'polygon');
+    polygon.setAttribute('class', className);
+    polygon.setAttribute('points', shapePoints(shape));
+    group.append(polygon);
+  }
+
+  function drawMarks() {
+    hoverGroup.replaceChildren();
+    linkedGroup.replaceChildren();
+    if (hoverMarks) {
+      hoverMarks.shapes.forEach((shape) => drawShape(hoverGroup, shape, 'xmark__shape'));
+      if (hoverMarks.nearShape) drawShape(hoverGroup, hoverMarks.nearShape, 'xmark__shape xmark__shape--near');
+      if (hoverMarks.point) {
+        const ring = document.createElementNS(SVG_NS, 'circle');
+        ring.setAttribute('class', 'xmark__ring');
+        ring.setAttribute('cx', hoverMarks.point.x.toFixed(1));
+        ring.setAttribute('cy', hoverMarks.point.y.toFixed(1));
+        ring.setAttribute('r', '15');
+        hoverGroup.append(ring);
+      }
+    }
+    for (const id of linkedIds) byId.get(id)?.shapes.forEach((shape) => drawShape(linkedGroup, shape, 'xmark__shape xmark__shape--linked'));
+  }
+
+  map.on('move zoom viewreset resize', () => {
+    if (hoverMarks || linkedIds.length) drawMarks();
+  });
 
   // ----------------------------------------------------------- hit testing
 
@@ -185,10 +240,10 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
     let best = null;
     for (const annotation of list) {
       for (const shape of annotation.shapes) {
-        if (shape.contains(x, y) && (!best || shape.size < best.size)) best = { annotation, size: shape.size };
+        if (shape.contains(x, y) && (!best || shape.size < best.size)) best = { annotation, shape, size: shape.size };
       }
     }
-    return best?.annotation ?? null;
+    return best;
   }
 
   /** The label nearest to a point among those linked to a colour class (for "Yakınındaki yazı"). */
@@ -200,51 +255,33 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
       if (!annotation.link?.includes(key)) continue;
       for (const shape of annotation.shapes) {
         const distance = boxDistance(shape, x, y);
-        if (distance <= NEAR_LIMITS[key] && (!best || distance < best.distance)) best = { annotation, distance };
+        if (distance <= NEAR_LIMITS[key] && (!best || distance < best.distance)) best = { annotation, shape, distance };
       }
     }
-    return best?.annotation ?? null;
+    return best;
   }
 
   /** Explains one image point. `radius` is the tolerance in image pixels. */
   function hitTest(x, y, radius = 4) {
     if (x < 0 || y < 0 || x > redraw.width || y > redraw.height) return { classId: 'outside' };
     const label = smallest(layers.label, x, y);
-    if (label) return { annotation: label };
+    if (label) return { annotation: label.annotation, shape: label.shape };
     const shape = smallest(layers.shape, x, y);
-    if (shape) return { annotation: shape };
+    if (shape) return { annotation: shape.annotation, shape: shape.shape };
     const ratio = imagePointToCircleRatio(x, y);
     if (ratio > 1.03) return { classId: 'outside' };
     if (ratio >= circle.oceanFromRatio) return { classId: 'ocean-ring' };
     const classId = classifyColour(x, y, Math.max(2, Math.round(radius)));
-    if (classId) return { classId, near: nearestLinked(classId, x, y) };
+    if (classId) {
+      const near = nearestLinked(classId, x, y);
+      return { classId, near: near?.annotation ?? null, nearShape: near?.shape ?? null };
+    }
     const area = smallest(layers.area, x, y);
-    if (area) return { annotation: area };
+    if (area) return { annotation: area.annotation, shape: area.shape };
     return { classId: 'empty-land' };
   }
 
   // -------------------------------------------------------------- rendering
-
-  function sourceList(refs) {
-    if (!refs?.length) return null;
-    const list = el('ul', { class: 'xcard__sources' });
-    let unverified = false;
-    for (const ref of refs) {
-      const source = sourcesById.get(ref.source_id);
-      const name = source?.short ?? source?.title ?? ref.source_id;
-      if (source && source.citation_verified === false) unverified = true;
-      const button = el('button', { type: 'button', class: 'link-btn', 'aria-label': `Kaynakçada aç: ${name}` }, name);
-      button.addEventListener('click', () => onOpenSource(ref.source_id));
-      list.append(el('li', {}, button, ref.locator ? el('span', { class: 'xcard__locator' }, ` · ${ref.locator}`) : null));
-    }
-    return el(
-      'div',
-      { class: 'xcard__block' },
-      el('p', { class: 'xcard__label' }, 'Kaynak'),
-      list,
-      unverified ? el('p', { class: 'xcard__fine' }, 'Künyesi “doğrulanacak” olan kaynakların yayın bilgileri ve sayfa numaraları henüz teyit edilmemiştir.') : null,
-    );
-  }
 
   function equivalentBlock(id) {
     const record = id ? equivalentsById.get(id) : null;
@@ -319,7 +356,7 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
 
     const equivalent = equivalentBlock(content.equivalentId);
     if (equivalent) parts.push(equivalent);
-    const sources = sourceList(content.sources);
+    const sources = buildSourceBlock(content.sources, sourcesById, onOpenSource);
     if (sources) parts.push(sources);
 
     card.replaceChildren(...parts);
@@ -327,48 +364,36 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
   }
 
   function placeCard(containerPoint) {
-    // On a narrow pane (phones) the card is a sheet at the top or bottom edge, on the side away from the pointer.
-    const sheet = pane.clientWidth < 420 || TOUCH_ONLY;
-    card.classList.toggle('xcard--sheet', sheet);
-    if (sheet) {
-      const pointerInLowerHalf = containerPoint.y > container.clientHeight / 2;
-      card.style.left = '';
-      card.style.top = pointerInLowerHalf ? `${container.offsetTop + 6}px` : '';
-      card.style.bottom = pointerInLowerHalf ? '' : '6px';
-      return;
-    }
-    card.style.bottom = '';
-    const gap = 16;
-    const offsetLeft = container.offsetLeft;
-    const offsetTop = container.offsetTop;
-    const paneWidth = pane.clientWidth;
-    const paneHeight = pane.clientHeight;
-    card.style.left = '0px';
-    card.style.top = '0px';
-    const width = card.offsetWidth;
-    const height = card.offsetHeight;
-    let left = offsetLeft + containerPoint.x + gap;
-    let top = offsetTop + containerPoint.y + gap;
-    if (left + width > paneWidth - 6) left = offsetLeft + containerPoint.x - gap - width;
-    if (top + height > paneHeight - 6) top = offsetTop + containerPoint.y - gap - height;
-    card.style.left = `${Math.max(6, Math.min(left, paneWidth - width - 6))}px`;
-    card.style.top = `${Math.max(offsetTop + 6, Math.min(top, paneHeight - height - 6))}px`;
+    placeBeside({ card, pane, container, point: containerPoint, touchOnly: TOUCH_ONLY, memory: placement });
   }
 
   function hide() {
     card.hidden = true;
     currentKey = null;
+    hoverMarks = null;
+    drawMarks();
+    onTarget(null);
   }
 
   function show(containerPoint, hit, { isPinned }) {
     const content = describe(hit);
-    if (content.key !== currentKey || card.classList.contains('is-pinned') !== isPinned) {
+    const changed = content.key !== currentKey || card.classList.contains('is-pinned') !== isPinned;
+    if (changed) {
       render(content, { isPinned });
       currentKey = content.key;
+      card.scrollTop = 0;
     }
     card.hidden = false;
     card.classList.toggle('is-instant', reducedMotion);
     placeCard(containerPoint);
+    markClipped(card, isPinned);
+
+    // Outline what is explained: the label or shape, or a ring at the pointer for colours.
+    const shapes = hit.shape ? [hit.shape] : [];
+    hoverMarks = { shapes, nearShape: hit.nearShape ?? null, point: hit.shape ? null : { x: containerPoint.x, y: containerPoint.y } };
+    if (hit.classId === 'outside') hoverMarks = null;
+    drawMarks();
+    if (changed) onTarget({ annotation: hit.annotation ?? null, near: hit.near ?? null });
   }
 
   // ------------------------------------------------------------ interaction
@@ -437,6 +462,7 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
     container.classList.toggle('is-explainable', active);
     if (!active) {
       pinned = false;
+      linkedIds = [];
       hide();
     }
   }
@@ -453,7 +479,7 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
     map.setView(latlng, zoom, { animate: false });
     const containerPoint = map.latLngToContainerPoint(latlng);
     pinned = true;
-    show(containerPoint, { annotation }, { isPinned: true });
+    show(containerPoint, { annotation, shape }, { isPinned: true });
     return true;
   }
 
@@ -470,5 +496,10 @@ export function createExplainer({ view, pane, config, data, sourcesById, equival
     hasPixels: () => Boolean(pixels),
     searchText: (annotation) => normalizeText([annotation.label, ...annotation.paragraphs].join(' ')),
     hide: unpin,
+    /** Outlines the given annotations on the map without opening a card (linked from the modern map). */
+    markAnnotations(ids) {
+      linkedIds = ids ?? [];
+      drawMarks();
+    },
   };
 }
