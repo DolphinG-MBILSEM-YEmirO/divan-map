@@ -1,0 +1,125 @@
+/* ==========================================================================
+   Side panel, version 4: one continuous sheet instead of stacked cards, and a panel that folds into a
+   slim rail so the maps get more room. Loaded after styles.css, so it overrides the earlier panel rules.
+   The wide-screen rules sit in a media query: on a phone the panel stays a drawer (see styles.css).
+   ========================================================================== */
+:root {
+  --sidebar-w: 19rem;
+  --rail-w: 3.5rem;
+  --rail-line: rgba(236, 228, 207, 0.16);
+}
+
+/* ----- the sheet ----- */
+.sidebar {
+  display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden; min-width: 0;
+  background: var(--paper); border-right: 1px solid var(--border-strong);
+}
+.sidebar__head {
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  min-height: 3.1rem; padding: 0.5rem 0.6rem 0.5rem 1rem; border-bottom: 1px solid var(--border);
+}
+.sidebar__title { margin: 0; font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.sidebar__toggle {
+  flex: none; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; padding: 0; cursor: pointer;
+  border: 1px solid var(--border-strong); border-radius: 0.5rem; background: #fff; color: var(--ink);
+}
+.sidebar__toggle:hover { background: #f1ead8; }
+.sidebar__toggle .ico { transition: transform 0.2s; }
+.sidebar__rail { display: none; }
+
+.sidebar__body {
+  flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
+}
+.sidebar__body .panel {
+  margin: 0; padding: 0.9rem 1rem; background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar__body .panel--search { padding: 0.85rem 1rem !important; }
+.sidebar__body .panel__title {
+  display: flex; align-items: baseline; gap: 0.4rem; margin: 0 0 0.6rem;
+  font-family: var(--serif); font-size: 0.98rem; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink);
+}
+body.hc .sidebar__body .panel__title { color: #000; }
+
+/* search */
+.sidebar__body .search-box { background: #fff; border-color: var(--border-strong); border-radius: 0.6rem; padding: 0.2rem 0.2rem 0.2rem 0.7rem; }
+
+/* maps: two tiles that behave like switches */
+.layer-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.layer-tiles .switch {
+  flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.65rem 0.7rem 0.7rem;
+  border: 1px solid var(--border-strong); border-radius: 0.65rem; background: #fff;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.layer-tiles .switch__track { width: 2rem; height: 1.1rem; }
+.layer-tiles .switch__track::after { top: 0.175rem; left: 0.175rem; width: 0.75rem; height: 0.75rem; }
+.layer-tiles .switch input:checked + .switch__track { background: var(--ink); }
+.layer-tiles .switch input:checked + .switch__track::after { transform: translateX(0.9rem); }
+.layer-tiles .switch:has(input:checked) { background: #f5eed9; border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.layer-tiles .switch:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.layer-tiles .switch__text strong { font-size: 0.9rem; }
+.layer-tiles .switch__text small { font-size: 0.74rem; line-height: 1.3; }
+.sidebar__body .panel__help { margin-top: 0.7rem; }
+body.hc .layer-tiles .switch { border: 2px solid #000; background: #fff; }
+body.hc .layer-tiles .switch:has(input:checked) { background: #000; color: #fff; }
+body.hc .layer-tiles .switch:has(input:checked) small { color: #fff; }
+body.hc .layer-tiles .switch:has(input:checked) .switch__track { background: #fff; }
+body.hc .layer-tiles .switch:has(input:checked) .switch__track::after { background: #000; }
+
+/* record types */
+.sidebar__body .chips { gap: 0.35rem; }
+
+/* the list of records: rows, not boxes */
+.sidebar__body .panel--list { flex: 1 0 auto; min-height: 13rem; border-bottom: 0; }
+.sidebar__body .results { gap: 0.1rem; margin: 0 -0.45rem; padding: 0; }
+.sidebar__body .results__item { border: 0; border-radius: 0.5rem; background: transparent; padding: 0.5rem 0.55rem; }
+.sidebar__body .results__item:hover { background: #f1ead8; }
+.sidebar__body .results__item[aria-current="true"] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+body.hc .sidebar__body .results__item[aria-current="true"] { background: #fff; box-shadow: none; border: 2px solid #000; }
+
+/* progress and "back to the start view" stay in sight while the panel scrolls */
+.sidebar__body .panel--footer {
+  position: sticky; bottom: 0; z-index: 1; margin-top: auto; background: var(--paper);
+  border-top: 1px solid var(--border); border-bottom: 0; padding: 0.7rem 1rem;
+}
+
+/* ----- wide screens: fixed width, folds into a rail ----- */
+@media (min-width: 861px) {
+  .layout.is-animated { transition: grid-template-columns 0.24s cubic-bezier(0.3, 0.7, 0.2, 1); }
+  .layout.is-rail { grid-template-columns: var(--rail-w) minmax(0, 1fr); }
+  .layout.is-rail.has-card { grid-template-columns: var(--rail-w) minmax(0, 1fr) var(--card-w); }
+  .sidebar__body { width: var(--sidebar-w); }
+
+  .layout.is-rail .sidebar { background: var(--ink); border-right-color: #000; }
+  .layout.is-rail .sidebar__body, .layout.is-rail .sidebar__title { display: none; }
+  .layout.is-rail .sidebar__head { justify-content: center; padding: 0.55rem 0; border-bottom-color: var(--rail-line); }
+  .layout.is-rail .sidebar__toggle { background: transparent; border-color: rgba(236, 228, 207, 0.3); color: var(--on-ink); }
+  .layout.is-rail .sidebar__toggle:hover { background: rgba(236, 228, 207, 0.12); }
+  .layout.is-rail .sidebar__toggle .ico { transform: rotate(180deg); }
+  .layout.is-rail .sidebar__rail { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.6rem 0; }
+  body.hc .layout.is-rail .sidebar { background: #000; }
+}
+
+/* the rail's shortcut buttons */
+.rail__btn {
+  position: relative; display: grid; place-items: center; width: 2.7rem; height: 2.7rem; padding: 0; cursor: pointer;
+  border: 0; border-radius: 0.65rem; background: transparent; color: var(--on-ink);
+}
+.rail__btn:hover { background: rgba(236, 228, 207, 0.12); color: #fff; }
+.rail__btn:focus-visible, .layout.is-rail .sidebar__toggle:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.rail__count {
+  position: absolute; top: 0.2rem; right: 0.15rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.28rem;
+  border-radius: 999px; background: var(--gold); color: var(--ink); font: 700 0.66rem/1.05rem system-ui, sans-serif; text-align: center;
+}
+.rail__count:empty { display: none; }
+
+/* ----- phones: the panel is the drawer of styles.css; the fold controls do not apply ----- */
+@media (max-width: 860px) {
+  .sidebar__toggle, .sidebar__rail { display: none; }
+  .sidebar__head { padding-left: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout.is-animated, .sidebar__toggle .ico, .layer-tiles .switch { transition: none; }
+}
