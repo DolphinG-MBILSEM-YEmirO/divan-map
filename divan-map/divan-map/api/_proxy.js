@@ -164,10 +164,10 @@ const reply = (status, json) => ({ status, json });
 
 /**
  * @param {{method: string, headers: object, body: unknown, ip: string}} request
- * @param {{env: object, fetchImpl: typeof fetch, limiter: ReturnType<typeof createLimiter>, now?: () => number}} deps
+ * @param {{env: object, fetchImpl: typeof fetch, limiter: ReturnType<typeof createLimiter>, now?: () => number, log?: (line: string) => void}} deps
  * @returns {Promise<{status: number, json: object}>} `json` is either {reply}, {available, codeRequired} or {error}.
  */
-export async function handleChat(request, { env, fetchImpl, limiter, now = Date.now }) {
+export async function handleChat(request, { env, fetchImpl, limiter, now = Date.now, log = () => {} }) {
   const config = readConfig(env);
   const available = isConfigured(config);
 
@@ -194,7 +194,11 @@ export async function handleChat(request, { env, fetchImpl, limiter, now = Date.
     // Provider messages are never forwarded: they can name the key or the account.
     if (response.status === 429) return reply(503, { error: 'busy' });
     if (response.status === 401 || response.status === 403) return reply(502, { error: 'upstream_auth' });
-    if (!response.ok) return reply(502, { error: 'upstream' });
+    if (!response.ok) {
+      // Only the status code is logged (never the body, the key or the question), so the owner can diagnose from Vercel logs.
+      log(`chat upstream status ${response.status}`);
+      return reply(502, { error: 'upstream' });
+    }
     let json = null;
     try {
       json = await response.json();
@@ -203,7 +207,8 @@ export async function handleChat(request, { env, fetchImpl, limiter, now = Date.
     }
     const text = parseUpstream(json);
     return text ? reply(200, { reply: text }) : reply(502, { error: 'empty' });
-  } catch {
+  } catch (error) {
+    log(`chat upstream failed: ${error?.name || 'error'}`);
     return reply(502, { error: 'upstream' });
   } finally {
     clearTimeout(timer);
