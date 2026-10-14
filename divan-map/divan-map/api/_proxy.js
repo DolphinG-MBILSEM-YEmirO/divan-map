@@ -10,6 +10,7 @@
  *   AI_MODEL              required  model name as the provider spells it
  *   AI_BASE_URL           optional  default https://api.openai.com/v1
  *   AI_MAX_TOKENS_PARAM   optional  name of the answer-length field, default "max_tokens" (some models want "max_completion_tokens")
+ *   AI_EXTRA_BODY         optional  JSON object of extra provider fields, e.g. {"chat_template_kwargs":{"enable_thinking":false}}
  *   AI_ACCESS_CODE        optional  if set, visitors must type this code (give it to students/teachers)
  *   AI_ALLOWED_ORIGINS    optional  extra allowed origins, comma separated (the site's own host is always allowed)
  *   AI_IP_LIMIT           optional  questions per visitor per 10 minutes, default 20
@@ -39,6 +40,17 @@ const DEFAULT_BASE_URL = 'https://api.openai.com/v1';
 
 // ------------------------------------------------------------------ configuration
 
+/** AI_EXTRA_BODY: a JSON object of extra provider fields (for example to switch a model's "thinking" off). Bad input is ignored. */
+export function parseExtraBody(text) {
+  if (!text) return {};
+  try {
+    const value = JSON.parse(text);
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
 export function readConfig(env = {}) {
   const positive = (value, fallback) => {
     const number = Number(value);
@@ -49,6 +61,7 @@ export function readConfig(env = {}) {
     model: env.AI_MODEL || '',
     baseUrl: (env.AI_BASE_URL || DEFAULT_BASE_URL).trim().replace(/\/+$/, ''),
     tokenParam: env.AI_MAX_TOKENS_PARAM || 'max_tokens',
+    extraBody: parseExtraBody(env.AI_EXTRA_BODY),
     accessCode: env.AI_ACCESS_CODE || '',
     allowedOrigins: (env.AI_ALLOWED_ORIGINS || '').split(',').map((item) => item.trim().toLowerCase()).filter(Boolean),
     perIp: positive(env.AI_IP_LIMIT, LIMITS.perIp),
@@ -147,7 +160,8 @@ export function buildUpstream(config, { question, history, context }) {
     init: {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${config.apiKey}` },
-      body: JSON.stringify({ model: config.model, messages, [config.tokenParam]: LIMITS.maxTokens }),
+      // The extra fields come first so they can never replace the model, the messages or the length cap.
+      body: JSON.stringify({ ...config.extraBody, model: config.model, messages, [config.tokenParam]: LIMITS.maxTokens }),
     },
   };
 }
@@ -206,7 +220,9 @@ export async function handleChat(request, { env, fetchImpl, limiter, now = Date.
       /* not JSON */
     }
     const text = parseUpstream(json);
-    return text ? reply(200, { reply: text }) : reply(502, { error: 'empty' });
+    if (text) return reply(200, { reply: text });
+    log(`chat empty answer, finish_reason ${json?.choices?.[0]?.finish_reason ?? 'unknown'}`);
+    return reply(502, { error: 'empty' });
   } catch (error) {
     log(`chat upstream failed: ${error?.name || 'error'}`);
     return reply(502, { error: 'upstream' });
