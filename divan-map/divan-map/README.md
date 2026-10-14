@@ -37,13 +37,16 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/maps.js` | Leaflet map views (original schematic with two base images + modern base map) |
 | `js/explain.js` | Explanation cards: hit testing on the Turkish-labelled redraw (labels, shapes, colours, ring) and the card itself |
 | `js/labels-list.js` | "Haritadaki yazılar" dialog: every card as a searchable list |
+| `js/cardparts.js` | Parts shared by the cards of both maps: source list and the placement beside the pointer |
+| `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
+| `js/assistant.js` | Opt-in AI assistant (own API key, answers from the site's cards) |
 | `js/ui.js` | Rendering of results, filters, info card, legend, sources |
 | `js/quiz.js` | Mini quiz (multiple choice and true/false) |
 | `js/activity.js` | "Find it on the map" activity |
 | `js/labels.js` | Turkish labels and symbol metadata |
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
-| `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards) |
+| `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
 | `tools/` | Data validator and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
@@ -108,6 +111,38 @@ activity switches the pane to the original image automatically.
 
 ## Top bar
 
-The top bar groups the former icon buttons into four labelled menus (Öğren, Dene, Kaynaklar, Görünüm) plus Kapak. Each
+The top bar groups the former icon buttons into four labelled menus (Öğren, Dene, Kaynaklar, Görünüm) plus the
+"Asistan" button. The "Kapak" button was removed (the cover still opens once per visit). Each
 item has a one-line purpose text. Menus are disclosure buttons: Esc closes them, a click outside closes them, and all
 earlier element ids (`btn-quiz`, `btn-activity`, `btn-present`, `btn-contrast`, ...) are unchanged.
+
+## Cards beside the pointer
+
+The explanation card is placed in the half of the pane the pointer is not in and changes sides only when the pointer
+would end up under it (`placeBeside` in `js/cardparts.js`). On panes narrower than 420 px and on touch screens it is a
+sheet at the top or bottom edge (at most 44 % of the map, on the side away from the pointer). The explained label or shape
+is outlined on the map (`.xmark`); colours get a ring at the pointer. Tall cards are clipped with a hint; clicking pins a card
+so it can be scrolled.
+
+## Findings on the modern map
+
+`data/modern-geo.json` gives every finding of `modern-equivalents.json` that the sources let us place a rough shape:
+`box` (frame), `circle` (centre + radius), `line` or `lines`. Each shape has a `geometryNote` that says what it is and
+is not; the card repeats that it is not a border or exact position. Entries that cannot be placed are listed under
+`notPlotted` with the reason and appear in the legend. `npm run validate` checks ids, coordinates and the required notes.
+Centres were taken from Wikipedia pages and rounded; frames and lines are hand-rounded and **must be re-checked** against an
+atlas or GIS source before they are quoted in a report. Hovering a card on one map highlights the linked item on the other.
+
+## AI assistant
+
+The "Asistan" button opens a panel. There is no server of ours: the visitor types **their own** Anthropic API key
+into the panel and the browser calls `https://api.anthropic.com/v1/messages` directly. Never put a key in the code.
+
+- The key is kept in `sessionStorage` (this tab). Only if the visitor ticks "remember" it is also kept in `localStorage`.
+  "Anahtarı sil" and "Bu cihazdaki kayıtlı verilerimi sil" remove it.
+- Before each question the best-matching cards, equivalents and sources are picked locally (`buildContext`) and sent as
+  the only material the model may use. The system prompt forbids inventing facts, stating certainty and made-up page numbers.
+- The panel states what is sent, that it can cost money and that under-18 users need parent or teacher consent.
+- Answers are shown as plain text. They can still be wrong; the panel says so and offers buttons to open the cards used.
+- If the school prefers a hidden key, build a small server function (for example on Vercel) that holds the key in an
+  environment variable, limits requests per visitor and forwards the question; then point `API_URL` in `js/assistant.js` to it.
