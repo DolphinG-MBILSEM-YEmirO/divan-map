@@ -5,7 +5,12 @@
 import { readLocal, writeLocal } from './storage.js';
 import { el } from './text.js';
 
-export function createQuiz({ container, quiz }) {
+/**
+ * @param {object} o
+ * @param {string} [o.storageKey] where the last result is kept (local only)
+ * @param {Function} [o.onAnswer] called with (question, correct) after each answer
+ */
+export function createQuiz({ container, quiz, storageKey = 'quizResult', onAnswer = () => {} }) {
   let index = 0;
   let score = 0;
 
@@ -52,6 +57,7 @@ export function createQuiz({ container, quiz }) {
       message.textContent = '';
       const correct = chosen.value === question.correct;
       if (correct) score += 1;
+      onAnswer(question, correct);
       inputs.forEach((input) => {
         input.disabled = true;
         const label = input.closest('label');
@@ -78,7 +84,7 @@ export function createQuiz({ container, quiz }) {
 
   function renderSummary() {
     const total = quiz.questions.length;
-    const saved = writeLocal('quizResult', { quizId: quiz.id, score, total, date: new Date().toISOString().slice(0, 10) });
+    const saved = writeLocal(storageKey, { quizId: quiz.id, score, total, date: new Date().toISOString().slice(0, 10) });
     const again = el('button', { type: 'button', class: 'btn btn--primary' }, 'Testi yeniden çöz');
     again.addEventListener('click', start);
     const heading = el('h3', { tabindex: '-1' }, `${score} / ${total} doğru`);
@@ -93,7 +99,7 @@ export function createQuiz({ container, quiz }) {
 
   /** Last stored result, or null. */
   function lastResult() {
-    return readLocal('quizResult', null);
+    return readLocal(storageKey, null);
   }
 
   return { start, lastResult };
