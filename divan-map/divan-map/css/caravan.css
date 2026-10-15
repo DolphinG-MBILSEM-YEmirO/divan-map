@@ -1,65 +1,7 @@
 /* ==========================================================================
-   "Kâşgarlı'nın Kervanı" (js/caravan.js): the game panel under the top bar, the caravan on the map,
-   its route and the outline of a place shown as help; plus the "Sözlüğüm" list. Loaded after styles.css.
+   "Sözlüğüm" on the main page: the place names delivered in "Kâşgarlı'nın Kervanı" (game.html).
+   Loaded after styles.css.
    ========================================================================== */
-.caravan {
-  display: grid; gap: 0.4rem; padding: 0.5rem 1rem 0.55rem;
-  background: #f6eed9; color: var(--ink); border-bottom: 2px solid var(--gold);
-}
-.caravan[hidden] { display: none; }
-.caravan p { margin: 0; }
-.caravan__head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
-.caravan__title { margin: 0; font-family: var(--serif); font-size: 1.05rem; }
-.caravan__progress { font-size: 0.85rem; color: var(--muted); }
-.caravan__hard { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; cursor: pointer; }
-.caravan__head .btn { margin-left: auto; }
-
-/* the names in the caravan */
-.caravan__cargo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
-.caravan__item {
-  width: 100%; height: 100%; display: grid; grid-template-columns: 1fr auto; align-content: start; gap: 0.15rem 0.5rem;
-  padding: 0.35rem 0.55rem; text-align: left; font: inherit; color: inherit; cursor: pointer;
-  background: #fff; border: 1px solid var(--border-strong); border-radius: 0.55rem;
-}
-.caravan__item:hover { background: #fffaf0; }
-.caravan__item[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); background: #fff; }
-.caravan__item:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.caravan__name { font-weight: 700; font-family: var(--serif); }
-.caravan__kind { font-size: 0.72rem; color: var(--muted); align-self: center; }
-.caravan__clue { grid-column: 1 / -1; font-size: 0.78rem; line-height: 1.3; color: #3b3f4a; }
-
-.caravan__feedback { font-size: 0.88rem; font-weight: 600; min-height: 1.3em; }
-.caravan__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
-.caravan__keys { font-size: 0.85rem; }
-.caravan__keys summary { cursor: pointer; }
-.caravan__keys[open] { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
-.caravan__keys[open] summary { width: 100%; }
-.caravan__keys select { font: inherit; padding: 0.25rem 0.4rem; max-width: 16rem; }
-.caravan__summary { display: grid; gap: 0.4rem; }
-.caravan__result { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; }
-.caravan__buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.caravan__about { font-size: 0.8rem; color: var(--muted); }
-.caravan__about summary { cursor: pointer; }
-.caravan__about p { max-width: 60rem; margin-top: 0.25rem; }
-
-body.hc .caravan { background: #fff; border-bottom: 3px solid #000; }
-body.hc .caravan__item { border: 2px solid #000; }
-body.hc .caravan__item[aria-pressed="true"] { background: #000; color: #fff; }
-body.hc .caravan__item[aria-pressed="true"] .caravan__clue, body.hc .caravan__item[aria-pressed="true"] .caravan__kind { color: #fff; }
-
-/* on the map */
-.caravan-marker { background: transparent; border: 0; }
-.caravan-marker__dot {
-  display: block; width: 30px; height: 30px; border-radius: 50%; box-sizing: border-box;
-  background: var(--gold); border: 3px solid var(--ink); box-shadow: 0 0 0 4px rgba(194, 162, 78, 0.35), 0 4px 10px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s;
-}
-.caravan-marker__dot::after { content: ""; display: block; width: 8px; height: 8px; margin: 8px auto; border-radius: 50%; background: var(--ink); }
-.caravan-route { stroke-linecap: round; }
-.caravan-reveal { animation: caravan-pulse 1.2s ease-in-out infinite alternate; }
-@keyframes caravan-pulse { from { stroke-opacity: 1; } to { stroke-opacity: 0.35; } }
-.leaflet-container.is-caravan { cursor: crosshair; }
-
 /* "Sözlüğüm" */
 .words { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
 .words__item { display: grid; gap: 0.3rem; align-content: start; padding: 0.6rem 0.75rem; border: 1px solid var(--border-strong); border-radius: 0.55rem; background: #fff; }
@@ -70,20 +12,6 @@ body.hc .caravan__item[aria-pressed="true"] .caravan__clue, body.hc .caravan__it
 .chip-static { font-size: 0.72rem; padding: 0.05rem 0.45rem; border: 1px solid var(--border-strong); border-radius: 999px; color: var(--muted); }
 .words__review { font-size: 0.72rem; font-weight: 700; color: var(--accent); }
 
-@media (max-width: 860px) {
-  .caravan { gap: 0.3rem; padding: 0.4rem 0.75rem 0.5rem; max-height: 44vh; overflow-y: auto; }
-  .caravan__head { gap: 0.2rem 0.6rem; }
-  .caravan__title { font-size: 0.95rem; }
-  .caravan__progress, .caravan__hard { font-size: 0.78rem; }
-  .caravan__head .btn { padding: 0.2rem 0.55rem; font-size: 0.8rem; }
-  /* the names scroll sideways, so the map keeps its height */
-  .caravan__cargo { display: flex; gap: 0.45rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.2rem; }
-  .caravan__cargo li { flex: 0 0 min(80%, 17rem); scroll-snap-align: start; }
-  .caravan__clue { font-size: 0.76rem; }
-  .caravan__feedback { font-size: 0.82rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .caravan-reveal { animation: none; }
-  .caravan-marker__dot { transition: none; }
-}
+/* the menu item that opens the game in a new tab is a link */
+a.menu__item { box-sizing: border-box; text-decoration: none; }
+.menu__badge { margin-left: 0.35rem; padding: 0.05rem 0.4rem; border-radius: 999px; background: var(--gold); color: var(--ink); font-size: 0.68rem; font-weight: 700; vertical-align: 0.1em; }
