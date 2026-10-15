@@ -156,3 +156,14 @@ body.hc.game, body.hc .g-side { background: #fff; }
   .is-walking .cv-camel, .is-walking .cv-guide, .cv-help { animation: none; }
   .cv-train { transition: none; }
 }
+
+/* "Yolculuğunu anlat" on the end screen */
+.g-story { display: grid; gap: 0.45rem; padding: 0.8rem 0.9rem; background: #fbf5e6; border: 1px solid var(--sand-2); border-radius: 0.7rem; }
+.g-story h3 { margin: 0; font-family: var(--serif); font-size: 1.1rem; }
+.g-story p { margin: 0; font-size: 0.9rem; }
+.g-story__route { font-size: 0.85rem; }
+.g-story__questions { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.15rem; font-size: 0.88rem; }
+.g-story__label { font-weight: 700; font-size: 0.88rem; }
+.g-story textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 0.95rem; line-height: 1.5; padding: 0.5rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 0.5rem; resize: vertical; background: #fff; }
+.g-story textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+.g-card h2:focus { outline: none; }

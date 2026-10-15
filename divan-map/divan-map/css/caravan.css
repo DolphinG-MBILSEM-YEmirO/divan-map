@@ -15,3 +15,8 @@
 /* the menu item that opens the game in a new tab is a link */
 a.menu__item { box-sizing: border-box; text-decoration: none; }
 .menu__badge { margin-left: 0.35rem; padding: 0.05rem 0.4rem; border-radius: 999px; background: var(--gold); color: var(--ink); font-size: 0.68rem; font-weight: 700; vertical-align: 0.1em; }
+
+/* the player's latest own account of a journey (written on the game's end screen) */
+.words__story { margin-top: 0.9rem; padding: 0.7rem 0.8rem; border-left: 3px solid var(--gold); background: #fbf7ec; }
+.words__story h3 { margin: 0 0 0.2rem; font-family: var(--serif); font-size: 1rem; }
+.words__story p { margin: 0.2rem 0 0; white-space: pre-line; }
