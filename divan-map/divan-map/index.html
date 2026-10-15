@@ -8,27 +8,49 @@
   <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/opening.css">
   <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body>
-  <!-- Opening animation: school identity and project team. Skippable; shown before the cover. -->
-  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-school">
-    <div class="intro__stage">
-      <div class="intro__emblem">
-        <svg class="intro__ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" /></svg>
-        <img src="assets/school-logo.jpg" width="200" height="200" alt="Maltepe Fen Lisesi logosu">
+  <!-- Opening screen: the school animation and the former cover in one view. Plays once per visit, then the site appears. -->
+  <div id="intro" class="opening" role="dialog" aria-modal="true" aria-labelledby="opening-school">
+    <div class="opening__inner">
+      <div class="opening__text">
+        <header class="opening__brand">
+          <div class="opening__emblem">
+            <svg class="opening__ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" /></svg>
+            <img src="assets/school-logo.jpg" width="200" height="200" alt="Maltepe Fen Lisesi logosu">
+          </div>
+          <div>
+            <p class="opening__eyebrow">Lise Öğrencileri Araştırma Projesi · Prototip sürüm</p>
+            <h1 id="opening-school" class="opening__school">Maltepe Fen Lisesi</h1>
+          </div>
+        </header>
+        <div class="opening__rule" aria-hidden="true"></div>
+        <h2 class="opening__title">Dîvânu Lugâti't-Türk Haritası</h2>
+        <p class="opening__lead">Kâşgarlı Mahmud'un 11. yüzyılda yazdığı eserdeki dünya haritasını, kaynakları ve belirsizlik düzeyleriyle birlikte okumak için hazırlanmış etkileşimli ortam.</p>
+        <dl class="opening__team">
+          <div><dt>Danışman</dt><dd>Sevil Orhan</dd></div>
+          <div><dt>Öğrenci</dt><dd>Yunus Emir OKUMUŞ</dd></div>
+        </dl>
+        <ul class="opening__legend" aria-label="Konum simgeleri">
+          <li><span class="mk mk--sample mk--precise" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Kesin</span></li>
+          <li><span class="mk mk--sample mk--approximate" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Yaklaşık</span></li>
+          <li><span class="mk mk--sample mk--disputed" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Tartışmalı</span></li>
+          <li><span class="mk mk--sample mk--schematic" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Şematik</span></li>
+        </ul>
+        <p class="opening__note">Bu harita ölçekli ve koordinatlı değildir. Hiçbir yer veya sınır kesin değildir; her kaydın kaynağı ve güven düzeyi gösterilir. Bu sürümdeki kayıtlar örnek içeriktir.</p>
+        <div class="opening__actions">
+          <button type="button" id="intro-open" class="btn btn--cover" data-intro-close>Haritayı aç <svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
       </div>
-      <p class="intro__eyebrow">Araştırma projesi</p>
-      <h1 id="intro-school" class="intro__school">Maltepe Fen Lisesi</h1>
-      <div class="intro__rule" aria-hidden="true"></div>
-      <p class="intro__project">Dîvânu Lugâti’t-Türk Haritası’nın<br>Etkileşimli Dijital Ortama Aktarılması</p>
-      <dl class="intro__team">
-        <div><dt>Danışman</dt><dd>Sevil Orhan</dd></div>
-        <div><dt>Öğrenci</dt><dd>Yunus Emir OKUMUŞ</dd></div>
-      </dl>
-      <p class="intro__motto">Türk dilinin ilk büyük sözlüğünün haritasını,<br>yeni nesil için yeniden okunur kılıyoruz.</p>
+      <figure class="opening__figure">
+        <img src="assets/original-map.jpg" width="741" height="670" alt="Dîvânu Lugâti't-Türk'teki dairesel dünya haritasının bir kopyası">
+        <figcaption>Özgün harita (Wikimedia Commons, PD-old; düşük çözünürlüklü kopya)</figcaption>
+      </figure>
+      <p class="opening__motto">Türk dilinin ilk büyük sözlüğünün haritasını,<br>yeni nesil için yeniden okunur kılıyoruz.</p>
     </div>
-    <button type="button" id="intro-skip" class="intro__skip">Geç <span aria-hidden="true">›</span></button>
+    <button type="button" id="intro-skip" class="opening__skip" data-intro-close>Geç <span aria-hidden="true">›</span></button>
   </div>
   <a class="skip-link" href="#maps">Haritaya geç</a>
 
@@ -231,33 +253,6 @@
       <p class="assistant__foot"><button type="button" class="link-btn" id="assistant-clear">Sohbeti temizle</button> · Yapay zekâ yanıtları kaynak yerine geçmez.</p>
     </section>
   </aside>
-
-  <!-- Welcome -->
-  <dialog id="dlg-welcome" class="cover" aria-labelledby="welcome-title">
-    <div class="cover__inner">
-      <div class="cover__text">
-        <p class="cover__eyebrow">Lise Öğrencileri Araştırma Projesi · Prototip sürüm</p>
-        <h2 id="welcome-title">Dîvânu Lugâti't-Türk Haritası</h2>
-        <p class="cover__rule" aria-hidden="true"></p>
-        <p class="cover__lead">Kâşgarlı Mahmud'un 11. yüzyılda yazdığı eserdeki dünya haritasını, kaynakları ve belirsizlik düzeyleriyle birlikte okumak için hazırlanmış etkileşimli ortam.</p>
-        <ul class="cover__legend" aria-label="Konum simgeleri">
-          <li><span class="mk mk--sample mk--precise" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Kesin</span></li>
-          <li><span class="mk mk--sample mk--approximate" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Yaklaşık</span></li>
-          <li><span class="mk mk--sample mk--disputed" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Tartışmalı</span></li>
-          <li><span class="mk mk--sample mk--schematic" style="--c: var(--c-place)" aria-hidden="true"><span class="mk__glyph">Y</span></span><span>Şematik</span></li>
-        </ul>
-        <p class="cover__note">Bu harita ölçekli ve koordinatlı değildir. Hiçbir yer veya sınır kesin değildir; her kaydın kaynağı ve güven düzeyi gösterilir. Bu sürümdeki kayıtlar örnek içeriktir.</p>
-        <div class="cover__actions">
-          <button type="button" class="btn btn--cover" data-close-dialog autofocus>Haritayı aç <svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-          <button type="button" class="btn btn--tool-dark" data-open-dialog="dlg-help" aria-label="Harita nasıl okunur?" data-tip="Harita nasıl okunur?"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9.2a3 3 0 0 1 5.8 1c0 2-2.9 2.6-2.9 4.3"/><path d="M12 17.6h.01"/></svg></button>
-        </div>
-      </div>
-      <figure class="cover__figure">
-        <img src="assets/original-map.jpg" width="741" height="670" alt="Dîvânu Lugâti't-Türk'teki dairesel dünya haritasının bir kopyası">
-        <figcaption>Özgün harita (Wikimedia Commons, PD-old; düşük çözünürlüklü kopya)</figcaption>
-      </figure>
-    </div>
-  </dialog>
 
   <!-- Help / legend -->
   <dialog id="dlg-help" aria-labelledby="help-title">
