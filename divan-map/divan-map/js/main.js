@@ -645,8 +645,7 @@ async function boot() {
   applyLayout(); // fit the freshly created maps
   refresh();
 
-  await playIntro(); // opening animation, skippable
-  openDialog('dlg-welcome'); // the cover is shown on every visit
+  await playIntro(); // opening screen (animation and cover in one view); the site appears directly after it
 }
 
 boot();
