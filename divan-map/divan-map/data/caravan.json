@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "title": "Kâşgarlı'nın Kervanı",
+  "notice": "Oyunda haritadaki yer adları kullanılır; Dîvân'ın sözlük kelimeleri henüz eklenmedi. İpuçları, haritanın açıklama kartlarındaki bilgilerin kısaltılmış hâlidir ve yeni bilgi içermez. Ekip tarafından henüz gözden geçirilmedi.",
+  "reviewed": false,
+  "start": "kasgar",
+  "journeyLength": 8,
+  "capacity": 3,
+  "stops": [
+    { "id": "balasagun", "clue": "Haritanın merkezindeki şehir; diğer şehirler ve yer adları bu şehre göre konumlandırılmıştır." },
+    { "id": "besbalik", "clue": "Uygurların beş şehri olarak anılan yer; monografi onu haritanın ortasındaki Türk şehirleri arasında sayar." },
+    { "id": "barsgan", "clue": "Kâşgarlı'nın babasının şehri olarak geçen yer; Gömeç onu Issık Köl'ün güneydoğusunda gösterir." },
+    { "id": "hoten", "clue": "Tarım'ın kollarından birinin kenarında kurulmuş şehir; Yarkend'in güneydoğusunda gösterilir." },
+    { "id": "yarkend", "clue": "Gömeç'e göre Hoten bu şehrin güneydoğusundadır." },
+    { "id": "kuca", "clue": "Gömeç'e göre Hoten ile bu yer arasında 15 günlük mesafe vardır." },
+    { "id": "taraz", "clue": "Gömeç'e göre Kâşgarlı'nın babasının şehri Barsgan bu yere yakındır." },
+    { "id": "cabarka", "clue": "Doğuda bir ada olarak gösterilen yer; araştırmacılar bunu Japonya olarak yorumlar." },
+    { "id": "serendib", "clue": "Seylan olarak bilinen ada; monografiye göre güneyindeki kırmızı nokta Âdem Tepesi ile özdeşleştirilir." },
+    { "id": "karacuk-dagi", "clue": "Haritada adı verilen yalnızca iki dağdan biri; aynı ad, destanda Oğuz Han'ın merkezi sayılan yer için de geçer." },
+    { "id": "abisgun-denizi", "clue": "Hazar Denizi'nin Divan'daki adı." },
+    { "id": "etil-irmagi", "clue": "Araştırmacıların Volga Nehri ile eşleştirdiği ırmak; monografiye göre Kıpçaklar bu ırmağın kuzey sınırları yakınında yaşar." },
+    { "id": "ila-irmagi", "clue": "Modern karşılığı olarak İli Nehri önerilen ırmak." },
+    { "id": "ceyhun", "clue": "Monografinin Amuderya ile eşleştirdiği ırmak adı." },
+    { "id": "bulgar", "clue": "Monografiye göre bugünkü bir Balkan ülkesine değil, büyük olasılıkla Volga boyundaki bir halka işaret eden ad." },
+    { "id": "rus", "clue": "Monografiye göre ülkesi haritada kuzeyde gösterilen halk." },
+    { "id": "magrip", "clue": "Araştırmacıların İspanya (İber Yarımadası) ile eşleştirdiği yer; Ormanoğlu ve arkadaşlarına göre haritanın güneybatısında gösterilir." },
+    { "id": "uygur-ulkesi", "clue": "Divan'a göre ayrı bir ağzı ve ayrı bir yazısı olan, hanının mührü anlatılan ülke." },
+    { "id": "alevi-sehri", "clue": "Bir makaleye göre kuzeyinde Câfu, batısında Kadınlar Şehri, güneydoğusunda Beşbalık bulunan yer." },
+    { "id": "cafu", "clue": "Alevi Şehri hakkındaki makalede, o şehrin kuzeyindeki yer olarak anılır." },
+    { "id": "kadinlar-sehri", "clue": "Alevi Şehri hakkındaki makalede, o şehrin batısındaki yer olarak anılır." },
+    { "id": "kipcak-meskeni", "clue": "\"Meskeni\" sözü bir topluluğun oturduğu yeri anlatır; bu topluluğun yerleşim alanının İtil boylarına kadar uzandığı belirtilir." }
+  ]
+}
