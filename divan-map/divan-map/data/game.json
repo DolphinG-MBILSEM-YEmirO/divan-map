@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "title": "Kâşgarlı'nın Kervanı",
+  "notice": "Bu bir öğrenme oyunudur. Karakterler ve yolculuk olayları kurgudur; tarihî bilgi değildir. Yerlerle ilgili ipuçları haritanın kaynaklı açıklama kartlarından alınmıştır.",
+  "settings": {
+    "journeyLength": 8,
+    "capacity": 3,
+    "waterStart": 10,
+    "waterMax": 10,
+    "pixelsPerWater": 380,
+    "eventChance": 0.6,
+    "refillByKind": { "place": 1, "river": 2, "water": 2 }
+  },
+  "characters": {
+    "leader": { "name": "Kervanbaşı Bilge", "role": "Yolu ve yükü yönetir.", "initial": "B", "color": "#8f2d20" },
+    "scribe": { "name": "Kâtip Ayaz", "role": "Teslim edilen adları deftere yazar, ipucu verir.", "initial": "A", "color": "#1b5e8c" },
+    "driver": { "name": "Deveci Tarkan", "role": "Develeri ve suyu bekler, yoldaki olayları haber verir.", "initial": "T", "color": "#8a4b00" }
+  },
+  "lines": {
+    "intro": [
+      { "who": "leader", "text": "Hoş geldin yolcu. Kervanımız Kaşgar'dan yola çıkıyor. Yükümüz yer adları: her birini haritada ait olduğu yere götüreceğiz." },
+      { "who": "scribe", "text": "Her yükün yanında bir ipucu var. Teslim ettiğin her adı defterime yazarım; sonra Sözlüğüm'de bulursun." },
+      { "who": "driver", "text": "Develer yürüdükçe su azalır. Yer adı yazılı konaklarda ve ırmak kıyılarında suyu tazeleriz. Su biterse kervan mola verir." }
+    ],
+    "pick": { "who": "leader", "text": "Bir yük seç, sonra haritada o adın yazılı olduğu yere tıkla." },
+    "wrongFirst": { "who": "scribe", "text": "Orası değil. {there} Aradığın yer buranın {direction} yönünde. Yönleri haritanın kenarındaki Doğu, Kuzey, Batı ve Güney yazılarından oku." },
+    "wrongSecond": { "who": "scribe", "text": "{there} Yeri haritada altın çerçeveyle işaretledim; çerçeveye tıklayarak teslim et. Bu adı tekrar listesine aldım." },
+    "travel": { "who": "driver", "text": "Develer yola koyuldu: {to} yönüne gidiyoruz." },
+    "arrive": { "who": "scribe", "text": "{to} teslim edildi. Deftere yazdım: “{clue}”" },
+    "refillCity": { "who": "driver", "text": "{to} yakınındaki konakta su tulumlarını doldurduk (+{amount} su)." },
+    "refillWater": { "who": "driver", "text": "{to} kıyısında develer su içti (+{amount} su)." },
+    "equivalent": { "who": "scribe", "text": "Araştırmacılar bu ad için şu günümüz karşılığını önerir: {modern}. Bu bir öneridir; kesin konum değildir." },
+    "thirsty": { "who": "driver", "text": "Su bitti. Kervan en yakın konakta mola veriyor; yolculuk burada sona erdi." },
+    "finish": { "who": "leader", "text": "Bütün yük teslim edildi. İyi yolculuktu!" }
+  },
+  "events": [
+    { "id": "sandstorm", "title": "Kum fırtınası", "who": "driver", "text": "Ufukta kum fırtınası var! Yolu kaybetmemek için kâtibin sorusunu doğru yanıtla.", "question": "map", "right": { "water": 0, "text": "Doğru yanıt kervanı yolda tuttu; su kaybı olmadı." }, "wrong": { "water": -2, "text": "Kervan yolunu şaşırdı ve 2 ölçek su harcadı." } },
+    { "id": "crossroads", "title": "Yol ayrımı", "who": "leader", "text": "Önümüzde bir yol ayrımı var. Sıradaki yüküne hangi yönden gidilir?", "question": "direction", "right": { "water": 1, "text": "Kısa yolu buldun; develer dinlendi (+1 su)." }, "wrong": { "water": -1, "text": "Uzun yoldan dolaştık (−1 su)." } },
+    { "id": "merchant", "title": "Yolda bir tüccar", "who": "scribe", "text": "Yolda karşılaştığımız tüccar, ipucunu çözene su vereceğini söylüyor.", "question": "place", "right": { "water": 2, "text": "Tüccar sözünü tuttu (+2 su)." }, "wrong": { "water": 0, "text": "Tüccar başını salladı ve yoluna devam etti." } },
+    { "id": "well", "title": "Yol kenarında kuyu", "who": "driver", "text": "Yol kenarında bir kuyu bulduk. Develer su içiyor.", "question": null, "right": { "water": 2, "text": "Kuyu sayesinde +2 su." } },
+    { "id": "tired-camels", "title": "Yorgun develer", "who": "driver", "text": "Develer yoruldu. Mola verirken haritadaki bir işaretin anlamını hatırlayalım.", "question": "map", "right": { "water": 0, "text": "Kısa bir moladan sonra yola devam." }, "wrong": { "water": -1, "text": "Mola uzadı (−1 su)." } }
+  ],
+  "mapQuestions": [
+    { "id": "mq-red", "classId": "mountain-line", "prompt": "Bu haritada kırmızı çizgiler çoğunlukla neyi gösterir?", "answer": "Dağları ve tepeleri", "wrong": ["Irmakları", "Kervan yollarını", "Kumlukları"], "explanation": "Kaynaklara göre kırmızı çizgiler dağları ve tepeleri gösterir. Haritanın güneyindeki tabloda ise kırmızı çizgiler ülke ve bölge sınırı olarak okunur (monografi)." },
+    { "id": "mq-blue", "classId": "river-line", "prompt": "Haritadaki mavi çizgiler neyi gösterir?", "answer": "Irmakları", "wrong": ["Dağları", "Ülke sınırlarını", "Kervan yollarını"], "explanation": "Haritada ırmaklar mavi çizgiyle gösterilir; Seyhun, Ceyhun, İtil ve İla gibi ırmak adları yazılıdır." },
+    { "id": "mq-dot", "classId": "settlement-dot", "prompt": "Haritadaki içi sarı küçük daireler neyi gösterir?", "answer": "Şehirleri ve yerleşim yerlerini", "wrong": ["Kuyuları", "Dağ zirvelerini", "Adaları"], "explanation": "Şehirler ve yerleşim yerleri içi sarı, çerçevesi siyah küçük dairelerle işaretlenmiştir; bazılarının yanına ad yazılmamıştır." },
+    { "id": "mq-sand", "classId": "sand-fill", "prompt": "Haritada açık sarı renkli alanlar neyi gösterir?", "answer": "Kumlukları ve çölleri", "wrong": ["Ekili tarlaları", "Denizleri", "Ormanları"], "explanation": "Kaynaklara göre sarı renk kumlukları ve çölleri gösterir." },
+    { "id": "mq-sea", "classId": "sea-fill", "prompt": "Bu çizimde turkuaz alanlar neyi gösterir?", "answer": "Denizleri ve gölleri", "wrong": ["Kumlukları", "Dağları", "Şehirleri"], "explanation": "Kaynaklara göre denizler yeşil renkle gösterilir; bu Türkçe etiketli çizimde yeşil yerine turkuaz kullanılmıştır." },
+    { "id": "mq-ring", "classId": "ocean-ring", "prompt": "Haritanın en dışındaki halka neyi simgeler?", "answer": "Dünyayı çevreleyen denizi", "wrong": ["Bir şehir surunu", "Çölün sınırını", "Kervan yolunu"], "explanation": "En dıştaki halka, dünyayı çevreleyen denizi (okyanusu) simgeler; bu öğe İslam dünyası haritalarında sık görülür (monografi)." },
+    { "id": "mq-scale", "classId": "empty-land", "prompt": "Haritada iki yer arasındaki boşluğun uzunluğu gerçek mesafeyi gösterir mi?", "answer": "Hayır, harita ölçeksiz ve şematiktir", "wrong": ["Evet, her santim bir günlük yoldur", "Evet, ama yalnızca denizlerde", "Yalnızca şehirler arasında gösterir"], "explanation": "Harita ölçeksiz ve şematiktir: boşlukların uzunluğu gerçek mesafeyi göstermez." }
+  ],
+  "divanWords": []
+}
