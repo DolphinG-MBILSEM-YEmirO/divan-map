@@ -193,8 +193,69 @@ function validateAnnotations(data, sourceIds, equivalentIds, redraw) {
   });
 }
 
+const GEO_TYPES = new Set(['box', 'circle', 'line', 'lines']);
+
+/** Shapes of the findings on the modern map (data/modern-geo.json). */
+function validateGeo(geo, equivalents) {
+  if (!geo) return;
+  const equivalentById = new Map((equivalents?.records ?? []).map((r) => [r.id, r]));
+  const groups = new Set(Object.keys(geo.groups ?? {}));
+  if (!geo.geometryNote || !geo.notice) fail('modern-geo.json: "notice" and "geometryNote" are required (shapes must be described as approximate)');
+  const seen = new Set();
+  const point = (p, where) => { if (!isLatLng(p)) fail(`${where}: bad [lat, lng] ${JSON.stringify(p)}`); };
+  for (const f of geo.features ?? []) {
+    const where = `modern-geo.json ${f.equivalentId}`;
+    const record = equivalentById.get(f.equivalentId);
+    if (!record) { fail(`${where}: unknown equivalentId`); continue; }
+    if (seen.has(f.equivalentId)) fail(`${where}: duplicate feature`);
+    seen.add(f.equivalentId);
+    if (record.status === 'unidentified') fail(`${where}: an unidentified place must not be drawn`);
+    if (!groups.has(f.group)) fail(`${where}: unknown group "${f.group}"`);
+    if (!f.label) fail(`${where}: no label`);
+    if (!f.geometryNote) fail(`${where}: geometryNote is required (say what the shape is and is not)`);
+    const g = f.geometry ?? {};
+    if (!GEO_TYPES.has(g.type)) { fail(`${where}: unknown geometry type "${g.type}"`); continue; }
+    if (g.type === 'box') { if (!Array.isArray(g.bounds) || g.bounds.length !== 2) fail(`${where}: box needs two corners`); else g.bounds.forEach((p) => point(p, where)); }
+    if (g.type === 'circle') { point(g.center, where); if (!(g.radius_km > 0)) fail(`${where}: circle needs a positive radius_km`); }
+    if (g.type === 'line') { if ((g.points ?? []).length < 2) fail(`${where}: line needs at least two points`); (g.points ?? []).forEach((p) => point(p, where)); }
+    if (g.type === 'lines') { if (!(g.lines ?? []).length) fail(`${where}: lines needs at least one line`); (g.lines ?? []).flat().forEach((p) => point(p, where)); }
+  }
+  for (const id of Object.keys(geo.notPlotted ?? {})) {
+    if (!equivalentById.has(id)) fail(`modern-geo.json notPlotted: unknown id "${id}"`);
+    if (seen.has(id)) fail(`modern-geo.json: "${id}" is both drawn and listed as not drawn`);
+  }
+  for (const r of equivalents?.records ?? []) {
+    if (!seen.has(r.id) && !(r.id in (geo.notPlotted ?? {}))) warn(`modern-geo.json: equivalent "${r.id}" is neither drawn nor listed as not drawn`);
+  }
+}
+
+/** The caravan game (data/caravan.json): every stop must be a sourced card, and a clue must not give the name away. */
+function validateCaravan(caravan, annotations) {
+  if (!caravan) return;
+  const byId = new Map((annotations?.annotations ?? []).map((a) => [a.id, a]));
+  const fold = (t) => String(t ?? '').toLocaleLowerCase('tr').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i');
+  const GENERIC = new Set(['irmagi', 'ulkesi', 'diyari', 'diyarlari', 'dagi', 'denizi', 'sehri', 'meskeni', 've', 'bu', 'endulus\'tur']);
+  if (!byId.has(caravan.start)) fail(`caravan.json: start "${caravan.start}" is not a card of map-annotations.json`);
+  if (caravan.reviewed !== true && !/gözden geçirilmedi/.test(caravan.notice ?? '')) fail('caravan.json: unreviewed clues must say so in the notice');
+  const seen = new Set();
+  (caravan.stops ?? []).forEach((stop, i) => {
+    const where = `caravan.json stop #${i + 1} (${stop.id ?? '?'})`;
+    const card = byId.get(stop.id);
+    if (!card) return fail(`${where}: no such card in map-annotations.json`);
+    if (seen.has(stop.id)) fail(`${where}: duplicate stop`);
+    seen.add(stop.id);
+    if (!['sourced', 'partial'].includes(card.status)) fail(`${where}: the card is "${card.status}"; only sourced or partial cards can be stops`);
+    if (!stop.clue || stop.clue.length < 15) fail(`${where}: clue missing or too short`);
+    const clue = fold(stop.clue);
+    for (const word of fold(card.label).split(/[\s:]+/).filter((w) => w.length > 2 && !GENERIC.has(w))) {
+      if (clue.includes(word)) fail(`${where}: the clue contains the name ("${word}")`);
+    }
+  });
+  if ((caravan.stops ?? []).length < (caravan.journeyLength ?? 8)) fail('caravan.json: fewer stops than journeyLength');
+}
+
 async function main() {
-  const [config, places, sources, quiz, instruments, equivalents, annotations] = await Promise.all([
+  const [config, places, sources, quiz, instruments, equivalents, annotations, geo, caravan] = await Promise.all([
     readJson('data/config.json'),
     readJson('data/places.json'),
     readJson('data/sources.json'),
@@ -202,6 +263,8 @@ async function main() {
     readJson('data/research-instruments.json'),
     readJson('data/modern-equivalents.json'),
     readJson('data/map-annotations.json'),
+    readJson('data/modern-geo.json'),
+    readJson('data/caravan.json'),
   ]);
   if (!config || !places || !sources) return finish();
 
@@ -233,7 +296,9 @@ async function main() {
   validateQuiz(quiz);
   validateInstruments(instruments);
   validateEquivalents(equivalents, sourceIds);
+  validateGeo(geo, equivalents);
   validateAnnotations(annotations, sourceIds, new Set((equivalents?.records ?? []).map((r) => r.id)), config.redrawMap);
+  validateCaravan(caravan, annotations);
   finish(places.records?.length ?? 0);
 }
 

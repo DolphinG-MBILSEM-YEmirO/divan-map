@@ -303,6 +303,7 @@ for (let i = 0; i < answers.length; i += 1) {
 check('quiz summary shows 7 / 7', $('quiz-body').textContent.includes('7 / 7 doğru'));
 const stored = JSON.parse(window.localStorage.getItem('dlt:quizResult'));
 check('quiz result stored locally without personal fields', stored && Object.keys(stored).sort().join() === 'date,quizId,score,total');
+$('dlg-quiz').close();
 
 // glossary
 check('glossary lists terms', $('glossary-body').querySelectorAll('dt').length >= 10);
@@ -320,6 +321,41 @@ check('activity judges a pick', fb.textContent.length > 0);
 if (firstIsPrecise) check('wrong pick is not accepted', fb.textContent.includes('Tekrar dene'));
 $('activity-bar').querySelector('[data-activity-stop]').click();
 check('activity can be closed', $('activity-bar').hidden === true);
+
+// "Pekiştir" menu and the caravan game (played with the keyboard list here; map clicks are the same rule)
+check('the "Pekiştir" menu holds the game, both tests, Sözlüğüm and the find-it activity', $('menu-practice-btn').textContent.includes('Pekiştir') && ['btn-caravan', 'btn-quiz', 'btn-review', 'btn-words', 'btn-activity'].every((id) => $('menu-practice').contains($(id))));
+$('btn-activity').click();
+$('btn-caravan').click();
+const game = window.__dlt.caravan;
+check('starting the caravan closes the find-it activity', $('activity-bar').hidden === true);
+check('the caravan panel opens with three names', $('caravan').hidden === false && $('caravan-cargo').querySelectorAll('button').length === 3);
+check('the game is played on the Turkish-labelled redraw, without hover cards', app.views.schematic.base === 'redraw' && !$('map-schematic').classList.contains('is-explainable'));
+check('the caravan and its route are drawn on the map', !!window.document.querySelector('#map-schematic .caravan-marker') && !!window.document.querySelector('#map-schematic .caravan-route'));
+const firstTarget = game.state().selectedId;
+const wrongPlace = game.stops.find((s) => s.id !== firstTarget && !game.state().cargo.includes(s.id)).id;
+const pickBox = $('caravan-pick');
+const deliverByList = (id) => { pickBox.value = id; $('caravan-pick-go').click(); };
+deliverByList(wrongPlace);
+check('a wrong place gives a direction hint in the map\'s own compass', /yönünde/.test($('caravan-feedback').textContent) && game.state().attempts === 1);
+deliverByList(wrongPlace);
+check('a second wrong try outlines the place and offers its card', !!window.document.querySelector('#map-schematic .caravan-reveal') && $('caravan-card').hidden === false);
+check('a place that needed help goes to the review list', JSON.parse(window.localStorage.getItem('dlt:caravanReview')).includes(firstTarget));
+deliverByList(firstTarget);
+check('the right place is delivered and a new name is loaded', game.state().delivered[0] === firstTarget && game.state().cargo.length === 3 && !game.state().cargo.includes(firstTarget));
+check('a delivered name goes to Sözlüğüm', JSON.parse(window.localStorage.getItem('dlt:caravanWords')).includes(firstTarget));
+for (let i = 1; i < 8; i += 1) deliverByList(game.state().selectedId);
+check('eight deliveries end the journey with a summary', !game.isRunning() && $('caravan').textContent.includes('Yolculuk bitti: 8 teslim, 7 tanesi ilk denemede'));
+check('hover cards come back after the journey', $('map-schematic').classList.contains('is-explainable'));
+$('btn-words').click();
+check('Sözlüğüm lists the eight names', $('words-body').querySelectorAll('.words__item').length === 8);
+$('dlg-words').close();
+$('btn-review').click();
+check('the review quiz starts with the place that needed help', $('review-body').textContent.includes(game.stops.find((s) => s.id === firstTarget).clue));
+$('dlg-review').close();
+$('caravan-stop').click();
+check('closing the panel removes the route from the map', $('caravan').hidden === true && !window.document.querySelector('#map-schematic .caravan-route'));
+const quizKept = JSON.parse(window.localStorage.getItem('dlt:quizResult'));
+check('the review quiz does not overwrite the mini test result', quizKept && quizKept.quizId === 'map-reading-basics-v0');
 
 // modern equivalents section
 check('equivalents table has rows', $('where-body').querySelectorAll('tbody tr').length >= 10);
