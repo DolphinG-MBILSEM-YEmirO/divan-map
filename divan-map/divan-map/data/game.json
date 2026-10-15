@@ -49,5 +49,17 @@
     { "id": "mq-ring", "classId": "ocean-ring", "prompt": "Haritanın en dışındaki halka neyi simgeler?", "answer": "Dünyayı çevreleyen denizi", "wrong": ["Bir şehir surunu", "Çölün sınırını", "Kervan yolunu"], "explanation": "En dıştaki halka, dünyayı çevreleyen denizi (okyanusu) simgeler; bu öğe İslam dünyası haritalarında sık görülür (monografi)." },
     { "id": "mq-scale", "classId": "empty-land", "prompt": "Haritada iki yer arasındaki boşluğun uzunluğu gerçek mesafeyi gösterir mi?", "answer": "Hayır, harita ölçeksiz ve şematiktir", "wrong": ["Evet, her santim bir günlük yoldur", "Evet, ama yalnızca denizlerde", "Yalnızca şehirler arasında gösterir"], "explanation": "Harita ölçeksiz ve şematiktir: boşlukların uzunluğu gerçek mesafeyi göstermez." }
   ],
+  "story": {
+    "title": "Yolculuğunu anlat",
+    "lead": "Şimdi kervanın yolculuğunu kendi cümlelerinle anlat. Aşağıdaki rota ve sorular sana yol gösterir.",
+    "questions": [
+      "Kervan nereden yola çıktı, sırasıyla hangi yerlere uğradı?",
+      "Yolda neler oldu, suyu nasıl idare ettin?",
+      "Haritada bir yeri bulurken hangi işaretlerden (renkler, çizgiler, yön yazıları) yararlandın?",
+      "Uğradığın yerlerden biri hakkında kartlarda ne öğrendin?"
+    ],
+    "reminder": "Yoldaki olaylar ve karakterler kurgudur; yerlerle ilgili bilgileri açıklama kartlarından kontrol et.",
+    "privacy": "Yazdığın metin yalnızca bu cihazda kalır. Adını, okulunu ya da başka kişisel bilgini yazma."
+  },
   "divanWords": []
 }
