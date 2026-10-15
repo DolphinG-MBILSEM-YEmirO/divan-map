@@ -1,5 +1,7 @@
 # Araştırma taslağı (TÜBİTAK 2204-A, 2027 rehberine göre)
 
+> Not (2026-10-15): Proje artık TÜBİTAK 2204-A için değil, TEKNOFEST için hazırlanıyor. Bu taslak, 2204-A rehberine göre yazıldığı hâliyle başvuru amacıyla saklanıyor; TEKNOFEST şartnamesine göre yeniden gözden geçirilmeli.
+
 **Durum: TASLAK.** Hiçbir veri toplanmadı. Bu belgede sonuç, örneklem büyüklüğü veya başarı iddiası yoktur.
 Rehber dosyasının adı "onaya sunulan" olduğundan 2027 çağrı metni ve tarihleri kesinleşince yeniden kontrol edilmelidir.
 Sayfa numaraları rehberdeki basılı numaralardır.
