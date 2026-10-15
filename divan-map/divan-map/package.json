@@ -2,7 +2,7 @@
   "name": "divanu-lugati-t-turk-map",
   "version": "0.1.0",
   "private": true,
-  "description": "Interactive prototype of the Divanu Lugati't-Turk map for a TUBITAK 2204-A research project.",
+  "description": "Interactive prototype of the Divanu Lugati't-Turk map for a TEKNOFEST project.",
   "type": "module",
   "scripts": {
     "validate": "node tools/validate-data.mjs",

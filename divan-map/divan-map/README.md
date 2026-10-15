@@ -1,6 +1,6 @@
 # Dîvânu Lugâti't-Türk Haritası (prototip)
 
-Interactive map prototype for the TÜBİTAK 2204-A research project
+Interactive map prototype for a TEKNOFEST project (earlier planned as a TÜBİTAK 2204-A research project)
 "Dîvânu Lugâti't-Türk Haritasının Etkileşimli Dijital Ortama Aktarılması ve
 Öğrencilerin Tarihî Harita Okuryazarlığına Katkısı".
 
