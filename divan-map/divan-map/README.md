@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, tests the assistant's server logic and the side panel, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic, the side panel and the opening screen, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -40,6 +40,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/cardparts.js` | Parts shared by the cards of both maps: source list and the placement beside the pointer |
 | `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
 | `js/assistant.js` | Opt-in AI assistant panel (picks the matching cards, calls `/api/chat`; holds no key) |
+| `js/intro.js`, `css/opening.css` | Opening screen: the school animation and the former cover in one view, shown once per visit; the site appears directly after it |
 | `js/sidebar.js`, `css/sidebar.css` | Collapsible side panel: folds into a slim rail of shortcuts (desktop), remembered on this device; the maps refit while it moves |
 | `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
 | `vercel.json` | Function settings (answer time limit) |
@@ -50,7 +51,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator, proxy test, side panel test and smoke test |
+| `tools/` | Data validator, proxy test, side panel test, opening screen test and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -66,7 +67,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 
 ## Manual checklist (real browser)
 
-- Welcome dialog appears once; "Harita nasıl okunur?" opens the legend.
+- The opening screen plays once per visit (school, title, map picture, "Haritayı aç"), closes by itself after about 15 seconds or with the button, "Geç", a click or Esc, and the map site appears directly (no second cover). "Harita nasıl okunur?" (Öğren menu) opens the legend.
 - Both maps show side by side on desktop; only the original map shows on a phone.
 - Clicking a marker or a list item opens the card; on a phone the card does not cover the whole map.
 - Dashed circle (approximate) and diamond (disputed) markers are distinguishable without colour.
@@ -79,9 +80,9 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 
 Real historical records and the research instruments (pre/post test, usability survey).
 
-## Opening animation
+## Opening screen
 
-`index.html` (`#intro`), `css/styles.css` (opening animation block) and `js/intro.js` show the school logo, school name, project title, advisor and student before the cover. It can be skipped (button, click, Esc/Enter/Space), closes by itself after about 10 seconds, and is shown without movement when the visitor prefers reduced motion. The logo is `assets/school-logo.jpg`.
+The school animation and the former cover are one view: `index.html` (`#intro`), `css/opening.css` and `js/intro.js`. The school logo and name, the project title, the one-line aim, advisor and student, the four location symbols, the note that nothing on the map is exact, the map picture and the motto appear one after another (about 7 seconds). It then stays for reading and closes by itself after about 15 seconds. It can be closed at any time with "Haritayı aç", "Geç", a click anywhere, or Esc/Enter/Space. The map site is shown directly afterwards; there is no separate cover dialog. With reduced motion everything is shown at once and closes after about 8 seconds. The logo is `assets/school-logo.jpg`. `tools/intro-test.mjs` checks every way of closing it and the inert page behind it.
 
 ## Explanation cards on the map
 
@@ -116,7 +117,7 @@ activity switches the pane to the original image automatically.
 ## Top bar
 
 The top bar groups the former icon buttons into four labelled menus (Öğren, Dene, Kaynaklar, Görünüm) plus the
-"Asistan" button. The "Kapak" button was removed (the cover still opens once per visit). Each
+"Asistan" button. The "Kapak" button was removed (the cover is now part of the opening screen). Each
 item has a one-line purpose text. Menus are disclosure buttons: Esc closes them, a click outside closes them, and all
 earlier element ids (`btn-quiz`, `btn-activity`, `btn-present`, `btn-contrast`, ...) are unchanged.
 
