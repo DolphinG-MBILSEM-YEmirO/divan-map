@@ -88,20 +88,27 @@ export function createBoard({ container, config, onClick }) {
     const startTime = performance.now();
     const trail = L.polyline([toLatLng(from), toLatLng(from)], { className: 'cv-route cv-route--live', color: '#8f2d20', weight: 4, dashArray: '2 10', lineCap: 'round', interactive: false }).addTo(map);
     return new Promise((resolve) => {
+      let finished = false;
+      const end = () => {
+        if (finished) return;
+        finished = true;
+        map.removeLayer(trail);
+        done();
+        resolve();
+      };
       const step = (now) => {
+        if (finished) return;
         const t = Math.min(1, (now - startTime) / duration);
         const e = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2; // ease in-out
         const p = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e };
         caravan.setLatLng(toLatLng(p));
         trail.setLatLngs([toLatLng(from), toLatLng(p)]);
         if (t < 1) window.requestAnimationFrame(step);
-        else {
-          map.removeLayer(trail);
-          done();
-          resolve();
-        }
+        else end();
       };
       window.requestAnimationFrame(step);
+      // Browsers pause animation frames in hidden tabs; the caravan still arrives on time.
+      setTimeout(end, duration + 800);
     });
   }
 
