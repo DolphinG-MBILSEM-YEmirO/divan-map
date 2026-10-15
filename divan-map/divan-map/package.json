@@ -7,7 +7,7 @@
   "scripts": {
     "validate": "node tools/validate-data.mjs",
     "serve": "python3 -m http.server 8000",
-    "test": "node tools/validate-data.mjs && node tools/proxy-test.mjs && node tools/sidebar-test.mjs && node tools/smoke-test.mjs"
+    "test": "node tools/validate-data.mjs && node tools/proxy-test.mjs && node tools/sidebar-test.mjs && node tools/intro-test.mjs && node tools/smoke-test.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
