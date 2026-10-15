@@ -19,6 +19,9 @@ import { el } from './text.js';
 
 const $ = (id) => document.getElementById(id);
 const MAX_TALK = 4;
+const STORY_KEY = 'caravanStories'; // the player's own accounts of their journeys, on this device only
+const MAX_STORIES = 10;
+const MAX_STORY_LENGTH = 2000;
 
 async function loadJson(path) {
   const response = await fetch(path);
@@ -56,7 +59,7 @@ async function boot() {
 
   const g = {
     phase: 'intro', water: settings.waterStart, delivered: [], stars: 0, cargo: [], selectedId: null,
-    attempts: 0, position: start.center, used: new Set(), hideNames: false, answers: { right: 0, total: 0 },
+    attempts: 0, position: start.center, used: new Set(), hideNames: false, answers: { right: 0, total: 0 }, happened: [],
   };
 
   const board = createBoard({ container: $('board'), config: data.config, onClick: (point, radius) => judge(point, radius) });
@@ -261,6 +264,7 @@ async function boot() {
 
   function runEvent(event) {
     g.phase = 'event';
+    g.happened.push(event.title);
     say({ who: event.who, text: `${event.title}: ${event.text}` }, {}, { tag: 'Oyun olayı · kurgu' });
     const task = $('task');
     const question = questionFor(event);
@@ -312,7 +316,13 @@ async function boot() {
     const box = $('overlay');
     box.replaceChildren(el('div', { class: 'g-card' }, ...children));
     box.hidden = false;
-    box.querySelector('.btn--primary')?.focus();
+    box.scrollTop = 0;
+    // Focus the first main button; on the long end screen the heading, so it opens at its top.
+    const heading = box.querySelector('h2');
+    if (box.querySelector('.g-story') && heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus();
+    } else box.querySelector('.btn--primary')?.focus();
   }
 
   function showIntro() {
@@ -336,7 +346,7 @@ async function boot() {
 
   function startJourney() {
     $('overlay').hidden = true;
-    Object.assign(g, { water: settings.waterStart, delivered: [], stars: 0, cargo: [], selectedId: null, attempts: 0, position: start.center, used: new Set(), answers: { right: 0, total: 0 } });
+    Object.assign(g, { water: settings.waterStart, delivered: [], stars: 0, cargo: [], selectedId: null, attempts: 0, position: start.center, used: new Set(), answers: { right: 0, total: 0 }, happened: [] });
     board.place(start.center);
     board.fitAll();
     $('talk').replaceChildren();
@@ -368,8 +378,60 @@ async function boot() {
         const stop = stops.find((s) => s.id === id);
         return el('li', {}, el('strong', {}, stop.label), el('span', {}, stop.clue));
       })),
-      el('p', { class: 'g-card__note' }, 'Teslim edilen adlar Sözlüğüm\'e, zorlandığın yerler Pekiştirme testine eklendi. İkisi de haritadaki "Pekiştir" menüsünde; yalnızca bu cihazda saklanır.'),
+      storySection(),
+      el('p', { class: 'g-card__note' }, 'Teslim edilen yer adları Sözlüğüm\'e, zorlandığın yerler Pekiştirme testine eklendi. İkisi de haritadaki "Pekiştir" menüsünde; yalnızca bu cihazda saklanır.'),
       el('div', { class: 'g-card__buttons' }, again, close, el('a', { class: 'btn', href: 'index.html' }, 'Haritaya dön')),
+    );
+  }
+
+  /** The journey's events once each, with a count when one happened more than once. */
+  function happenedText() {
+    const counts = new Map();
+    g.happened.forEach((title) => counts.set(title, (counts.get(title) ?? 0) + 1));
+    return [...counts].map(([title, n]) => (n > 1 ? `${title} (${n} kez)` : title)).join(', ');
+  }
+
+  /** "Yolculuğunu anlat": the route and what happened, guiding questions, and a box for the player's own account. */
+  function storySection() {
+    const story = data.game.story;
+    if (!story) return null;
+    const route = [start.label, ...g.delivered.map((id) => stops.find((s) => s.id === id).label)];
+    const box = el('textarea', { id: 'story-text', rows: '6', maxlength: String(MAX_STORY_LENGTH), 'aria-describedby': 'story-privacy' });
+    const status = el('p', { class: 'hint', role: 'status' });
+    const save = el('button', { type: 'button', class: 'btn btn--primary' }, 'Anlatımımı kaydet');
+    const copy = el('button', { type: 'button', class: 'btn' }, 'Metni kopyala');
+    save.addEventListener('click', () => {
+      const text = box.value.trim();
+      if (text.length < 20) {
+        status.textContent = 'Biraz daha yaz: en az bir iki cümle.';
+        return;
+      }
+      const list = readLocal(STORY_KEY, []);
+      const entry = { date: new Date().toISOString().slice(0, 10), route, text };
+      const saved = writeLocal(STORY_KEY, [entry, ...(Array.isArray(list) ? list : [])].slice(0, MAX_STORIES));
+      status.textContent = saved ? 'Kaydedildi (yalnızca bu cihazda). Haritadaki Sözlüğüm\'de de görünür.' : 'Bu tarayıcıda kaydedilemedi; metni kopyalayabilirsin.';
+    });
+    copy.addEventListener('click', async () => {
+      const text = `${story.title}\nRota: ${route.join(' → ')}\n\n${box.value.trim()}`;
+      try {
+        await navigator.clipboard.writeText(text);
+        status.textContent = 'Metin kopyalandı.';
+      } catch {
+        box.select();
+        status.textContent = 'Kopyalanamadı; metni seçip kendin kopyalayabilirsin.';
+      }
+    });
+    return el('section', { class: 'g-story', 'aria-labelledby': 'story-title' },
+      el('h3', { id: 'story-title' }, story.title),
+      el('p', {}, story.lead),
+      el('p', { class: 'g-story__route' }, el('strong', {}, 'Rota: '), route.join(' → ')),
+      g.happened.length ? el('p', { class: 'g-story__route' }, el('strong', {}, 'Yolda: '), happenedText(), ' (kurgu)') : null,
+      el('ul', { class: 'g-story__questions' }, ...story.questions.map((q) => el('li', {}, q))),
+      el('label', { for: 'story-text', class: 'g-story__label' }, 'Anlatımın'),
+      box,
+      el('p', { class: 'hint', id: 'story-privacy' }, `${story.privacy} ${story.reminder}`),
+      el('div', { class: 'g-card__buttons' }, save, copy),
+      status,
     );
   }
 

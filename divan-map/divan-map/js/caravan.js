@@ -12,6 +12,7 @@ import { readLocal, writeLocal } from './storage.js';
 
 export const WORDS_KEY = 'caravanWords';
 export const REVIEW_KEY = 'caravanReview';
+export const STORY_KEY = 'caravanStories';
 const PLAYABLE_STATUS = new Set(['sourced', 'partial']);
 const CLICK_TOLERANCE_PX = 10;
 const DIRECTION_WORDS = ['kuzey', 'kuzeydoğu', 'doğu', 'güneydoğu', 'güney', 'güneybatı', 'batı', 'kuzeybatı'];
@@ -151,7 +152,7 @@ export function renderWordsList(container, stops, { onShow }) {
   const words = (Array.isArray(ids) ? ids : []).map((id) => byId.get(id)).filter(Boolean);
   container.replaceChildren();
   if (!words.length) {
-    container.append(el('p', {}, 'Henüz kelime toplamadın. "Pekiştir" menüsünden Kâşgarlı\'nın Kervanı\'nı başlat; teslim ettiğin yer adları burada birikir.'));
+    container.append(el('p', {}, 'Henüz yer adı toplamadın. "Pekiştir" menüsünden Kâşgarlı\'nın Kervanı\'nı başlat; teslim ettiğin yer adları burada birikir.'));
     return 0;
   }
   const review = new Set(readLocal(REVIEW_KEY, []));
@@ -171,5 +172,14 @@ export function renderWordsList(container, stops, { onShow }) {
     ));
   }
   container.append(el('p', { class: 'hint' }, `${words.length} / ${stops.length} yer adı toplandı.`), list);
+  const stories = readLocal(STORY_KEY, []);
+  if (Array.isArray(stories) && stories.length) {
+    const last = stories[0];
+    container.append(el('section', { class: 'words__story' },
+      el('h3', {}, 'Son yolculuk anlatın'),
+      el('p', { class: 'hint' }, `${last.date} · Rota: ${(last.route ?? []).join(' → ')}`),
+      el('p', {}, last.text),
+    ));
+  }
   return words.length;
 }
