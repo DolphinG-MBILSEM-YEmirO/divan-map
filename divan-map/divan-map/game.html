@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kâşgarlı'nın Kervanı · Dîvânu Lugâti't-Türk Haritası</title>
+  <meta name="description" content="Dîvânu Lugâti't-Türk haritası üzerinde develi bir kervanla yer adlarını taşıyan öğrenme oyunu.">
+  <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body class="game">
+  <header class="g-top">
+    <a class="g-back" href="index.html">← Haritaya dön</a>
+    <h1 class="g-title">Kâşgarlı'nın Kervanı</h1>
+    <dl class="g-hud" aria-label="Kervanın durumu">
+      <div class="g-hud__item g-hud__item--water"><dt>Su</dt><dd><span class="g-water" id="hud-water" role="meter" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" aria-label="Su"></span><span id="hud-water-text"></span></dd></div>
+      <div class="g-hud__item"><dt>Teslim</dt><dd id="hud-delivered">0 / 8</dd></div>
+      <div class="g-hud__item"><dt>Yıldız</dt><dd id="hud-stars">0 ★</dd></div>
+      <div class="g-hud__item"><dt>Defter</dt><dd id="hud-words">0</dd></div>
+    </dl>
+  </header>
+
+  <main class="g-main">
+    <section class="g-board-wrap" aria-label="Oyun tahtası">
+      <div id="board" class="g-board" role="application" aria-label="Dîvân haritasının Türkçe etiketli çizimi. Seçtiğin yükün yerine tıkla; klavyeyle oynamak için yandaki listeyi kullan."></div>
+      <p class="g-credit" id="board-credit"></p>
+    </section>
+
+    <aside class="g-side" aria-label="Kervan">
+      <ol class="g-talk" id="talk" aria-live="polite" aria-label="Kervandakilerin konuşmaları"></ol>
+      <section class="g-task" id="task" aria-label="Görev"></section>
+      <details class="g-keys" id="keys">
+        <summary>Klavyeyle oyna</summary>
+        <label for="pick">Yeri listeden seç</label>
+        <div class="g-keys__row"><select id="pick"></select><button type="button" class="btn btn--small" id="pick-go">Buraya götür</button></div>
+      </details>
+      <details class="g-notebook">
+        <summary>Kâtibin defteri <span id="notebook-count"></span></summary>
+        <ol id="notebook" class="g-notebook__list"></ol>
+        <p class="hint" id="divan-words"></p>
+      </details>
+      <p class="g-notice" id="notice"></p>
+    </aside>
+  </main>
+
+  <div class="g-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title"></div>
+
+  <noscript><p class="banner banner--status">Bu oyun JavaScript gerektirir.</p></noscript>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>

@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, tests the assistant's server logic, the side panel, the opening screen and the caravan game rules, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic, the side panel, the opening screen, the caravan rules and the game page, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -41,7 +41,8 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
 | `js/assistant.js` | Opt-in AI assistant panel (picks the matching cards, calls `/api/chat`; holds no key) |
 | `js/intro.js`, `css/opening.css` | Opening screen: the school animation and the former cover in one view, shown once per visit; the site appears directly after it |
-| `js/caravan.js`, `css/caravan.css`, `data/caravan.json` | "Kâşgarlı'nın Kervanı" journey game, its review quiz and "Sözlüğüm" (see "Caravan game") |
+| `game.html`, `js/game.js`, `js/game-rules.js`, `js/game-board.js`, `css/game.css`, `data/game.json` | The game page "Kâşgarlı'nın Kervanı" (opens in a new tab; see "Caravan game") |
+| `js/caravan.js`, `css/caravan.css`, `data/caravan.json` | Places and clues of the game, shared helpers, and "Sözlüğüm" / review quiz on the main page |
 | `js/sidebar.js`, `css/sidebar.css` | Collapsible side panel: folds into a slim rail of shortcuts (desktop), remembered on this device; the maps refit while it moves |
 | `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
 | `vercel.json` | Function settings (answer time limit) |
@@ -52,7 +53,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator, proxy test, side panel test, opening screen test, caravan test and smoke test |
+| `tools/` | Data validator, proxy test, side panel test, opening screen test, caravan test, game page test and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -76,7 +77,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 - Turn the network off: a message explains that the modern base map cannot load.
 - Text size buttons and the high-contrast toggle work and are remembered after reload.
 - Side panel: the « button folds it into a rail and both maps grow to fill the space; the rail's icons reopen the panel at search, maps, record types or records; the choice survives a reload. On a phone the panel is still the drawer opened by the layers button.
-- Pekiştir → Kâşgarlı'nın Kervanı: the panel opens under the top bar with three names; a wrong click gives a direction hint, a second one outlines the place; eight deliveries end the journey and the route stays drawn until "Kapat". Sözlüğüm lists the delivered names; Pekiştirme testi starts with the places that needed help.
+- Pekiştir → Kâşgarlı'nın Kervanı opens game.html in a new tab. Start screen with the three fictional characters; the camel caravan walks to each right place (the route is dotted, visited places get numbered flags); water goes down on the way and up at places and rivers; events are marked "Oyun olayı · kurgu"; the end screen lists the delivered names. On a phone the board stays at the top while the talk and the task scroll under it. Back on the map, Sözlüğüm lists the names and Pekiştirme testi starts with the places that needed help.
 
 ## Not in this version
 
@@ -142,13 +143,15 @@ atlas or GIS source before they are quoted in a report. Hovering a card on one m
 
 ## Caravan game
 
-"Pekiştir" (the former "Dene" menu, same element ids) holds the caravan game, the mini test, the review quiz, "Sözlüğüm" and the find-it activity.
+"Pekiştir" (the former "Dene" menu, same element ids) holds the caravan game, the mini test, the review quiz, "Sözlüğüm" and the find-it activity. *Kâşgarlı'nın Kervanı* is its own page, `game.html`, opened in a new tab.
 
-*Kâşgarlı'nın Kervanı* (`js/caravan.js`) is played on the Turkish-labelled redraw. The caravan starts at Kaşgar with three names, each with a clue. The player picks a name and clicks where it is written on the map (or chooses the place from a list: "Klavyeyle oyna"). A right delivery moves the caravan there, extends its dashed route and, if the place has a plotted modern equivalent, highlights it on the present-day map. A first wrong try gives a direction in the map's own compass (computed from the Doğu/Kuzey/Batı/Güney labels, because "up" on this map is not north); a second one outlines the place, offers its card and puts it on the review list. Eight deliveries end a journey. "Adları gizle" hides the names so only the clues are shown. Hover cards are off while a journey runs.
+**How it plays.** The board is the Turkish-labelled redraw (`js/game-board.js`, Leaflet `CRS.Simple`, image pixels as coordinates). A drawn camel caravan starts at Kaşgar with three place names, each with a clue. The player picks one and clicks where it is written (or chooses the place from a list: "Klavyeyle oyna"). The caravan walks there (eased animation, no animation with reduced motion), leaves a dotted route and a numbered flag. Each leg costs water (one unit per 380 image pixels, at least one); places (`kind: place`) give back 1, rivers and seas 2 (a game rule, not history). A first wrong try gives a direction read with the map's own compass labels (Doğu/Kuzey/Batı/Güney; "up" on this map is not north); a second one outlines the place, opens its explanation card in the panel and puts it on the review list. After an arrival a journey event may follow (`data/game.json`: sandstorm, crossroads, merchant, well, tired camels) with a map-reading, direction or place question. Eight deliveries, or an empty water skin, end the journey with a summary and **"Yolculuğunu anlat"**: the route and what happened on the way, four guiding questions (`data/game.json` → `story`) and a box where the student tells the journey in their own words. The account is kept on this device (`dlt:caravanStories`, last ten), can be copied, and the latest one appears under Sözlüğüm on the main page; the box asks for no personal data. On the advisor's advice the game calls what is carried "yer adı", not "kelime".
 
-`data/caravan.json` lists the stops and clues. **Only cards with status `sourced` or `partial` can be stops**, and every clue is a shortened sentence of that card: it adds nothing the card does not say. The clues have not been reviewed by the team yet (`reviewed: false`; the notice says so). `npm run validate` refuses a stop that is not such a card, and a clue that contains the place's own name. For now the "words" are place names on the map; a sourced list of Dîvân words (word, meaning, page) can be added later as another kind of stop.
+**Content and honesty.** The three characters (Kervanbaşı Bilge, Kâtip Ayaz, Deveci Tarkan) and all events are invented; the start screen, every event and the notice say so ("kurgu"). What the game says about a place comes from `data/caravan.json`: **only cards with status `sourced` or `partial` can be stops**, and every clue is a shortened sentence of that card. Map-reading questions restate the sourced colour/symbol classes of `data/map-annotations.json`. Modern equivalents are quoted from `data/modern-equivalents.json` as suggestions, never as positions. The clues have not been reviewed by the team yet (`reviewed: false`). `npm run validate` refuses: a stop that is not such a card, a clue that contains the place's own name, a map question on an unsourced class, an event or line with an unknown speaker, fiction without the "kurgu" notice, and a Dîvân word without a known source and page.
 
-Delivered names (`dlt:caravanWords`) and places to review (`dlt:caravanReview`) stay on this device; "Bu cihazdaki kayıtlı verilerimi sil" removes them. *Pekiştirme testi* builds five "which place does this clue describe?" questions, review places first; a right answer takes a place off the review list. Its result is kept apart from the mini test's.
+**Dîvân words.** `data/game.json` has an empty `divanWords` list. When the team prepares a sourced list (word, meaning, `sources` with page or section), the notebook shows it; until then the game says the section will open later.
+
+**On this device only.** Delivered names (`dlt:caravanWords`) and places to review (`dlt:caravanReview`) are shared with the main page; "Bu cihazdaki kayıtlı verilerimi sil" removes them. On the main page *Sözlüğüm* lists the names and *Pekiştirme testi* builds five "which place does this clue describe?" questions, review places first; a right answer takes a place off the review list. Its result is kept apart from the mini test's.
 
 ## AI assistant
 

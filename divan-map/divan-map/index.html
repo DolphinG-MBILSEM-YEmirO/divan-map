@@ -78,7 +78,7 @@
       <div class="menu" data-menu>
         <button type="button" class="menu__trigger" id="menu-practice-btn" aria-expanded="false" aria-controls="menu-practice"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18h6a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h6"/></svg><span>Pekiştir</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <ul class="menu__panel" id="menu-practice" hidden>
-          <li><button type="button" class="menu__item" id="btn-caravan"><span class="menu__name">Kâşgarlı'nın Kervanı</span><span class="menu__desc">Kervana yüklenen yer adlarını haritada doğru yere götür; yolculuğun rotası çizilir.</span></button></li>
+          <li><a class="menu__item" id="btn-caravan" href="game.html" target="_blank" rel="noopener"><span class="menu__name">Kâşgarlı'nın Kervanı <span class="menu__badge">Oyun · yeni sekme</span></span><span class="menu__desc">Develi kervanla haritada yolculuk: yer adlarını taşı, suyu idare et, yol olaylarında soruları yanıtla.</span></a></li>
           <li><button type="button" class="menu__item" data-open-dialog="dlg-quiz" id="btn-quiz"><span class="menu__name">Mini test</span><span class="menu__desc">Harita okumayı kısa sorularla dene; sonucun yalnızca bu cihazda kalır.</span></button></li>
           <li><button type="button" class="menu__item" data-open-dialog="dlg-review" id="btn-review"><span class="menu__name">Pekiştirme testi</span><span class="menu__desc">Kervan ipuçlarından sorular; önce zorlandığın yerler gelir.</span></button></li>
           <li><button type="button" class="menu__item" data-open-dialog="dlg-words" id="btn-words"><span class="menu__name">Sözlüğüm</span><span class="menu__desc">Yolculuklarda topladığın yer adları; yalnızca bu cihazda saklanır.</span></button></li>
@@ -126,8 +126,6 @@
     <button type="button" class="btn btn--primary" data-activity-next hidden>Sonraki görev</button>
     <button type="button" class="btn" data-activity-stop>Etkinliği kapat</button>
   </section>
-  <!-- "Kâşgarlı'nın Kervanı" journey game: filled by js/caravan.js -->
-  <section id="caravan" class="caravan" aria-labelledby="caravan-title" hidden></section>
 
   <main class="layout" id="layout">
     <aside id="sidebar" class="sidebar" aria-label="Arama, haritalar ve kayıtlar">
