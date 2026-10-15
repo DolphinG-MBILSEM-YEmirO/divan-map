@@ -16,6 +16,7 @@ import { createExplainer } from './explain.js';
 import { renderLabelsList } from './labels-list.js';
 import { createModernLayer } from './modern-layer.js';
 import { createAssistant, forgetStoredKey } from './assistant.js';
+import { createCaravan, buildReviewQuiz, forgetReview, renderWordsList, REVIEW_KEY } from './caravan.js';
 
 const TEXT_SCALES = [100, 115, 130, 150];
 const NARROW_QUERY = window.matchMedia('(max-width: 860px)');
@@ -62,6 +63,7 @@ let activity = null;
 let explainer = null;
 let modernLayer = null;
 let assistant = null;
+let caravan = null;
 let lastAnnotationId = null; // the card the visitor looked at last (context for the assistant)
 const shownOnce = new Set();
 
@@ -192,7 +194,11 @@ function syncBaseUi() {
   $('base-redraw').setAttribute('aria-pressed', String(base === 'redraw'));
   $('base-original').setAttribute('aria-pressed', String(base === 'original'));
   $('base-note').textContent = view.hasRedraw() ? BASE_NOTES[base] : '';
-  explainer?.setActive(base === 'redraw');
+  explainer?.setActive(base === 'redraw' && !caravan?.isRunning());
+  if (base !== 'redraw' && caravan?.isRunning()) {
+    caravan.stop(); // the game is played on the Turkish-labelled redraw only
+    showStatus('Özgün görsele geçildiği için kervan yolculuğu durduruldu. Oyun Türkçe etiketli çizimde oynanır.');
+  }
 
   const { originalMap, redrawMap } = state.config;
   const credit = $('map-credit');
@@ -261,6 +267,74 @@ function wireBaseSwitch() {
   for (const id of ['base-redraw', 'base-original', 'btn-labels-pane']) $(id).hidden = !redrawAvailable;
   $('base-redraw').addEventListener('click', () => chooseBase('redraw'));
   $('base-original').addEventListener('click', () => chooseBase('original'));
+}
+
+// ------------------------------------------------------------- caravan game
+
+/** "Kâşgarlı'nın Kervanı", its review quiz and "Sözlüğüm". Needs the redraw map and data/caravan.json. */
+function wireCaravan(data) {
+  const ids = ['btn-caravan', 'btn-review', 'btn-words'];
+  if (!explainer || !data.caravan) {
+    ids.forEach((id) => { $(id).closest('li').hidden = true; });
+    return;
+  }
+  caravan = createCaravan({
+    view: views.schematic,
+    bar: $('caravan'),
+    data: data.caravan,
+    annotations: explainer.annotations,
+    circle: state.config.redrawMap.circle,
+    onStart: () => {
+      activity?.stop();
+      closeCard();
+      showStatus(null);
+      if (!state.showOriginal) {
+        state.showOriginal = true;
+        dom.layerOriginal.checked = true;
+        applyLayout();
+      }
+      chooseBase('redraw', { remember: false });
+      explainer.setActive(false);
+      explainer.hide();
+      $('base-note').textContent = 'Kervan oyunu: seçtiğin yerin yazısını haritada bul ve tıkla.';
+      modernLayer?.highlight(null);
+      closeSidebarOnNarrow();
+      requestAnimationFrame(() => views.schematic.refreshSize());
+    },
+    onEnd: () => {
+      syncBaseUi(); // hover cards and the pane note come back
+      modernLayer?.highlight(null);
+    },
+    onDelivered: (stop) => {
+      explainer.hide();
+      const shown = Boolean(stop.equivalentId && state.showModern && modernLayer?.has(stop.equivalentId));
+      modernLayer?.highlight(shown ? stop.equivalentId : null);
+      return shown;
+    },
+    onOpenCard: (id) => explainer.focusAnnotation(id),
+    onOpenWords: () => { renderWords(); openDialog('dlg-words'); },
+    onOpenReview: () => { startReview(); openDialog('dlg-review'); },
+  });
+
+  const renderWords = () => renderWordsList($('words-body'), caravan.stops, {
+    onShow: (id) => {
+      $('dlg-words').close();
+      showAnnotation(id);
+    },
+  });
+  const startReview = () => {
+    const quiz = buildReviewQuiz(caravan.stops, readLocal(REVIEW_KEY, []), 5);
+    createQuiz({
+      container: $('review-body'),
+      quiz,
+      storageKey: 'caravanReviewResult',
+      onAnswer: (question, correct) => { if (correct) forgetReview(question.stopId); },
+    }).start();
+  };
+  $('words-notice').textContent = data.caravan.notice ?? '';
+  $('btn-caravan').addEventListener('click', () => caravan.start());
+  $('btn-words').addEventListener('click', renderWords);
+  $('btn-review').addEventListener('click', startReview);
 }
 
 // --------------------------------------------------------------------- layout
@@ -522,7 +596,7 @@ async function boot() {
 
   let data;
   try {
-    const [config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo] = await Promise.all([
+    const [config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo, caravanData] = await Promise.all([
       loadJson('data/config.json'),
       loadJson('data/places.json'),
       loadJson('data/sources.json'),
@@ -532,8 +606,9 @@ async function boot() {
       loadJson('data/modern-equivalents.json'),
       loadJson('data/map-annotations.json'),
       loadJson('data/modern-geo.json'),
+      loadJson('data/caravan.json').catch(() => null), // optional: without it the game is simply hidden
     ]);
-    data = { config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo };
+    data = { config, places, sources, quiz, glossary, instruments, equivalents, annotations, geo, caravan: caravanData };
   } catch (error) {
     console.error(error);
     showFatal(
@@ -633,7 +708,8 @@ async function boot() {
   const research = createResearch({ container: $('research-body'), instruments: data.instruments });
   $('btn-research-test').addEventListener('click', research.start);
   activity = createActivity({ bar: $('activity-bar'), records: state.records });
-  $('btn-activity').addEventListener('click', () => { closeCard(); showOriginalBase(); activity.start(); });
+  $('btn-activity').addEventListener('click', () => { caravan?.stop(); closeCard(); showOriginalBase(); activity.start(); });
+  wireCaravan(data);
 
   renderFilters();
   wireControls();
@@ -651,4 +727,4 @@ async function boot() {
 boot();
 
 // Exposed for tests and debugging only; not part of the interface.
-window.__dlt = { state, views, selectRecord, closeCard, get explainer() { return explainer; }, get modernLayer() { return modernLayer; }, get assistant() { return assistant; } };
+window.__dlt = { state, views, selectRecord, closeCard, get explainer() { return explainer; }, get modernLayer() { return modernLayer; }, get assistant() { return assistant; }, get caravan() { return caravan; } };
