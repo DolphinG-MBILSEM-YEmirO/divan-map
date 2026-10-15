@@ -54,12 +54,13 @@ if (!app) process.exit(1);
 
 check('3 demo records loaded', app.state.records.length === 3);
 check('demo banner visible', $('demo-banner').hidden === false);
-check('intro shows school, advisor and student', !!$('intro') && ['Maltepe Fen Lisesi', 'Sevil Orhan', 'Yunus Emir OKUMUŞ', 'yeni nesil için'].every((t) => $('intro').textContent.includes(t)));
-check('cover waits for the intro', !$('dlg-welcome').hasAttribute('open'));
-$('intro-skip').click();
+check('opening screen shows school, advisor and student', !!$('intro') && ['Maltepe Fen Lisesi', 'Sevil Orhan', 'Yunus Emir OKUMUŞ', 'yeni nesil için'].every((t) => $('intro').textContent.includes(t)));
+check('opening screen carries the cover content (title, uncertainty note, legend, map picture)', ['Dîvânu Lugâti\'t-Türk Haritası', 'ölçekli ve koordinatlı değildir', 'örnek içeriktir', 'Tartışmalı'].every((t) => $('intro').textContent.includes(t)) && !!$('intro').querySelector('img[src="assets/original-map.jpg"]'));
+check('there is no separate cover dialog any more', $('dlg-welcome') === null);
+$('intro-open').click();
 await new Promise((r) => setTimeout(r, 900));
-check('intro removed after skip', $('intro') === null);
-check('cover opened after intro', $('dlg-welcome').hasAttribute('open'));
+check('opening screen removed after "Haritayı aç"', $('intro') === null);
+check('the site is directly usable after the opening screen (no dialog open)', !window.document.querySelector('dialog[open]'));
 check('page not inert after intro', !window.document.querySelector('[inert]'));
 // Turkish-labelled redraw as the default base: record markers are hidden until the original image is shown
 check('redraw is the default base of the schematic pane', app.views.schematic.base === 'redraw' && $('base-redraw').getAttribute('aria-pressed') === 'true');
