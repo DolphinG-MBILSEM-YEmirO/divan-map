@@ -254,8 +254,49 @@ function validateCaravan(caravan, annotations) {
   if ((caravan.stops ?? []).length < (caravan.journeyLength ?? 8)) fail('caravan.json: fewer stops than journeyLength');
 }
 
+/** The game page (data/game.json): fiction must say it is fiction, questions must rest on sourced map classes. */
+function validateGame(game, annotations, sourceIds) {
+  if (!game) return;
+  const who = new Set(Object.keys(game.characters ?? {}));
+  const classes = annotations?.classes ?? {};
+  if (!/kurgu/.test(game.notice ?? '')) fail('game.json: the notice must say that characters and events are fiction ("kurgu")');
+  for (const [key, c] of Object.entries(game.characters ?? {})) {
+    if (!c.name || !c.initial || !/^#[0-9a-f]{6}$/i.test(c.color ?? '')) fail(`game.json character "${key}": name, initial and a #rrggbb colour are required`);
+  }
+  const lines = Object.entries(game.lines ?? {}).flatMap(([key, v]) => (Array.isArray(v) ? v.map((l, i) => [`${key}[${i}]`, l]) : [[key, v]]));
+  for (const [key, line] of lines) {
+    if (!who.has(line.who) || !line.text) fail(`game.json line "${key}": unknown speaker or empty text`);
+  }
+  for (const needed of ['pick', 'wrongFirst', 'wrongSecond', 'travel', 'arrive', 'refillCity', 'refillWater', 'equivalent', 'thirsty', 'finish']) {
+    if (!game.lines?.[needed]) fail(`game.json: missing line "${needed}"`);
+  }
+  for (const e of game.events ?? []) {
+    const where = `game.json event "${e.id}"`;
+    if (!e.title || !e.text || !who.has(e.who)) fail(`${where}: title, text and a known speaker are required`);
+    if (![null, 'map', 'direction', 'place'].includes(e.question ?? null)) fail(`${where}: unknown question type "${e.question}"`);
+    if (!e.right?.text || (e.question && !e.wrong?.text)) fail(`${where}: outcome texts are required`);
+  }
+  if (!(game.mapQuestions ?? []).length) fail('game.json: at least one map-reading question is required');
+  for (const q of game.mapQuestions ?? []) {
+    const where = `game.json map question "${q.id}"`;
+    const cls = classes[q.classId];
+    if (!cls) fail(`${where}: unknown classId "${q.classId}"`);
+    else if (!['sourced', 'partial'].includes(cls.status)) fail(`${where}: class "${q.classId}" is not backed by a source`);
+    if (!q.prompt || !q.answer || !q.explanation) fail(`${where}: prompt, answer and explanation are required`);
+    if (!Array.isArray(q.wrong) || q.wrong.length < 3 || q.wrong.includes(q.answer)) fail(`${where}: three wrong options, none equal to the answer`);
+  }
+  for (const w of game.divanWords ?? []) {
+    const where = `game.json Dîvân word "${w.word ?? '?'}"`;
+    if (!w.word || !w.meaning) fail(`${where}: word and meaning are required`);
+    if (!(w.sources ?? []).length || w.sources.some((s) => !sourceIds.has(s.source_id) || !s.locator)) fail(`${where}: every word needs a known source with a page or section`);
+  }
+  if (game.story && (!game.story.title || !(game.story.questions ?? []).length || !/kişisel/.test(game.story.privacy ?? ''))) fail('game.json: the story section needs a title, questions and a privacy note about personal data');
+  const s = game.settings ?? {};
+  if (!(s.journeyLength > 0 && s.capacity > 0 && s.waterStart > 0 && s.waterMax >= s.waterStart && s.pixelsPerWater > 0)) fail('game.json: settings are incomplete or inconsistent');
+}
+
 async function main() {
-  const [config, places, sources, quiz, instruments, equivalents, annotations, geo, caravan] = await Promise.all([
+  const [config, places, sources, quiz, instruments, equivalents, annotations, geo, caravan, game] = await Promise.all([
     readJson('data/config.json'),
     readJson('data/places.json'),
     readJson('data/sources.json'),
@@ -265,6 +306,7 @@ async function main() {
     readJson('data/map-annotations.json'),
     readJson('data/modern-geo.json'),
     readJson('data/caravan.json'),
+    readJson('data/game.json'),
   ]);
   if (!config || !places || !sources) return finish();
 
@@ -299,6 +341,7 @@ async function main() {
   validateGeo(geo, equivalents);
   validateAnnotations(annotations, sourceIds, new Set((equivalents?.records ?? []).map((r) => r.id)), config.redrawMap);
   validateCaravan(caravan, annotations);
+  validateGame(game, annotations, sourceIds);
   finish(places.records?.length ?? 0);
 }
 
