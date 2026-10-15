@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, tests the assistant's server logic, the side panel and the opening screen, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic, the side panel, the opening screen and the caravan game rules, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -41,6 +41,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/modern-layer.js` | Findings on the modern map: rough shapes, hover cards, legend, link to the original map |
 | `js/assistant.js` | Opt-in AI assistant panel (picks the matching cards, calls `/api/chat`; holds no key) |
 | `js/intro.js`, `css/opening.css` | Opening screen: the school animation and the former cover in one view, shown once per visit; the site appears directly after it |
+| `js/caravan.js`, `css/caravan.css`, `data/caravan.json` | "Kâşgarlı'nın Kervanı" journey game, its review quiz and "Sözlüğüm" (see "Caravan game") |
 | `js/sidebar.js`, `css/sidebar.css` | Collapsible side panel: folds into a slim rail of shortcuts (desktop), remembered on this device; the maps refit while it moves |
 | `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
 | `vercel.json` | Function settings (answer time limit) |
@@ -51,7 +52,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator, proxy test, side panel test, opening screen test and smoke test |
+| `tools/` | Data validator, proxy test, side panel test, opening screen test, caravan test and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -75,6 +76,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 - Turn the network off: a message explains that the modern base map cannot load.
 - Text size buttons and the high-contrast toggle work and are remembered after reload.
 - Side panel: the « button folds it into a rail and both maps grow to fill the space; the rail's icons reopen the panel at search, maps, record types or records; the choice survives a reload. On a phone the panel is still the drawer opened by the layers button.
+- Pekiştir → Kâşgarlı'nın Kervanı: the panel opens under the top bar with three names; a wrong click gives a direction hint, a second one outlines the place; eight deliveries end the journey and the route stays drawn until "Kapat". Sözlüğüm lists the delivered names; Pekiştirme testi starts with the places that needed help.
 
 ## Not in this version
 
@@ -116,7 +118,7 @@ activity switches the pane to the original image automatically.
 
 ## Top bar
 
-The top bar groups the former icon buttons into four labelled menus (Öğren, Dene, Kaynaklar, Görünüm) plus the
+The top bar groups the former icon buttons into four labelled menus (Öğren, Pekiştir, Kaynaklar, Görünüm) plus the
 "Asistan" button. The "Kapak" button was removed (the cover is now part of the opening screen). Each
 item has a one-line purpose text. Menus are disclosure buttons: Esc closes them, a click outside closes them, and all
 earlier element ids (`btn-quiz`, `btn-activity`, `btn-present`, `btn-contrast`, ...) are unchanged.
@@ -137,6 +139,16 @@ is not; the card repeats that it is not a border or exact position. Entries that
 `notPlotted` with the reason and appear in the legend. `npm run validate` checks ids, coordinates and the required notes.
 Centres were taken from Wikipedia pages and rounded; frames and lines are hand-rounded and **must be re-checked** against an
 atlas or GIS source before they are quoted in a report. Hovering a card on one map highlights the linked item on the other.
+
+## Caravan game
+
+"Pekiştir" (the former "Dene" menu, same element ids) holds the caravan game, the mini test, the review quiz, "Sözlüğüm" and the find-it activity.
+
+*Kâşgarlı'nın Kervanı* (`js/caravan.js`) is played on the Turkish-labelled redraw. The caravan starts at Kaşgar with three names, each with a clue. The player picks a name and clicks where it is written on the map (or chooses the place from a list: "Klavyeyle oyna"). A right delivery moves the caravan there, extends its dashed route and, if the place has a plotted modern equivalent, highlights it on the present-day map. A first wrong try gives a direction in the map's own compass (computed from the Doğu/Kuzey/Batı/Güney labels, because "up" on this map is not north); a second one outlines the place, offers its card and puts it on the review list. Eight deliveries end a journey. "Adları gizle" hides the names so only the clues are shown. Hover cards are off while a journey runs.
+
+`data/caravan.json` lists the stops and clues. **Only cards with status `sourced` or `partial` can be stops**, and every clue is a shortened sentence of that card: it adds nothing the card does not say. The clues have not been reviewed by the team yet (`reviewed: false`; the notice says so). `npm run validate` refuses a stop that is not such a card, and a clue that contains the place's own name. For now the "words" are place names on the map; a sourced list of Dîvân words (word, meaning, page) can be added later as another kind of stop.
+
+Delivered names (`dlt:caravanWords`) and places to review (`dlt:caravanReview`) stay on this device; "Bu cihazdaki kayıtlı verilerimi sil" removes them. *Pekiştirme testi* builds five "which place does this clue describe?" questions, review places first; a right answer takes a place off the review list. Its result is kept apart from the mini test's.
 
 ## AI assistant
 
