@@ -349,7 +349,7 @@ h1, h2, h3 { font-family: var(--serif); }
 }
 [data-tip]:hover::after, [data-tip]:focus-visible::after { opacity: 1; }
 .topbar__settings [data-tip]:last-child::after, .topbar__settings [data-tip]:nth-last-child(2)::after { left: auto; right: 0; transform: none; }
-.panel [data-tip]::after, .cover [data-tip]::after { top: auto; bottom: calc(100% + 6px); }
+.panel [data-tip]::after { top: auto; bottom: calc(100% + 6px); }
 
 /* ----- banners ----- */
 .banner--demo { background: #f6eed2; color: #5c4510; border-bottom: 1px solid var(--gold); font-size: 0.85rem; padding: 0.35rem 1rem; }
@@ -397,29 +397,6 @@ body.hc dialog { border: 3px solid #000; }
 .quiz-option:hover { background: #f7f1e1; }
 .quiz-option input { accent-color: var(--accent); }
 
-/* ----- cover (main title page) ----- */
-dialog.cover {
-  width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; border-radius: 0;
-  background: radial-gradient(ellipse at 75% 50%, #2a3850 0%, var(--ink) 62%); color: var(--on-ink); overflow-y: auto;
-}
-dialog.cover::backdrop { background: var(--ink); }
-.cover__inner { min-height: 100%; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; gap: 2.5rem; max-width: 76rem; margin: 0 auto; padding: 3rem 2rem; }
-.cover__eyebrow { margin: 0 0 1rem; font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
-.cover h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); line-height: 1.1; margin: 0; color: #fff; font-weight: 700; letter-spacing: 0.01em; }
-.cover__rule { width: 5rem; height: 3px; background: var(--gold); margin: 1.4rem 0; }
-.cover__lead { font-size: 1.1rem; line-height: 1.6; max-width: 34rem; color: #d9d1bb; }
-.cover__legend { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin: 1.6rem 0 1rem; padding: 0; }
-.cover__legend li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--on-ink); }
-.cover .mk--approximate { background: color-mix(in srgb, var(--c) 22%, #fff); }
-.cover__note { max-width: 34rem; font-size: 0.85rem; line-height: 1.5; color: #b7ae96; border-left: 2px solid var(--gold); padding-left: 0.8rem; margin: 0 0 1.6rem; }
-.cover__actions { display: flex; align-items: center; gap: 0.75rem; }
-.btn--cover { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 700; font-size: 1rem; padding: 0.6rem 1.2rem; min-height: 2.9rem; letter-spacing: 0.02em; }
-.btn--cover:hover { background: #d5b765; border-color: #d5b765; }
-.cover__figure { margin: 0; text-align: center; }
-.cover__figure img { width: min(100%, 30rem); height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 50%; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 0 0 10px rgba(194, 162, 78, 0.18), var(--shadow-lg); filter: saturate(0.92); }
-.cover__figure figcaption { margin-top: 1.1rem; font-size: 0.75rem; color: #a79f88; }
-body.hc dialog.cover { background: #000; }
-
 @media (max-width: 1100px) {
   .topbar__subtitle { display: none; }
 }
@@ -428,13 +405,6 @@ body.hc dialog.cover { background: #000; }
   .sidebar { padding: 0.75rem; }
   .maps { padding: 0.5rem; gap: 0.5rem; }
   .topbar__settings { border-left: 0; padding-left: 0; }
-  .cover__inner { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 1.5rem 1.25rem 2rem; }
-  .cover__figure { order: -1; }
-  .cover__figure img { width: min(48vw, 11rem); box-shadow: 0 0 0 6px rgba(194, 162, 78, 0.18); }
-  .cover__figure figcaption { display: none; }
-  .cover__eyebrow { margin-bottom: 0.6rem; }
-  .cover__legend { margin: 1rem 0 0.8rem; }
-  .cover h2 { font-size: 2rem; }
 }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 
@@ -457,49 +427,6 @@ dialog.dialog--wide { width: min(64rem, calc(100vw - 2rem)); }
 .status-symbol { display: inline-block; min-width: 1.1em; color: var(--accent); }
 .equiv-table .link-btn { text-align: left; }
 .status-symbol { font-family: system-ui, sans-serif; }
-
-/* ----- opening animation (school identity and team) ----- */
-.intro {
-  position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; padding: 1.5rem; overflow-y: auto;
-  background: radial-gradient(ellipse at 50% 40%, #2a3850 0%, var(--ink) 66%); color: var(--on-ink);
-  opacity: 1; transition: opacity 0.6s ease; cursor: pointer;
-}
-.intro.is-leaving { opacity: 0; pointer-events: none; }
-.intro__stage { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 40rem; }
-.intro__emblem { position: relative; width: clamp(9rem, 28vw, 12.5rem); aspect-ratio: 1 / 1; margin-bottom: 1.6rem; animation: intro-pop 1.1s cubic-bezier(.2,.8,.2,1) 0.2s both; }
-.intro__emblem img { width: 100%; height: 100%; display: block; border-radius: 50%; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45); }
-.intro__ring { position: absolute; inset: -9%; width: 118%; height: 118%; transform: rotate(-90deg); }
-.intro__ring circle { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 654; stroke-dashoffset: 654; animation: intro-ring 1.9s ease-out 0.5s forwards; }
-.intro__eyebrow { margin: 0 0 0.6rem; font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); animation: intro-rise 0.8s ease 1.5s both; }
-.intro__school { margin: 0; font-family: var(--serif); font-size: clamp(1.9rem, 6vw, 3.2rem); line-height: 1.1; letter-spacing: 0.04em; color: #fff; animation: intro-rise 0.9s ease 1.8s both; }
-.intro__rule { width: 5rem; height: 3px; background: var(--gold); margin: 1.3rem 0; transform-origin: center; animation: intro-rule 0.8s ease 2.4s both; }
-.intro__project { margin: 0 0 1.8rem; font-size: clamp(0.95rem, 2.4vw, 1.15rem); line-height: 1.55; color: #d9d1bb; animation: intro-rise 0.9s ease 3s both; }
-.intro__team { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 2.6rem; margin: 0; }
-.intro__team div { animation: intro-rise 0.9s ease both; }
-.intro__team div:nth-child(1) { animation-delay: 3.8s; }
-.intro__team div:nth-child(2) { animation-delay: 4.6s; }
-.intro__team dt { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
-.intro__team dd { margin: 0; font-size: 1.15rem; color: #fff; }
-.intro__motto { margin: 2rem 0 0; padding-top: 1.4rem; border-top: 1px solid rgba(194, 162, 78, 0.45); font-family: var(--serif); font-style: italic; font-size: clamp(1rem, 2.6vw, 1.25rem); line-height: 1.6; color: #e6dec8; animation: intro-rise 1s ease 5.6s both; }
-.intro__skip {
-  position: absolute; right: 1.25rem; bottom: 1.25rem; font: inherit; font-size: 0.9rem; color: var(--on-ink); background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.45); border-radius: 999px; padding: 0.45rem 1.1rem; cursor: pointer; animation: intro-rise 0.6s ease 1s both;
-}
-.intro__skip:hover { background: rgba(255, 255, 255, 0.12); }
-.intro__skip:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-
-@keyframes intro-pop { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: scale(1); } }
-@keyframes intro-ring { to { stroke-dashoffset: 0; } }
-@keyframes intro-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes intro-rule { from { opacity: 0; transform: scaleX(0); } to { opacity: 1; transform: scaleX(1); } }
-
-/* Reduced motion: show everything at once, no movement. */
-@media (prefers-reduced-motion: reduce) {
-  .intro, .intro * { animation: none !important; transition: none !important; }
-  .intro__ring circle { stroke-dashoffset: 0; }
-}
-.intro.is-static, .intro.is-static * { animation: none !important; }
-.intro.is-static .intro__ring circle { stroke-dashoffset: 0; }
 
 /* ====================================================================
    Top bar menus (Öğren, Dene, Kaynaklar, Görünüm)
