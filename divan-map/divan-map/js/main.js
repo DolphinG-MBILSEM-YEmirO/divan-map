@@ -330,13 +330,37 @@ function onLayerToggle(changedInput, key) {
   if (selected) renderCard(selected); // notes depend on which maps are visible; keep focus where it is
 }
 
-function setSidebarOpen(open) {
+// The sample-content notice can be hidden for this visit only (sessionStorage); it is shown again on the next visit.
+const DEMO_BANNER_KEY = 'dlt:demoBannerHidden';
+
+function demoBannerDismissed() {
+  try { return window.sessionStorage.getItem(DEMO_BANNER_KEY) === '1'; } catch { return false; }
+}
+
+function dismissDemoBanner() {
+  try { window.sessionStorage.setItem(DEMO_BANNER_KEY, '1'); } catch { /* storage blocked: hide for this page only */ }
+  dom.demoBanner.hidden = true;
+  window.dispatchEvent(new Event('resize')); // the maps take the freed height
+  document.getElementById('maps')?.focus?.();
+}
+
+/**
+ * Opens or closes the panel drawer on narrow screens. While it is open a backdrop covers the maps (a tap on it
+ * closes the drawer), focus moves into the drawer, and on closing it returns to the button that opened it.
+ */
+function setSidebarOpen(open, { returnFocus = true } = {}) {
+  const wasOpen = dom.sidebar.classList.contains('is-open');
   dom.sidebar.classList.toggle('is-open', open);
   dom.sidebarToggle.setAttribute('aria-expanded', String(open));
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (backdrop) backdrop.hidden = !(open && NARROW_QUERY.matches);
+  if (!NARROW_QUERY.matches || open === wasOpen) return;
+  if (open) document.getElementById('btn-sidebar-close')?.focus();
+  else if (returnFocus) dom.sidebarToggle.focus();
 }
 
 function closeSidebarOnNarrow() {
-  if (NARROW_QUERY.matches) setSidebarOpen(false);
+  if (NARROW_QUERY.matches) setSidebarOpen(false, { returnFocus: false });
 }
 
 // ---------------------------------------------------------------------- menus
@@ -523,6 +547,9 @@ function wireControls() {
     });
   });
   dom.sidebarToggle.addEventListener('click', () => setSidebarOpen(!dom.sidebar.classList.contains('is-open')));
+  document.getElementById('btn-sidebar-close')?.addEventListener('click', () => setSidebarOpen(false));
+  document.getElementById('sidebar-backdrop')?.addEventListener('click', () => setSidebarOpen(false));
+  NARROW_QUERY.addEventListener?.('change', () => setSidebarOpen(false, { returnFocus: false }));
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !document.querySelector('dialog[open]')) {
       if (dom.sidebar.classList.contains('is-open')) setSidebarOpen(false);
@@ -582,7 +609,8 @@ async function boot() {
   state.config = data.config;
   state.records = prepareRecords(data.places.records);
   data.sources.sources.forEach((s) => state.sourcesById.set(s.id, s));
-  dom.demoBanner.hidden = !state.records.some((r) => r.is_demo);
+  dom.demoBanner.hidden = !state.records.some((r) => r.is_demo) || demoBannerDismissed();
+  document.getElementById('demo-banner-close')?.addEventListener('click', dismissDemoBanner);
 
   // Layout first, so each map is created inside a visible, sized container.
   applyLayout();
