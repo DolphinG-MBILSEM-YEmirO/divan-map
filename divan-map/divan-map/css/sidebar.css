@@ -114,11 +114,22 @@ body.hc .sidebar__body .results__item[aria-current="true"] { background: #fff; b
 }
 .rail__count:empty { display: none; }
 
+/* close button and backdrop of the phone drawer (hidden on wide screens) */
+.sidebar__close {
+  display: none; place-items: center; width: 2.6rem; height: 2.6rem; padding: 0; cursor: pointer;
+  border: 1px solid var(--border-strong); border-radius: 0.6rem; background: var(--paper); color: var(--text);
+}
+.sidebar__close:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.sidebar-backdrop { position: fixed; inset: 0; z-index: 1450; background: rgba(23, 32, 46, 0.45); }
+.sidebar-backdrop[hidden] { display: none; }
+
 /* ----- phones: the panel is the drawer of styles.css; the fold controls do not apply ----- */
 @media (max-width: 860px) {
   .sidebar__toggle, .sidebar__rail { display: none; }
-  .sidebar__head { padding-left: 1rem; }
+  .sidebar__head { padding-left: 1rem; justify-content: space-between; }
+  .sidebar__close { display: inline-grid; }
 }
+@media (min-width: 861px) { .sidebar-backdrop { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   .layout.is-animated, .sidebar__toggle .ico, .layer-tiles .switch { transition: none; }

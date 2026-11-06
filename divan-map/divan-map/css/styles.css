@@ -352,7 +352,18 @@ h1, h2, h3 { font-family: var(--serif); }
 .panel [data-tip]::after { top: auto; bottom: calc(100% + 6px); }
 
 /* ----- banners ----- */
-.banner--demo { background: #f6eed2; color: #5c4510; border-bottom: 1px solid var(--gold); font-size: 0.85rem; padding: 0.35rem 1rem; }
+.banner--demo { background: #f6eed2; color: #5c4510; border-bottom: 1px solid var(--gold); font-size: 0.85rem; padding: 0.35rem 0.5rem 0.35rem 1rem; }
+.banner--demo:not([hidden]) { display: flex; align-items: center; gap: 0.75rem; }
+.banner__text { margin: 0; flex: 1; }
+.banner__close {
+  flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; padding: 0; cursor: pointer;
+  border: 1px solid transparent; border-radius: 0.5rem; background: transparent; color: inherit;
+}
+.banner__close:hover { border-color: currentColor; }
+.banner__close:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.about-team { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.4rem 1rem; margin: 0; }
+.about-team dt { font-size: 0.78rem; color: var(--muted); }
+.about-team dd { margin: 0; font-weight: 600; }
 .banner--activity { background: var(--accent-soft); border: 0; border-bottom: 1px solid var(--accent); }
 body.hc .banner--demo, body.hc .banner--activity { background: #fff; border-bottom: 2px solid #000; }
 
@@ -413,7 +424,9 @@ body.hc dialog { border: 3px solid #000; }
 
 /* the sidebar toggle exists only on small screens (must come after .btn--sq) */
 .map-toggle-sidebar { display: none; }
-@media (max-width: 860px) { .map-toggle-sidebar { display: inline-grid; } }
+@media (max-width: 860px) {
+  .map-toggle-sidebar { display: inline-grid; z-index: 1050; } /* below an open explanation card (1100) */
+}
 
 /* findings table: modern equivalents */
 dialog.dialog--wide { width: min(64rem, calc(100vw - 2rem)); }
@@ -709,3 +722,8 @@ body.hc .assistant__head { background: #000; }
   .menu__trigger--assistant span { display: none; }
   .menu__trigger--assistant .ico { display: block; }
 }
+.maps:focus { outline: none; }
+.banner--lang { margin: 0; background: #e9eef6; color: #1d2a3d; border-bottom: 1px solid #b8c4d6; font-size: 0.85rem; padding: 0.35rem 1rem; }
+body.hc .banner--lang { background: #fff; color: #000; border-bottom: 2px solid #000; }
+/* phones: keep the map credit readable beside the round panel button (after the theme's .map-credit rule) */
+@media (max-width: 860px) { .map-credit { padding-left: 4.6rem; } }
