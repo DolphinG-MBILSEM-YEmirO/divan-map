@@ -5,10 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kâşgarlı'nın Kervanı · Dîvânu Lugâti't-Türk Haritası</title>
   <meta name="description" content="Dîvânu Lugâti't-Türk haritası üzerinde develi bir kervanla yer adlarını taşıyan öğrenme oyunu.">
+  <link rel="canonical" href="https://www.deargear.tools/game.html">
+  <meta name="theme-color" content="#17202e">
   <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dîvânu Lugâti't-Türk Haritası">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:url" content="https://www.deargear.tools/game.html">
+  <meta property="og:title" content="Kâşgarlı'nın Kervanı · Harita oyunu">
+  <meta property="og:description" content="Dîvânu Lugâti't-Türk haritası üzerinde develi bir kervanla yer adlarını taşıyan öğrenme oyunu. Karakterler ve yol olayları kurgudur.">
+  <meta property="og:image" content="https://www.deargear.tools/assets/og-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dîvânu Lugâti't-Türk'teki dairesel dünya haritası ve proje başlığı">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kâşgarlı'nın Kervanı">
+  <meta name="twitter:description" content="Dîvânu Lugâti't-Türk haritası üzerinde develi bir kervanla yer adlarını taşıyan öğrenme oyunu.">
+  <meta name="twitter:image" content="https://www.deargear.tools/assets/og-preview.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    "name": "Kâşgarlı'nın Kervanı",
+    "url": "https://www.deargear.tools/game.html",
+    "description": "Dîvânu Lugâti't-Türk haritası üzerinde develi bir kervanla yer adlarını taşıyan öğrenme oyunu. Karakterler ve yol olayları kurgudur; yer ipuçları sitenin kaynaklı açıklama kartlarından alınır.",
+    "inLanguage": "tr",
+    "isAccessibleForFree": true,
+    "learningResourceType": "Oyun",
+    "creativeWorkStatus": "Prototip",
+    "isPartOf": { "@type": "LearningResource", "name": "Dîvânu Lugâti't-Türk Haritası", "url": "https://www.deargear.tools/" },
+    "sourceOrganization": { "@type": "EducationalOrganization", "name": "Maltepe Fen Lisesi" }
+  }
+  </script>
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/game.css">
+  <noscript><style>.g-loading { display: none; }</style></noscript>
 </head>
 <body class="game">
   <header class="g-top">
@@ -45,10 +79,27 @@
     </aside>
   </main>
 
-  <div class="g-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title"></div>
+  <!-- The start screen. This text is shown while the game loads (and to readers without JavaScript); js/game.js replaces it. -->
+  <div class="g-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+    <div class="g-card">
+      <h2 id="overlay-title">Kâşgarlı'nın Kervanı</h2>
+      <p>Develi bir kervanla Dîvânu Lugâti't-Türk haritasında yolculuk yaptığın bir öğrenme oyunu. Kervan Kaşgar'dan yola çıkar; yükün yer adlarıdır.</p>
+      <ul class="g-howto">
+        <li>Bir yük seç ve ipucunu oku, sonra haritada o adın yazılı olduğu yere tıkla.</li>
+        <li>Yanlış yerde kâtip, haritanın kendi yön yazılarına göre yön ipucu verir; ikinci yanlışta yer çerçevelenir.</li>
+        <li>Develer yürüdükçe su azalır; yer adı yazılı konaklarda ve ırmak kıyılarında su tazelenir.</li>
+        <li>Yoldaki olaylarda harita okuma, yön ve yer soruları gelir.</li>
+        <li>Yolculuğun sonunda rotanı ve gördüklerini kendi cümlelerinle anlatırsın.</li>
+      </ul>
+      <p class="hint">Karakterler ve yol olayları kurgudur; yer ipuçları haritanın kaynaklı açıklama kartlarından alınır.</p>
+      <p class="hint g-loading">Oyun yükleniyor…</p>
+      <noscript><p class="g-noscript">Bu oyun JavaScript gerektirir. Tarayıcında JavaScript'i açıp sayfayı yenile.</p></noscript>
+      <p><a class="btn" href="index.html">Haritaya dön</a></p>
+    </div>
+  </div>
 
-  <noscript><p class="banner banner--status">Bu oyun JavaScript gerektirir.</p></noscript>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="js/game.js"></script>
+  <script type="module" src="js/pwa.js"></script>
 </body>
 </html>

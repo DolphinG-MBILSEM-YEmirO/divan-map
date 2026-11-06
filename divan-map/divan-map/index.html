@@ -5,7 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dîvânu Lugâti't-Türk Haritası</title>
   <meta name="description" content="Dîvânu Lugâti't-Türk'teki 11. yüzyıl dünya haritasını etkileşimli olarak keşfet. Prototip sürüm.">
+  <link rel="canonical" href="https://www.deargear.tools/">
+  <meta name="theme-color" content="#17202e">
   <link rel="icon" type="image/jpeg" href="assets/school-logo.jpg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <!-- Link previews (Open Graph, X/Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dîvânu Lugâti't-Türk Haritası">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:url" content="https://www.deargear.tools/">
+  <meta property="og:title" content="Dîvânu Lugâti't-Türk Haritası · Maltepe Fen Lisesi">
+  <meta property="og:description" content="Kâşgarlı Mahmud'un 11. yüzyıl dünya haritasını kaynakları ve belirsizlik düzeyleriyle okumak için etkileşimli ortam. TEKNOFEST projesi, prototip sürüm.">
+  <meta property="og:image" content="https://www.deargear.tools/assets/og-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dîvânu Lugâti't-Türk'teki dairesel dünya haritası ve proje başlığı">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dîvânu Lugâti't-Türk Haritası">
+  <meta name="twitter:description" content="11. yüzyıl dünya haritasını kaynakları ve belirsizlik düzeyleriyle okumak için etkileşimli ortam. Prototip sürüm.">
+  <meta name="twitter:image" content="https://www.deargear.tools/assets/og-preview.jpg">
+  <!-- Structured data for search engines (schema.org). Describes only what is on the site; no ratings or invented facts. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    "name": "Dîvânu Lugâti't-Türk Haritası",
+    "url": "https://www.deargear.tools/",
+    "description": "Kâşgarlı Mahmud'un Dîvânu Lugâti't-Türk eserindeki 11. yüzyıl dünya haritasını kaynakları ve belirsizlik düzeyleriyle okumak için etkileşimli ortam. Prototip sürüm; kayıtların bir kısmı örnek içeriktir.",
+    "inLanguage": "tr",
+    "isAccessibleForFree": true,
+    "learningResourceType": ["Etkileşimli harita", "Oyun", "Test"],
+    "creativeWorkStatus": "Prototip",
+    "image": "https://www.deargear.tools/assets/og-preview.jpg",
+    "about": { "@type": "Book", "name": "Dîvânu Lugâti't-Türk", "author": { "@type": "Person", "name": "Kâşgarlı Mahmud" } },
+    "sourceOrganization": { "@type": "EducationalOrganization", "name": "Maltepe Fen Lisesi" },
+    "codeRepository": "https://github.com/DolphinG-MBILSEM-YEmirO/divan-map"
+  }
+  </script>
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/opening.css">
@@ -17,7 +54,7 @@
   <div id="intro" class="opening" role="dialog" aria-modal="true" aria-labelledby="opening-school">
     <div class="opening__inner">
       <div class="opening__text">
-        <header class="opening__brand">
+        <div class="opening__brand">
           <div class="opening__emblem">
             <svg class="opening__ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" /></svg>
             <img src="assets/school-logo.jpg" width="200" height="200" alt="Maltepe Fen Lisesi logosu">
@@ -26,7 +63,7 @@
             <p class="opening__eyebrow">TEKNOFEST Projesi · Prototip sürüm</p>
             <h1 id="opening-school" class="opening__school">Maltepe Fen Lisesi</h1>
           </div>
-        </header>
+        </div>
         <div class="opening__rule" aria-hidden="true"></div>
         <h2 class="opening__title">Dîvânu Lugâti't-Türk Haritası</h2>
         <p class="opening__lead">Kâşgarlı Mahmud'un 11. yüzyılda yazdığı eserdeki dünya haritasını, kaynakları ve belirsizlik düzeyleriyle birlikte okumak için hazırlanmış etkileşimli ortam.</p>
@@ -64,7 +101,7 @@
       </div>
     </div>
     <nav class="topbar__nav" aria-label="Uygulama bölümleri">
-      <button type="button" id="btn-assistant-fab" class="menu__trigger menu__trigger--assistant" aria-controls="assistant" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg><span>Asistan</span></button>
+      <button type="button" id="btn-assistant-fab" class="menu__trigger menu__trigger--assistant" aria-controls="assistant" aria-expanded="false" aria-label="Asistan"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg><span>Asistan</span></button>
       <div class="menu" data-menu>
         <button type="button" class="menu__trigger" id="menu-learn-btn" aria-expanded="false" aria-controls="menu-learn"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5V5.5"/><path d="M9 8h7"/></svg><span>Öğren</span><svg class="menu__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <ul class="menu__panel" id="menu-learn" hidden>
@@ -111,15 +148,23 @@
             <span class="menu__name">Yüksek karşıtlık</span>
             <span class="menu__desc">Siyah-beyaz, kalın kenarlı görünüm.</span>
           </button>
+          <button type="button" class="menu__toggle" id="btn-lang" aria-pressed="false" data-keep-open>
+            <span class="menu__name" lang="en">English interface</span>
+            <span class="menu__desc">Menüler ve paneller İngilizce olur; açıklama kartları, kaynaklar ve oyun Türkçe kalır.</span>
+          </button>
         </div>
       </div>
     </nav>
   </header>
 
+  <section class="notices" aria-label="Duyurular">
   <div id="demo-banner" class="banner banner--demo" role="note" hidden>
-    Bu sürümde yalnızca <strong>örnek içerik</strong> vardır. Haritadaki kayıtlar gerçek tarihî veri değildir.
+    <p class="banner__text">Kayıt listesindeki kayıtlar (Örnek Yer Adı A gibi) <strong>örnek içeriktir</strong>, gerçek tarihî veri değildir. Haritadaki yazıların açıklama kartlarında ise her kartın kaynak durumu yazar.</p>
+    <button type="button" class="banner__close" id="demo-banner-close" aria-label="Bu uyarıyı bu ziyaret için gizle" title="Bu ziyaret için gizle"><svg class="ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
+  <p class="banner banner--lang" data-i18n-note lang="en" hidden></p>
   <div id="status-banner" class="banner banner--status" role="status" hidden></div>
+  </section>
   <section id="activity-bar" class="banner banner--activity" aria-label="Haritada bul etkinliği" hidden>
     <p data-activity-prompt></p>
     <p data-activity-feedback role="status" aria-live="polite"></p>
@@ -132,6 +177,7 @@
       <div class="sidebar__head">
         <h2 class="sidebar__title">Arama ve kayıtlar</h2>
         <button type="button" class="sidebar__toggle" id="btn-sidebar-collapse" aria-controls="sidebar-body" aria-expanded="true" aria-label="Paneli daralt" title="Paneli daralt"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg></button>
+        <button type="button" class="sidebar__close" id="btn-sidebar-close" aria-controls="sidebar" aria-label="Paneli kapat" title="Paneli kapat"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
       <nav class="sidebar__rail" id="sidebar-rail" aria-label="Panel kısayolları">
         <button type="button" class="rail__btn" data-rail-target="search-input" aria-label="Ara" title="Ara"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
@@ -183,7 +229,7 @@
       </div>
     </aside>
 
-    <section id="maps" class="maps" data-mode="both" aria-label="Harita alanı">
+    <section id="maps" class="maps" data-mode="both" aria-label="Harita alanı" tabindex="-1">
       <div class="map-pane" id="pane-schematic">
         <h2 class="map-pane__title" id="schematic-title">Özgün harita</h2>
         <div class="map-pane__tools" id="schematic-tools">
@@ -212,6 +258,7 @@
       <button type="button" class="btn btn--primary btn--sq map-toggle-sidebar" id="btn-sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Arama ve katmanlar"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
     </section>
 
+    <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
     <aside id="info-card" class="info-card" aria-label="Kayıt bilgisi" hidden></aside>
   </main>
 
@@ -247,8 +294,8 @@
     </section>
 
     <section id="assistant-chat" class="assistant__chat" aria-label="Sohbet" hidden>
-      <div id="assistant-log" class="assistant__log" role="log" aria-live="polite"></div>
-      <div id="assistant-suggest" class="assistant__suggest" aria-label="Örnek sorular"></div>
+      <div id="assistant-log" class="assistant__log" role="log" aria-live="polite" data-i18n-skip></div>
+      <div id="assistant-suggest" class="assistant__suggest" aria-label="Örnek sorular" data-i18n-skip></div>
       <form id="assistant-form" class="assistant__form">
         <label for="assistant-input" class="visually-hidden">Sorun</label>
         <textarea id="assistant-input" rows="2" maxlength="500" placeholder="Örneğin: Balasagun nerede?"></textarea>
@@ -364,7 +411,23 @@
   <dialog id="dlg-about" aria-labelledby="about-title">
     <div class="dialog__head"><h2 id="about-title">Proje hakkında</h2><button type="button" class="icon-btn" data-close-dialog aria-label="Pencereyi kapat">×</button></div>
     <p><strong>Çalışma adı:</strong> Dîvânu Lugâti't-Türk Haritasının Etkileşimli Dijital Ortama Aktarılması ve Öğrencilerin Tarihî Harita Okuryazarlığına Katkısı.</p>
-    <p>Bu bir prototip sürümdür. Tarihî kayıtlar henüz kaynaklarla doğrulanmadığı için yalnızca açıkça etiketlenmiş örnek içerik bulunur.</p>
+    <h3>Ekip</h3>
+    <dl class="about-team">
+      <div><dt>Okul</dt><dd>Maltepe Fen Lisesi</dd></div>
+      <div><dt>Yarışma</dt><dd>TEKNOFEST projesi</dd></div>
+      <div><dt>Danışman</dt><dd>Sevil Orhan</dd></div>
+      <div><dt>Öğrenci</dt><dd>Yunus Emir OKUMUŞ</dd></div>
+    </dl>
+    <h3>Bu sürümde neler var?</h3>
+    <ul>
+      <li><strong>Haritadaki yazıların açıklama kartları:</strong> her kart kaynak durumunu gösterir (kaynakta var, kısmen kaynaklı, yalnızca haritadaki yazı ya da yorum). Bazı künye ve sayfa numaraları henüz teyit edilmedi; kartlarda bu belirtilir.</li>
+      <li><strong>Günümüz karşılıkları:</strong> araştırmacıların önerileridir; kesin konum ya da sınır değildir.</li>
+      <li><strong>Kayıt listesi:</strong> şu an yalnızca açıkça etiketlenmiş örnek kayıtlar vardır. Kaynaklı kayıtlar doğrulandıkça eklenecek.</li>
+      <li><strong>Ticaret ve göç yolları:</strong> kaynakla desteklenen kayıt olmadığı için kapalıdır.</li>
+      <li><strong>Kâşgarlı'nın Kervanı oyunu:</strong> karakterleri ve yol olayları kurgudur; yer ipuçları açıklama kartlarından alınır.</li>
+    </ul>
+    <h3>Kaynak kodu</h3>
+    <p>Sitenin kodu ve veri dosyaları herkese açık bir depoda görülebilir: <a href="https://github.com/DolphinG-MBILSEM-YEmirO/divan-map" target="_blank" rel="noopener">GitHub deposu</a>. Kod için henüz bir lisans seçilmedi.</p>
     <h3>Temel ilkeler</h3>
     <ul>
       <li>Haritadaki hiçbir yer veya sınır kesinmiş gibi gösterilmez.</li>
@@ -393,5 +456,7 @@
   <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/sidebar.js"></script>
+  <script type="module" src="js/i18n.js"></script>
+  <script type="module" src="js/pwa.js"></script>
 </body>
 </html>

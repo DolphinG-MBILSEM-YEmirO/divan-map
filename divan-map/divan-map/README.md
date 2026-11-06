@@ -21,7 +21,7 @@ python3 -m http.server 8000      # or: npm run serve
 
 ```bash
 npm install      # only needed for the tests (esbuild, jsdom)
-npm test         # validates data files, tests the assistant's server logic, the side panel, the opening screen, the caravan rules and the game page, then runs the logic smoke test
+npm test         # validates data files, tests the assistant's server logic, the side panel, the opening screen, the caravan rules, the game page, the site metadata / offline files / English option, then runs the logic smoke test
 ```
 
 `npm test` does **not** check visual rendering or real map tiles. Test those by hand in a real browser
@@ -46,6 +46,9 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/sidebar.js`, `css/sidebar.css` | Collapsible side panel: folds into a slim rail of shortcuts (desktop), remembered on this device; the maps refit while it moves |
 | `api/chat.js`, `api/_proxy.js` | Server function that holds the provider key (environment variable), checks, limits and forwards questions |
 | `vercel.json` | Function settings (answer time limit) |
+| `js/i18n.js`, `js/i18n-en.js` | Optional English interface (menus and panels); Turkish stays the default |
+| `js/pwa.js`, `sw.js`, `manifest.webmanifest` | Installable site that opens offline after one visit (network-first copies of the site's own files) |
+| `robots.txt`, `sitemap.xml`, `assets/og-preview.jpg`, `assets/icon-*.png`, `tools/brand/` | Search engines, link previews and app icons (images rendered from `tools/brand/*.html`) |
 | `js/ui.js` | Rendering of results, filters, info card, legend, sources |
 | `js/quiz.js` | Mini quiz (multiple choice and true/false) |
 | `js/activity.js` | "Find it on the map" activity |
@@ -53,7 +56,7 @@ on a phone-sized and a desktop-sized window (see "Manual checklist" below).
 | `js/storage.js` | Local-only storage helpers |
 | `js/text.js` | Turkish-aware search normalisation, DOM helper |
 | `data/*.json` | Config, map records, sources, quiz questions, `map-annotations.json` (explanation cards), `modern-geo.json` (shapes of the findings on the modern map) |
-| `tools/` | Data validator, proxy test, side panel test, opening screen test, caravan test, game page test and smoke test |
+| `tools/` | Data validator, proxy test, side panel test, opening screen test, caravan test, game page test, site test (metadata, offline files, English option) and smoke test |
 | `vendor/leaflet/` | Leaflet 1.9.4 (BSD-2-Clause), shipped locally |
 | `docs/` | Decisions log, data model, research draft |
 
@@ -152,6 +155,33 @@ atlas or GIS source before they are quoted in a report. Hovering a card on one m
 **Dîvân words.** `data/game.json` has an empty `divanWords` list. When the team prepares a sourced list (word, meaning, `sources` with page or section), the notebook shows it; until then the game says the section will open later.
 
 **On this device only.** Delivered names (`dlt:caravanWords`) and places to review (`dlt:caravanReview`) are shared with the main page; "Bu cihazdaki kayıtlı verilerimi sil" removes them. On the main page *Sözlüğüm* lists the names and *Pekiştirme testi* builds five "which place does this clue describe?" questions, review places first; a right answer takes a place off the review list. Its result is kept apart from the mini test's.
+
+## Sharing, search engines and offline use
+
+- **Link previews and search.** `index.html` and `game.html` carry Open Graph and X/Twitter tags, a canonical link and
+  schema.org `LearningResource` data (prototype status, school, the work it is about; no ratings or invented facts).
+  `robots.txt` keeps `/api/` out of crawlers and names `sitemap.xml`. The preview image `assets/og-preview.jpg` and the
+  app icons are rendered from `tools/brand/*.html` with `node tools/brand/render.mjs` (needs Playwright and the local server).
+- **Installable, opens offline.** `manifest.webmanifest` and `sw.js` (registered by `js/pwa.js`). The worker is
+  *network first*: online visitors always get the latest files; a stored copy is used only when the network fails.
+  It never stores `/api/` (the assistant) or other origins (OpenStreetMap tiles stay with OpenStreetMap). Raise
+  `CACHE_VERSION` when the list of stored files changes; `tools/site-test.mjs` checks that every listed file exists
+  and that every script in `js/` is listed.
+
+## English interface
+
+"Görünüm → English interface" switches menus, panels, dialogs, buttons and notices to English (`js/i18n.js`, texts in
+`js/i18n-en.js`, keyed by the exact Turkish text). Turkish stays the default and the source. Explanation cards, sources,
+the glossary, the research instruments and the game stay in Turkish (they are checked against Turkish sources); a note
+says so while English is on. Text written later by the scripts is translated by a MutationObserver; the assistant's chat
+(`data-i18n-skip`) never is. `tools/site-test.mjs` fails if an English entry no longer matches a Turkish text of the site,
+so after changing a Turkish interface text, update its entry.
+
+## Phones
+
+On narrow screens the side panel is a drawer: the round button on the map opens it, focus moves to its close button, a
+dimmed backdrop covers the maps and a tap on it (or Esc, or ×) closes the drawer and returns focus. The sample-content
+notice can be hidden for the current visit (`sessionStorage`); it comes back on the next visit.
 
 ## AI assistant
 
